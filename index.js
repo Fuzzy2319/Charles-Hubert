@@ -50,8 +50,14 @@ client.on("message", message => {
     if ((testCommand[0] === prefix + "shutdown") && (message.author.id === "454682288563683329") && (message.channel.name === "control-pannel")) {
         log("shutdown", message);
         console.log("Shutingdown Charles-Hubert...");
-        message.channel.send("Shutingdown Charles-Hubert...").then(message => {
-            client.destroy();
+        message.channel.send("Arrêt de Charles-Hubert").then(message => {
+            message.edit("Arrêt de Charles-Hubert.").then(message => {
+                message.edit("Arrêt de Charles-Hubert..").then(message => {
+                    message.edit("Arrêt de Charles-Hubert...").then(message => {
+                        client.destroy();
+                    });
+                });
+            });
         });
     }
     if (testCommand[0] === prefix + "randomMusic") {
