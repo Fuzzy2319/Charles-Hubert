@@ -257,7 +257,9 @@ client.on("message", message => {
     }
     if (testCommand[0] === prefix + "someone") {
         log("someone", message);
-        someone = message.guild.members.valueOf().random();
+        message.guild.members.fetch({ force: true }).then(members => {
+            someone = members.random();
+        });
         msgContent = message.content.replace(prefix + "someone", "");
         if (msgContent !== "") {
             message.channel.send(prefix + "clean 1").then(message => {
