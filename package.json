@@ -1,0 +1,13 @@
+{
+  "name": "Charles-Hubert",
+  "version": "0.0.0",
+  "description": "Discord Bot",
+  "author": {
+    "name": "Fuzzy2319"
+  },
+  "dependencies": {
+    "bufferutil": "^4.0.2",
+    "discord.js": "^12.5.1",
+    "libsodium-wrappers": "^0.7.8"
+  }
+}
