@@ -18,6 +18,13 @@ function randomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+function sleep(ms) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+        currentDate = Date.now();
+    } while (currentDate - date < ms);
+}
 function log(str, message) {
     console.log(prefix + " " + str + " send by " + message.author.username + " on " + message.createdAt);
     try {
@@ -51,8 +58,11 @@ client.on("message", message => {
         log("shutdown", message);
         console.log("Shutingdown Charles-Hubert...");
         message.channel.send("Arrêt de Charles-Hubert").then(message => {
+            sleep(500);
             message.edit("Arrêt de Charles-Hubert.").then(message => {
+                sleep(1000);
                 message.edit("Arrêt de Charles-Hubert..").then(message => {
+                    sleep(1000);
                     message.edit("Arrêt de Charles-Hubert...").then(message => {
                         client.destroy();
                     });
