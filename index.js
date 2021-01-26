@@ -1,9 +1,11 @@
 const Discord = require("discord.js");
 const Fs = require("fs");
 const Ytdl = require('ytdl-core');
+const Ytpl = require('ytpl');
 const client = new Discord.Client();
 var msgembed = new Discord.MessageEmbed();
 var connexion;
+var queue = [];
 var audio;
 var indexNumber;
 var testCommand;
@@ -40,6 +42,24 @@ function log(str, message) {
     catch (e) {
         console.log(e);
     }
+}
+function play(music) {
+    audio = connexion.play(Ytdl(music, {
+        filter: "audioonly",
+        quality: "highestaudio",
+    }), {
+        volume: 0.5,
+    });
+    audio.on("finish", () => {
+        if (queue.length != 0) {
+            queue.shift();
+            console.log(queue[0]);
+            play(queue[0]);
+        }
+        else {
+            connexion.disconnect();
+        }
+    });
 }
 client.login("NjMzMzUxOTUxMDg5NjY0MDEw.XaSvHg.LTXzUy6oMqjCTUiBN6CXFRU787Q"); //Token (Série de chiffre) propre a chaque Bot
 client.on("ready", () => {
@@ -291,24 +311,32 @@ client.on("message", async (message) => {
     }
     if (testCommand[0] === prefix + "play") {
         log("play", message);
-        msgContent = message.content.replace(prefix + "play", "");
-        msgContent = msgContent.replace(" ", "");
+        msgContent = message.content.replace(prefix + "play", "").trim();
         if (msgContent !== "") {
             if (message.member.voice.channel !== null) {
                 if (Ytdl.validateURL(msgContent)) {
                     connexion = await message.member.voice.channel.join();
-                    audio = connexion.play(Ytdl(msgContent, {
-                        filter: 'audioonly',
-                        quality: 'highestaudio',
-                    }), {
-                        volume: 0.5,
-                    });
-                    audio.on('finish', () => {
-                        connexion.disconnect();
-                    });
+                    play(msgContent);
                 }
                 else {
-                    message.channel.send("Url non valide");
+                    if (Ytpl.validateID(msgContent)) {
+                        connexion = await message.member.voice.channel.join();
+                        Ytpl(msgContent).then(playlist => {
+                            playlist.items.forEach((item) => {
+                                if (Ytdl.validateURL(item.shortUrl)) {
+                                    queue.push(item.shortUrl);
+                                }
+                                else {
+                                    message.channel.send("Url non valide " + item.shortUrl);
+                                }
+                            });
+                        }).then(() => {
+                            play(queue[0]);
+                        });
+                    }
+                    else {
+                        message.channel.send("Url non valide");
+                    }
                 }
             }
             else {
@@ -336,11 +364,21 @@ client.on("message", async (message) => {
         }
         return;
     }
+    if (testCommand[0] === prefix + "next") {
+        log("next", message);
+        if (audio !== null) {
+            message.react('⏩');
+            queue.shift();
+            play(queue[0]);
+        }
+        return;
+    }
     if (testCommand[0] === prefix + "stop") {
         log("stop", message);
         if (audio !== null) {
             message.react('🛑');
             audio = null;
+            queue = [];
             connexion.disconnect();
         }
         return;
