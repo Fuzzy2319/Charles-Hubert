@@ -29,7 +29,7 @@ function sleep(ms) {
     } while (currentDate - date < ms);
 }
 function log(str, message) {
-    console.log(prefix + " " + str + " send by " + message.author.username + " on " + message.createdAt);
+    console.log(prefix + str + " send by " + message.author.username + " on " + message.createdAt);
     try {
         Fs.appendFile("./command.log", prefix + str + " send by " + message.author.username + " on " + message.createdAt + "\n", function (err) {
             if (err) {
@@ -291,20 +291,25 @@ client.on("message", async (message) => {
     }
     if (testCommand[0] === prefix + "play") {
         log("play", message);
-        msgContent = message.content.replace(prefix + "play ", "");
+        msgContent = message.content.replace(prefix + "play", "");
+        msgContent = msgContent.replace(" ", "");
         if (msgContent !== "") {
             if (message.member.voice.channel !== null) {
-                console.log(msgContent);
-                connexion = await message.member.voice.channel.join();
-                audio = connexion.play(Ytdl(msgContent, {
-                    filter: 'audioonly',
-                    quality: 'highestaudio',
-                }), {
-                    volume: 0.5,
-                });
-                audio.on('finish', () => {
-                    connexion.disconnect();
-                });
+                if (Ytdl.validateURL(msgContent)) {
+                    connexion = await message.member.voice.channel.join();
+                    audio = connexion.play(Ytdl(msgContent, {
+                        filter: 'audioonly',
+                        quality: 'highestaudio',
+                    }), {
+                        volume: 0.5,
+                    });
+                    audio.on('finish', () => {
+                        connexion.disconnect();
+                    });
+                }
+                else {
+                    message.channel.send("Url non valide");
+                }
             }
             else {
                 message.channel.send("tu dois être dans un channel vocal pour utiliser cette commande");
@@ -312,6 +317,31 @@ client.on("message", async (message) => {
         }
         else {
             message.channel.send("Erreur de syntaxe: la commande play attend un argument <url> non null");
+        }
+        return;
+    }
+    if (testCommand[0] === prefix + "pause") {
+        log("pause", message);
+        if (audio !== null) {
+            message.react('⏸');
+            audio.pause();
+        }
+        return;
+    }
+    if (testCommand[0] === prefix + "resume") {
+        log("resume", message);
+        if (audio !== null) {
+            message.react('▶');
+            audio.resume();
+        }
+        return;
+    }
+    if (testCommand[0] === prefix + "stop") {
+        log("stop", message);
+        if (audio !== null) {
+            message.react('🛑');
+            audio = null;
+            connexion.disconnect();
         }
         return;
     }
