@@ -1,7 +1,10 @@
 const Discord = require("discord.js");
 const Fs = require("fs");
-const client = new Discord.Client(); //Que votre Bot est un nouvel utilisateur
+const Ytdl = require('ytdl-core');
+const client = new Discord.Client();
 var msgembed = new Discord.MessageEmbed();
+var connexion;
+var audio;
 var indexNumber;
 var testCommand;
 var cleanMsg;
@@ -12,7 +15,7 @@ var ordi = null;
 var invite = null;
 var someone = null;
 var msgContent = null;
-var prefix = "/"; //Préfix des commandes du bot
+var prefix = "/";
 function randomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -28,7 +31,7 @@ function sleep(ms) {
 function log(str, message) {
     console.log(prefix + " " + str + " send by " + message.author.username + " on " + message.createdAt);
     try {
-        Fs.appendFile("./command.log", prefix + " " + str + " send by " + message.author.username + " on " + message.createdAt + "\n", function (err) {
+        Fs.appendFile("./command.log", prefix + str + " send by " + message.author.username + " on " + message.createdAt + "\n", function (err) {
             if (err) {
                 throw err;
             };
@@ -44,10 +47,11 @@ client.on("ready", () => {
     client.user.setStatus("online");//Statut du bot
     client.user.setActivity("les oiseaux chanter", { type: "LISTENING" });//Activité du bot
 });
-client.on("message", message => {
+client.on("message", async (message) => {
     if (message.channel.type === "dm" && message.author.id !== client.user.id) {
         message.content = "";
         message.channel.send("je ne réponds pas aux messages privés");
+        return;
     }
     testCommand = message.content.split(" ");
     if (testCommand[0] === prefix + "test") {
@@ -57,6 +61,9 @@ client.on("message", message => {
     if ((testCommand[0] === prefix + "shutdown") && (message.author.id === "454682288563683329") && (message.channel.name === "control-pannel")) {
         log("shutdown", message);
         console.log("Shutingdown Charles-Hubert...");
+        client.voice.connections.forEach((connexion) => {
+            connexion.disconnect();
+        })
         message.channel.send("Arrêt de Charles-Hubert").then(message => {
             sleep(500);
             message.edit("Arrêt de Charles-Hubert.").then(message => {
@@ -65,6 +72,7 @@ client.on("message", message => {
                     sleep(1000);
                     message.edit("Arrêt de Charles-Hubert...").then(message => {
                         client.destroy();
+                        return;
                     });
                 });
             });
@@ -80,11 +88,13 @@ client.on("message", message => {
             .addField("YouTube", "https://www.youtube.com/embed?listType=playlist&list=PLfrxyCC4yNcJUbgl7cgjGmXNTtwKYj5xm&index=" + indexNumber);
         message.channel.send("Que pense-tu de cette musique?");
         message.channel.send(msgembed);
+        return;
     }
     if (testCommand[0] === prefix + "fullPlaylist") {
         log("fullPlaylist", message);
         message.channel.send("Playlist faite par Icecold120000");
         message.channel.send("https://www.youtube.com/playlist?list=PLfrxyCC4yNcJUbgl7cgjGmXNTtwKYj5xm");
+        return;
     }
     if (testCommand[0] === prefix + "clean") {
         log("clean", message);
@@ -102,10 +112,12 @@ client.on("message", message => {
             message.channel.send("Erreur de syntaxe: /clean <nombre entier positif non nul>");
             console.log("Cleaned 0 messages");
         }
+        return;
     }
     if (testCommand[0] === prefix + "version") {
         log("version", message);
-        message.channel.send("Charles-Hubert v1.11 by ALEX");
+        message.channel.send("Charles-Hubert v2.0 by ALEX");
+        return;
     }
     if (testCommand[0] === prefix + "invite") {
         log("invite", message);
@@ -114,11 +126,12 @@ client.on("message", message => {
         }).catch(error => {
             message.channel.send("Il n'y a pas d'invitation pour ce serveur et/ou la permission gérer le serveur n'est pas activée");
         });
+        return;
     }
     if (testCommand[0] === prefix + "randomTTS") {
         log("randomTTS", message);
-        indexNumber = randomInt(0,10);
-        switch (indexNumber){
+        indexNumber = randomInt(0, 10);
+        switch (indexNumber) {
             case 0:
                 randomPhrase = "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW";
                 break;
@@ -153,7 +166,8 @@ client.on("message", message => {
                 randomPhrase = "ioioiioiooioiiooiioioioioiooiioioiiioioioiooioioiioiooioiioioiooiiooioiioioioiooioioiiooioiiioioioiioiooioiiooiioioioioiooiioioiiioioioiooioioiioiooioiioioiooiiooio";
                 break;
         }
-        message.channel.send(randomPhrase, {tts: true});
+        message.channel.send(randomPhrase, { tts: true });
+        return;
     }
     if (testCommand[0] === prefix + "help") {
         log("help", message);
@@ -168,6 +182,7 @@ client.on("message", message => {
                 { name: "Commandes Utilisateur", value: "__**test**__ : permet de vérifier si le bot est fonctionnel\n__**randomMusic**__ : donne une musique aléatoire dans la playlist de icecold120000\n__**fullPlaylist**__ : donne la playlist entière de icecold120000\n__**clean**__ <nombre entier positif> : supprime <nombre entier positif>+1 message(s) dans le channel où la commande a été envoyée\n__**version**__ : donne la version actuelle de Charles-Hubert\n__**invite**__ : envoie une invitation pour " + message.guild.name + "\n__**randomTTS**__ : envoie un message tts contenant une phrase rigolote\n__**help**__ : affiche ce message\n__**pfc**__ <P, F ou C>* : lance un pierre-feuille-ciseaux contre Charles-Hubert P pour choisir pierre, F pour choisir feuille et C pour choisir ciseaux\n__**prefix**__ : donne le préfixe actuel\n__**fiesta**__ : envoie l'emoji fiesta\n__**someone**__ <message>* : mentionne une personne aléatoire parmi les membres de la guild avec votre message", inline: true }
             );
         message.channel.send(msgembed);
+        return;
     }
     if (testCommand[0] === prefix + "pfc") {
         log("pfc", message);
@@ -235,6 +250,7 @@ client.on("message", message => {
         catch (e) {
             message.channel.send("Erreur de syntaxe: la commande pfc attend un argument qui peut prendre la valeur P, F ou C");
         }
+        return;
     }
     if (testCommand[0] === prefix + "prefix") {
         log("prefix", message);
@@ -250,14 +266,16 @@ client.on("message", message => {
         else {
             message.channel.send("Le préfixe actuel est \"" + prefix + "\"");
         }
+        return;
     }
     if (testCommand[0] === prefix + "fiesta") {
         log("fiesta", message);
         message.channel.send(client.emojis.resolve("756525370433601587").toString() + client.emojis.resolve("756525370433601587").toString() + client.emojis.resolve("756525370433601587").toString());
+        return;
     }
     if (testCommand[0] === prefix + "someone") {
         log("someone", message);
-        message.guild.members.fetch({ force: true }).then(members => {
+        message.guild.members.fetch({ force: false }).then(members => {
             someone = members.random();
         });
         msgContent = message.content.replace(prefix + "someone", "");
@@ -269,5 +287,32 @@ client.on("message", message => {
         else {
             message.channel.send("Erreur de syntaxe: la commande someone attend un argument <message> non null");
         }
+        return;
+    }
+    if (testCommand[0] === prefix + "play") {
+        log("play", message);
+        msgContent = message.content.replace(prefix + "play ", "");
+        if (msgContent !== "") {
+            if (message.member.voice.channel !== null) {
+                console.log(msgContent);
+                connexion = await message.member.voice.channel.join();
+                audio = connexion.play(Ytdl(msgContent, {
+                    filter: 'audioonly',
+                    quality: 'highestaudio',
+                }), {
+                    volume: 0.5,
+                });
+                audio.on('finish', () => {
+                    connexion.disconnect();
+                });
+            }
+            else {
+                message.channel.send("tu dois être dans un channel vocal pour utiliser cette commande");
+            }
+        }
+        else {
+            message.channel.send("Erreur de syntaxe: la commande play attend un argument <url> non null");
+        }
+        return;
     }
 });
