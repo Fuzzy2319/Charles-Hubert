@@ -64,14 +64,15 @@ function play(music) {
         filter: "audioonly",
         quality: "highestaudio",
     }), {
-        volume: 0.5,
+        volume: 0.25,
     });
     audio.on("finish", () => {
-        if (queue.length > 0) {
+        if (queue.length > 1) {
             queue.shift();
             play(queue[0].shortUrl);
         }
         else {
+            queue = [];
             connexion.disconnect();
         }
     });
