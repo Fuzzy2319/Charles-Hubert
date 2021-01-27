@@ -125,24 +125,6 @@ client.on("message", async (message) => {
             });
         });
     }
-    if (testCommand[0] === prefix + "randomMusic") {
-        log("randomMusic", message);
-        indexNumber = randomInt(0, 338);
-        msgembed = new Discord.MessageEmbed()
-            .setColor("#FF0000")
-            .setThumbnail("https://i.ytimg.com/vi/bKv9WeS8BOs/maxresdefault.jpg")
-            .setURL("https://www.youtube.com/embed?listType=playlist&list=PLfrxyCC4yNcJUbgl7cgjGmXNTtwKYj5xm&index=" + indexNumber)
-            .addField("YouTube", "https://www.youtube.com/embed?listType=playlist&list=PLfrxyCC4yNcJUbgl7cgjGmXNTtwKYj5xm&index=" + indexNumber);
-        message.channel.send("Que pense-tu de cette musique?");
-        message.channel.send(msgembed);
-        return;
-    }
-    if (testCommand[0] === prefix + "fullPlaylist") {
-        log("fullPlaylist", message);
-        message.channel.send("Playlist faite par Icecold120000");
-        message.channel.send("https://www.youtube.com/playlist?list=PLfrxyCC4yNcJUbgl7cgjGmXNTtwKYj5xm");
-        return;
-    }
     if (testCommand[0] === prefix + "clean") {
         log("clean", message);
         try {
@@ -225,10 +207,17 @@ client.on("message", async (message) => {
             .addFields(
                 { name: message.guild.member(client.user.id).displayName, value: "Le préfixe est actuellement \"" + prefix + "\" utilisez le devant une commande pour effectuer une action.", inline: true },
                 { name: "\u200B", value: "\u200B" },
-                { name: "Commandes Admin", value: "__**shutdown**__ : arrête le bot pour effectuer une mise à jour du code source utilisable uniquement par Le créateur du bot\n__**prefix**__ <Caractère> : définie un nouveau préfixe utilisable dans #control-pannel par les membres ayant le rôle Grand-fuzzy ou Dieu-fuzzy", inline: true },
-                { name: "Commandes Utilisateur", value: "__**test**__ : permet de vérifier si le bot est fonctionnel\n__**randomMusic**__ : donne une musique aléatoire dans la playlist de icecold120000\n__**fullPlaylist**__ : donne la playlist entière de icecold120000\n__**clean**__ <nombre entier positif> : supprime <nombre entier positif>+1 message(s) dans le channel où la commande a été envoyée\n__**version**__ : donne la version actuelle de Charles-Hubert\n__**invite**__ : envoie une invitation pour " + message.guild.name + "\n__**randomTTS**__ : envoie un message tts contenant une phrase rigolote\n__**help**__ : affiche ce message\n__**pfc**__ <P, F ou C>* : lance un pierre-feuille-ciseaux contre Charles-Hubert P pour choisir pierre, F pour choisir feuille et C pour choisir ciseaux\n__**prefix**__ : donne le préfixe actuel\n__**fiesta**__ : envoie l'emoji fiesta\n__**someone**__ <message>* : mentionne une personne aléatoire parmi les membres de la guild avec votre message", inline: true },
-                { name: "Commandes Musique", value: "__**play**__ <url>* : joue une musique dans un channel vocal\n__**pause**__ : met en pause la musique jouée\n__**resume**__ : reprend la musique en pause\n__**shuffle**__ : mélange la musique en attente\n__**next**__ : passe à la musique suivante\n__**queue**__ <url> : ajoute la musique à la musique en attente ou affiche la musique en attente\n__**stop**__ : arrête la musique jouée", inline: true },
         );
+        msgContent = testCommand[1];
+        if (msgContent === "Admin" || typeof msgContent === "undefined") {
+            msgembed.addField("Commandes Admin", "__**shutdown**__ : arrête le bot pour effectuer une mise à jour du code source utilisable uniquement par Le créateur du bot\n__**prefix**__ <Caractère> : définie un nouveau préfixe utilisable dans #control-pannel par les membres ayant le rôle Grand-fuzzy ou Dieu-fuzzy", true);
+        }
+        if (msgContent === "Utilisateur" || typeof msgContent === "undefined") {
+            msgembed.addField("Commandes Utilisateur", "__**test**__ : permet de vérifier si le bot est fonctionnel\n__**clean**__ <nombre entier positif> : supprime <nombre entier positif>+1 message(s) dans le channel où la commande a été envoyée\n__**version**__ : donne la version actuelle de Charles-Hubert\n__**invite**__ : envoie une invitation pour " + message.guild.name + "\n__**randomTTS**__ : envoie un message tts contenant une phrase rigolote\n__**help**__ : affiche ce message\n__**pfc**__ <P, F ou C>* : lance un pierre-feuille-ciseaux contre Charles-Hubert P pour choisir pierre, F pour choisir feuille et C pour choisir ciseaux\n__**prefix**__ : donne le préfixe actuel\n__**fiesta**__ : envoie l'emoji fiesta\n__**someone**__ <message>* : mentionne une personne aléatoire parmi les membres de la guild avec votre message", true);
+        }
+        if (msgContent === "Musique" || typeof msgContent === "undefined") {
+            msgembed.addField("Commandes Musique", "__**play**__ <url>* : joue une musique dans un channel vocal\n__**pause**__ : met en pause la musique jouée\n__**resume**__ : reprend la musique en pause\n__**shuffle**__ : mélange la musique en attente\n__**next**__ : passe à la musique suivante\n__**queue**__ <url> : ajoute la musique à la musique en attente ou affiche la musique en attente\n__**stop**__ : arrête la musique jouée", true);
+        }
         message.channel.send(msgembed);
         return;
     }
