@@ -64,7 +64,7 @@ function play(music) {
         filter: "audioonly",
         quality: "highestaudio",
     }), {
-        volume: 0.25,
+        volume: 0.3,
     });
     audio.on("finish", () => {
         if (queue.length > 1) {
@@ -348,6 +348,7 @@ client.on("message", async (message) => {
                         queue = [];
                         queue.push(new Vid(info.player_response.videoDetails.title, msgContent, new Thumb(info.player_response.videoDetails.thumbnail.thumbnails[0].url)));
                         play(queue[0].shortUrl);
+                        message.react('▶');
                     });
                 }
                 else {
@@ -364,6 +365,7 @@ client.on("message", async (message) => {
                             });
                         }).then(() => {
                             play(queue[0].shortUrl);
+                            message.react('▶');
                         });
                     }
                     else {
@@ -383,34 +385,34 @@ client.on("message", async (message) => {
     if (testCommand[0] === prefix + "pause") {
         log("pause", message);
         if (audio !== null) {
-            message.react('⏸');
             audio.pause();
+            message.react('⏸');
         }
         return;
     }
     if (testCommand[0] === prefix + "resume") {
         log("resume", message);
         if (audio !== null) {
-            message.react('▶');
             audio.resume();
+            message.react('▶');
         }
         return;
     }
     if (testCommand[0] === prefix + "next") {
         log("next", message);
         if (audio !== null && queue.length > 1) {
-            message.react('⏩');
             queue.shift();
             play(queue[0].shortUrl);
+            message.react('⏩');
         }
         return;
     }
     if (testCommand[0] === prefix + "shuffle") {
         log("shuffle", message);
         if (audio !== null && queue.length > 1) {
-            message.react('🔀');
             queue = shuffle(queue);
             play(queue[0].shortUrl);
+            message.react('🔀');
         }
         return;
     }
@@ -419,11 +421,10 @@ client.on("message", async (message) => {
         if (audio !== null) {
             msgContent = testCommand[1];
             if (typeof msgContent !== "undefined") {
-                message.react('☑');
                 if (Ytdl.validateURL(msgContent)) {
                     Ytdl.getInfo(msgContent).then(info => {
-                        console.log(info.player_response.videoDetails.title);
                         queue.push(new Vid(info.player_response.videoDetails.title, msgContent, new Thumb(info.player_response.videoDetails.thumbnail.thumbnails[0].url)));
+                        message.react('☑');
                     });
                 }
                 else {
@@ -432,6 +433,7 @@ client.on("message", async (message) => {
                             playlist.items.forEach((item) => {
                                 if (Ytdl.validateURL(item.shortUrl)) {
                                     queue.push(item);
+                                    message.react('☑');
                                 }
                                 else {
                                     message.channel.send("Url non valide " + item.shortUrl);
