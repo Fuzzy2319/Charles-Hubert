@@ -18,6 +18,22 @@ var invite = null;
 var someone = null;
 var msgContent = null;
 var prefix = "/";
+class Vid {
+    title;
+    shortUrl;
+    bestThumbnail;
+    constructor(title, shortUrl, bestThumbnail) {
+        this.title = title;
+        this.shortUrl = shortUrl;
+        this.bestThumbnail = bestThumbnail;
+    }
+}
+class Thumb {
+    url
+    constructor(url) {
+        this.url = url;
+    }
+}
 function randomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -51,15 +67,25 @@ function play(music) {
         volume: 0.5,
     });
     audio.on("finish", () => {
-        if (queue.length != 0) {
+        if (queue.length > 0) {
             queue.shift();
-            console.log(queue[0]);
-            play(queue[0]);
+            play(queue[0].shortUrl);
         }
         else {
             connexion.disconnect();
         }
     });
+}
+function shuffle(array) {
+    var counter = array.length;
+    while (counter > 0) {
+        var index = Math.floor(Math.random() * counter);
+        counter += -1;
+        var temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
+    return array;
 }
 client.login("NjMzMzUxOTUxMDg5NjY0MDEw.XaSvHg.LTXzUy6oMqjCTUiBN6CXFRU787Q"); //Token (Série de chiffre) propre a chaque Bot
 client.on("ready", () => {
@@ -197,10 +223,11 @@ client.on("message", async (message) => {
             .setThumbnail(client.user.avatarURL())
             .addFields(
                 { name: message.guild.member(client.user.id).displayName, value: "Le préfixe est actuellement \"" + prefix + "\" utilisez le devant une commande pour effectuer une action.", inline: true },
-                { name: '\u200B', value: '\u200B' },
+                { name: "\u200B", value: "\u200B" },
                 { name: "Commandes Admin", value: "__**shutdown**__ : arrête le bot pour effectuer une mise à jour du code source utilisable uniquement par Le créateur du bot\n__**prefix**__ <Caractère> : définie un nouveau préfixe utilisable dans #control-pannel par les membres ayant le rôle Grand-fuzzy ou Dieu-fuzzy", inline: true },
-                { name: "Commandes Utilisateur", value: "__**test**__ : permet de vérifier si le bot est fonctionnel\n__**randomMusic**__ : donne une musique aléatoire dans la playlist de icecold120000\n__**fullPlaylist**__ : donne la playlist entière de icecold120000\n__**clean**__ <nombre entier positif> : supprime <nombre entier positif>+1 message(s) dans le channel où la commande a été envoyée\n__**version**__ : donne la version actuelle de Charles-Hubert\n__**invite**__ : envoie une invitation pour " + message.guild.name + "\n__**randomTTS**__ : envoie un message tts contenant une phrase rigolote\n__**help**__ : affiche ce message\n__**pfc**__ <P, F ou C>* : lance un pierre-feuille-ciseaux contre Charles-Hubert P pour choisir pierre, F pour choisir feuille et C pour choisir ciseaux\n__**prefix**__ : donne le préfixe actuel\n__**fiesta**__ : envoie l'emoji fiesta\n__**someone**__ <message>* : mentionne une personne aléatoire parmi les membres de la guild avec votre message", inline: true }
-            );
+                { name: "Commandes Utilisateur", value: "__**test**__ : permet de vérifier si le bot est fonctionnel\n__**randomMusic**__ : donne une musique aléatoire dans la playlist de icecold120000\n__**fullPlaylist**__ : donne la playlist entière de icecold120000\n__**clean**__ <nombre entier positif> : supprime <nombre entier positif>+1 message(s) dans le channel où la commande a été envoyée\n__**version**__ : donne la version actuelle de Charles-Hubert\n__**invite**__ : envoie une invitation pour " + message.guild.name + "\n__**randomTTS**__ : envoie un message tts contenant une phrase rigolote\n__**help**__ : affiche ce message\n__**pfc**__ <P, F ou C>* : lance un pierre-feuille-ciseaux contre Charles-Hubert P pour choisir pierre, F pour choisir feuille et C pour choisir ciseaux\n__**prefix**__ : donne le préfixe actuel\n__**fiesta**__ : envoie l'emoji fiesta\n__**someone**__ <message>* : mentionne une personne aléatoire parmi les membres de la guild avec votre message", inline: true },
+                { name: "Commandes Musique", value: "__**play**__ <url>* : joue une musique dans un channel vocal\n__**pause**__ : met en pause la musique jouée\n__**resume**__ : reprend la musique en pause\n__**shuffle**__ : mélange la musique en attente\n__**next**__ : passe à la musique suivante\n__**queue**__ <url> : ajoute la musique à la musique en attente ou affiche la musique en attente\n__**stop**__ : arrête la musique jouée", inline: true },
+        );
         message.channel.send(msgembed);
         return;
     }
@@ -311,12 +338,16 @@ client.on("message", async (message) => {
     }
     if (testCommand[0] === prefix + "play") {
         log("play", message);
-        msgContent = message.content.replace(prefix + "play", "").trim();
+        msgContent = testCommand[1];
         if (msgContent !== "") {
             if (message.member.voice.channel !== null) {
                 if (Ytdl.validateURL(msgContent)) {
                     connexion = await message.member.voice.channel.join();
-                    play(msgContent);
+                    Ytdl.getInfo(msgContent).then(info => {
+                        queue = [];
+                        queue.push(new Vid(info.player_response.videoDetails.title, msgContent, new Thumb(info.player_response.videoDetails.thumbnail.thumbnails[0].url)));
+                        play(queue[0].shortUrl);
+                    });
                 }
                 else {
                     if (Ytpl.validateID(msgContent)) {
@@ -324,14 +355,14 @@ client.on("message", async (message) => {
                         Ytpl(msgContent).then(playlist => {
                             playlist.items.forEach((item) => {
                                 if (Ytdl.validateURL(item.shortUrl)) {
-                                    queue.push(item.shortUrl);
+                                    queue.push(item);
                                 }
                                 else {
                                     message.channel.send("Url non valide " + item.shortUrl);
                                 }
                             });
                         }).then(() => {
-                            play(queue[0]);
+                            play(queue[0].shortUrl);
                         });
                     }
                     else {
@@ -366,10 +397,65 @@ client.on("message", async (message) => {
     }
     if (testCommand[0] === prefix + "next") {
         log("next", message);
-        if (audio !== null) {
+        if (audio !== null && queue.length > 1) {
             message.react('⏩');
             queue.shift();
-            play(queue[0]);
+            play(queue[0].shortUrl);
+        }
+        return;
+    }
+    if (testCommand[0] === prefix + "shuffle") {
+        log("shuffle", message);
+        if (audio !== null && queue.length > 1) {
+            message.react('🔀');
+            queue = shuffle(queue);
+            play(queue[0].shortUrl);
+        }
+        return;
+    }
+    if (testCommand[0] === prefix + "queue") {
+        log("queue", message);
+        if (audio !== null) {
+            msgContent = testCommand[1];
+            if (typeof msgContent !== "undefined") {
+                message.react('☑');
+                if (Ytdl.validateURL(msgContent)) {
+                    Ytdl.getInfo(msgContent).then(info => {
+                        console.log(info.player_response.videoDetails.title);
+                        queue.push(new Vid(info.player_response.videoDetails.title, msgContent, new Thumb(info.player_response.videoDetails.thumbnail.thumbnails[0].url)));
+                    });
+                }
+                else {
+                    if (Ytpl.validateID(msgContent)) {
+                        Ytpl(msgContent).then(playlist => {
+                            playlist.items.forEach((item) => {
+                                if (Ytdl.validateURL(item.shortUrl)) {
+                                    queue.push(item);
+                                }
+                                else {
+                                    message.channel.send("Url non valide " + item.shortUrl);
+                                }
+                            });
+                        });
+                    }
+                    else {
+                        message.channel.send("Url non valide");
+                    }
+                }
+            }
+            else {
+                if (queue.length > 1) {
+                    msgembed = new Discord.MessageEmbed()
+                        .setColor("#007700")
+                        .setTitle("Prochaine musique")
+                        .setThumbnail(queue[1].bestThumbnail.url)
+                        .addField(queue[1].title, queue[1].shortUrl, true);
+                    message.channel.send(msgembed);
+                }
+                else {
+                    message.channel.send("Aucune musique en attente");
+                }
+            }
         }
         return;
     }
