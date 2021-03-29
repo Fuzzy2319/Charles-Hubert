@@ -1,7 +1,8 @@
 module.exports = {
 	name: "shutdown",
     description: "Arrête le bot pour effectuer une mise à jour du code source utilisable uniquement par Le créateur du bot",
-    execute: function(client, message, args) {
+    category: "Admin",
+    execute: function (client, message, args) {
         const Utils = require("../utils.js");
 
         if ((message.author.id === "454682288563683329") && (message.channel.name === "control-pannel")) {

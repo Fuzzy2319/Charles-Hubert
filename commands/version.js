@@ -1,7 +1,8 @@
 module.exports = {
     name: "version",
     description: "Donne la version actuelle de Charles-Hubert",
-    execute: function(client, message, args) {
+    category: "Utilisateur",
+    execute: function (client, message, args) {
         const Utils = require("../utils.js");
 
         Utils.log(this.name, message);

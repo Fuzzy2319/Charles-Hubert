@@ -32,10 +32,31 @@
     <Content Include="commands\clean.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="commands\fiesta.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="commands\help.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="commands\invite.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="commands\pfc.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="commands\play.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="commands\prefix.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="commands\randomTTS.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="commands\shutdown.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="commands\someone.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="commands\version.js">
