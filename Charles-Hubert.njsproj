@@ -68,7 +68,6 @@
     <Content Include="index.js">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="index.js.old" />
     <Content Include="utils.js">
       <SubType>Code</SubType>
     </Content>
