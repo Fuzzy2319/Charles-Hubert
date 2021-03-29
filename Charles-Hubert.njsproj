@@ -29,8 +29,23 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="index.js" />
+    <Content Include="config.json">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="index.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="index.js.old" />
+    <Content Include="logger.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="package.json" />
+    <Content Include="commands\test.js">
+      <SubType>Code</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="commands\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>
