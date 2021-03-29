@@ -29,6 +29,18 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="commands\clean.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="commands\invite.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="commands\shutdown.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="commands\version.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="config.json">
       <SubType>Code</SubType>
     </Content>
@@ -36,7 +48,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="index.js.old" />
-    <Content Include="logger.js">
+    <Content Include="utils.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="package.json" />

@@ -10,6 +10,7 @@ const commandFiles = Fs.readdirSync("./commands").filter(file => file.endsWith("
 for (const file of commandFiles) {
     const command = require("./commands/" + file);
     client.commands.set(command.name, command);
+    console.log("Info: commande " + command.name + " chargée avec succès");
 }
 
 client.login(token);
@@ -22,13 +23,13 @@ client.on("ready", () => {
 
 client.on("message", message => {
     if (message.channel.type === "dm" && message.author.id !== client.user.id) {
-        message.channel.send("je ne réponds pas aux messages privés");
+        message.channel.send("Je ne réponds pas aux messages privés");
         return;
     }
 
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const args = message.content.slice(prefix.length).trim().split(" ");
     const command = args.shift().toLowerCase();
 
     if (!client.commands.has(command)) return;
@@ -37,7 +38,7 @@ client.on("message", message => {
         client.commands.get(command).execute(client, message, args);
     } catch (error) {
         client.users.fetch("454682288563683329").then(user => {
-            user.send("erreur: " + error.name + ": " + error.message);
+            user.send("Une erreur est survenue: " + error.name + ": " + error.message);
         });
     }
 });
