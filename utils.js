@@ -51,9 +51,11 @@ module.exports = {
             volume: 0.3,
         });
         client.audio.on("finish", () => {
+            const Utils = require("./utils.js");
+
             if (client.queue.length > 1) {
                 client.queue.shift();
-                this.play(client);
+                Utils.play(client);
             }
             else {
                 client.queue = [];
