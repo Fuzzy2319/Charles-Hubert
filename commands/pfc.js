@@ -47,7 +47,7 @@ module.exports = {
             }
             if (args[0].toUpperCase() === "C") {
                 j1 = "Ciseaux";
-                ordi = randomInt(1, 3);
+                ordi = Utils.randomInt(1, 3);
                 switch (ordi) {
                     case 1:
                         ordi = "Pierre";

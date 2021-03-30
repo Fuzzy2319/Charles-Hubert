@@ -43,6 +43,7 @@ module.exports = {
 
     play: client => {
         const Ytdl = require("ytdl-core");
+        const Utils = require("./utils.js");
 
         client.audio = client.connexion.play(Ytdl(client.queue[0].shortUrl, {
             filter: "audioonly",
@@ -51,8 +52,6 @@ module.exports = {
             volume: 0.3,
         });
         client.audio.on("finish", () => {
-            const Utils = require("./utils.js");
-
             if (client.queue.length > 1) {
                 client.queue.shift();
                 Utils.play(client);
