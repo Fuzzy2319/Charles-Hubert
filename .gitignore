@@ -340,4 +340,4 @@ ASALocalRun/
 healthchecksdb
 
 .gitignore
-/index.js.old
+/config.json
