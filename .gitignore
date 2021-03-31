@@ -339,5 +339,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-.gitignore
-./config.json
+config.json
