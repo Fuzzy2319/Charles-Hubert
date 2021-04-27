@@ -22,10 +22,7 @@ client.on("ready", () => {
     console.log("Connected !");//Signifie que le bot a bien démarré
     client.user.setStatus("online");//Statut du bot
     client.user.setActivity("les oiseaux chanter", { type: "LISTENING" });//Activité du bot
-    /*client.guilds.fetch("454688325651922944").then(guild => {
-        guild.channels.resolve("633395358034165761").send("test");
-    });*/
-    //console.log(new Date(new Date().getFullYear() + "-04-18").toISOString());
+
     Schedule.scheduleJob("0 0 9 * * *", () => {
         Object.entries(birthdays).forEach((birthday) => {
             let now = new Date();
