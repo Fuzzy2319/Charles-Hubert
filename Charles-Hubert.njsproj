@@ -29,6 +29,9 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="birthday.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="commands\clean.js">
       <SubType>Code</SubType>
     </Content>

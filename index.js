@@ -1,6 +1,9 @@
 const Fs = require("fs");
 const Discord = require("discord.js");
+const Schedule = require("node-schedule");
 const { prefix, token } = require("./config.json");
+const birthdays = require("./birthday.json");
+
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -19,6 +22,20 @@ client.on("ready", () => {
     console.log("Connected !");//Signifie que le bot a bien démarré
     client.user.setStatus("online");//Statut du bot
     client.user.setActivity("les oiseaux chanter", { type: "LISTENING" });//Activité du bot
+    /*client.guilds.fetch("454688325651922944").then(guild => {
+        guild.channels.resolve("633395358034165761").send("test");
+    });*/
+    //console.log(new Date(new Date().getFullYear() + "-04-18").toISOString());
+    Schedule.scheduleJob("0 0 9 * * *", () => {
+        Object.entries(birthdays).forEach((birthday) => {
+            let now = new Date();
+            if (birthday[1] === (now.getMonth() + 1) + "-" + now.getDate()) {
+                client.guilds.fetch("454688325651922944").then(guild => {
+                    guild.channels.resolve("454688325651922946").send("Joyeux anniversire <@" + birthday[0] + "> !!!");
+                });
+            }
+        });
+    });
 });
 
 client.on("message", message => {
@@ -38,7 +55,7 @@ client.on("message", message => {
         client.commands.get(command).execute(client, message, args);
     } catch (error) {
         client.users.fetch("454682288563683329").then(user => {
-            user.send("Une erreur est survenue: " + error.name + ": " + error.message);
+            user.send("Une erreur est survenue: **" + error.name + "**: " + error.message);
         });
     }
 });
