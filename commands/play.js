@@ -2,6 +2,7 @@ module.exports = {
 	name: "play",
     description: "Joue une musique dans un channel vocal",
     category: "Musique",
+	args: "<url>\\*",
 	execute: async function (client, message, args) {
         const Utils = require("../utils.js");
         const Ytdl = require("ytdl-core");

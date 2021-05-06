@@ -35,6 +35,9 @@
     <Content Include="commands\clean.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="commands\current.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="commands\fiesta.js">
       <SubType>Code</SubType>
     </Content>

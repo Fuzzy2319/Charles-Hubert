@@ -2,6 +2,7 @@ module.exports = {
 	name: "fiesta",
 	description: "Envoie l'emoji fiesta",
 	category: "Utilisateur",
+	args: "",
 	execute: function (client, message, args) {
 		const Utils = require("../utils.js");
 

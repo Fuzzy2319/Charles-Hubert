@@ -2,6 +2,7 @@ module.exports = {
     name: "help",
     description: "Affiche ce message",
     category: "Utilisateur",
+	args: "<categorie>",
 	execute: function (client, message, args) {
         const Utils = require("../utils.js");
         const { prefix } = require("../config.json");
@@ -23,7 +24,7 @@ module.exports = {
                 if (typeof descriptionCommands[command.category] === "undefined") {
                     descriptionCommands[command.category] = "";
                 }
-                descriptionCommands[command.category] += "__**" + command.name + "**__: " + command.description + "\n";
+                descriptionCommands[command.category] += "__**" + command.name + "**__ " + command.args + ": " + command.description + "\n";
             });
         }
         else {
@@ -31,7 +32,7 @@ module.exports = {
                 if (typeof descriptionCommands[command.category] === "undefined") {
                     descriptionCommands[command.category] = "";
                 }
-                descriptionCommands[command.category] += "__**" + command.name + "**__: " + command.description + "\n";
+                descriptionCommands[command.category] += "__**" + command.name + "**__ " + command.args + ": " + command.description + "\n";
             });
         }
 

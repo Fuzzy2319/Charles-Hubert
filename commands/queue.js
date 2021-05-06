@@ -2,6 +2,7 @@ module.exports = {
     name: "queue",
     description: "Ajoute la musique à la musique en attente ou affiche la musique en attente",
     category: "Musique",
+	args: "<url>",
     execute: async function (client, message, args) {
         const Utils = require("../utils.js");
         const Discord = require("discord.js");

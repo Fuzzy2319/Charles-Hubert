@@ -2,6 +2,7 @@ module.exports = {
     name: "clean",
     description: "Supprime <nombre entier positif>+1 message(s) dans le channel où la commande a été envoyée",
     category: "Utilisateur",
+	args: "<nombre entier positif>\\*",
     execute: function (client, message, args) {
         const Utils = require("../utils.js");
 

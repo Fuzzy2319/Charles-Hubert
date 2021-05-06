@@ -2,6 +2,7 @@ module.exports = {
 	name: "next",
 	description: "Passe à la musique suivante",
 	category: "Musique",
+	args: "",
 	execute: function (client, message, args) {
 		const Utils = require("../utils.js");
 

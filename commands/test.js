@@ -2,6 +2,7 @@ module.exports = {
 	name: "test",
 	description: "Permet de vérifier si le bot est fonctionnel",
 	category: "Utilisateur",
+	args: "",
 	execute: function (client, message, args) {
 		const Utils = require("../utils.js");
 

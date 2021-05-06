@@ -2,6 +2,7 @@ module.exports = {
     name: "invite",
     description: "Envoie une invitation pour QG d'ALEX",
     category: "Utilisateur",
+	args: "",
     execute: function (client, message, args) {
         const Utils = require("../utils.js");
 

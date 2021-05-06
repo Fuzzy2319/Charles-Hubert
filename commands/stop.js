@@ -2,6 +2,7 @@ module.exports = {
 	name: "stop",
 	description: "Arrête la musique jouée",
 	category: "Musique",
+	args: "",
 	execute: function (client, message, args) {
 		const Utils = require("../utils.js");
 

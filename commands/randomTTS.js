@@ -2,6 +2,7 @@ module.exports = {
     name: "randomTTS",
     description: "Envoie un message tts contenant une phrase rigolote",
     category: "Utilisateur",
+	args: "",
     execute: function (client, message, args) {
         const Utils = require("../utils.js");
 

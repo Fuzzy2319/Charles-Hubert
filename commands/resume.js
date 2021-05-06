@@ -2,6 +2,7 @@ module.exports = {
 	name: "resume",
 	description: "Reprend la musique en pause",
 	category: "Musique",
+	args: "",
 	execute: function (client, message, args) {
 		const Utils = require("../utils.js");
 

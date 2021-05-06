@@ -2,6 +2,7 @@ module.exports = {
     name: "someone",
     description: "Mentionne une personne aléatoire parmi les membres de la guild avec votre message",
     category: "Utilisateur",
+	args: "<message>\\*",
 	execute: function (client, message, args) {
         const Utils = require("../utils.js");
 

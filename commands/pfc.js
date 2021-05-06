@@ -2,6 +2,7 @@ module.exports = {
     name: "pfc",
     description: "Lance un pierre-feuille-ciseaux contre Charles-Hubert P pour choisir pierre, F pour choisir feuille et C pour choisir ciseaux",
     category: "Utilisateur",
+	args: "<P, F ou C>\\*",
     execute: function (client, message, args) {
         const Utils = require("../utils.js");
         let j1 = null;

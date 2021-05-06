@@ -2,6 +2,7 @@ module.exports = {
 	name: "shutdown",
     description: "Arrête le bot pour effectuer une mise à jour du code source utilisable uniquement par Le créateur du bot",
     category: "Admin",
+	args: "",
     execute: function (client, message, args) {
         const Utils = require("../utils.js");
 
