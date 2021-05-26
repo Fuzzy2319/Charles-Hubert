@@ -47,6 +47,12 @@
     <Content Include="commands\invite.js">
       <SubType>Code</SubType>
     </Content>
+	<Content Include="commands\next.js">
+      <SubType>Code</SubType>
+    </Content>
+	<Content Include="commands\pause.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="commands\pfc.js">
       <SubType>Code</SubType>
     </Content>
@@ -56,13 +62,28 @@
     <Content Include="commands\prefix.js">
       <SubType>Code</SubType>
     </Content>
+	<Content Include="commands\queue.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="commands\randomTTS.js">
+      <SubType>Code</SubType>
+    </Content>
+	<Content Include="commands\resume.js">
+      <SubType>Code</SubType>
+    </Content>
+	<Content Include="commands\shuffle.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="commands\shutdown.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="commands\someone.js">
+      <SubType>Code</SubType>
+    </Content>
+	<Content Include="commands\stop.js">
+      <SubType>Code</SubType>
+    </Content>
+	<Content Include="commands\test.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="commands\version.js">

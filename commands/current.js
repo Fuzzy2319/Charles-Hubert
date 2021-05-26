@@ -12,7 +12,7 @@ module.exports = {
             let msgembed = new Discord.MessageEmbed();
             msgembed
                 .setColor("#007700")
-                .setTitle("Prochaine musique")
+                .setTitle("Musique actuelle")
                 .setThumbnail(client.queue[0].bestThumbnail.url)
                 .addField(client.queue[0].title, client.queue[0].shortUrl, true);
             message.channel.send(msgembed);
