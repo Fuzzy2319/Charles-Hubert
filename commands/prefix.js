@@ -8,6 +8,6 @@ module.exports = {
         const { prefix } = require("../config.json");
 
         Utils.log(this.name, message);
-        message.channel.send("Le préfixe actuel est \"" + prefix + "\"");
+        message.channel.send(`Le préfixe actuel est "${prefix}"`);
     }
 };

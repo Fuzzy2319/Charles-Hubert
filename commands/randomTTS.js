@@ -16,7 +16,7 @@ module.exports = {
                 randomPhrase = "Voici la nouvelle pham de ta vie";
                 break;
             case 2:
-                randomPhrase = message.guild.members.find(user => user.id === message.author.id).displayName + " coucou petite bite";
+                randomPhrase = `${message.guild.members.find(user => user.id === message.author.id).displayName} coucou petite bite`;
                 break;
             case 3:
                 randomPhrase = "nope";

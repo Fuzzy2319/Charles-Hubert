@@ -69,7 +69,7 @@ module.exports = {
             message.channel.send("Erreur de syntaxe: la commande pfc attend un argument qui peut prendre la valeur P, F ou C");
         }
         else {
-            message.channel.send(result + "\n" + message.guild.member(message.author.id).displayName + " : " + j1 + "\n" + message.guild.member(client.user.id).displayName + " : " + ordi);
+            message.channel.send(`${result}\n${message.guild.member(message.author.id).displayName} : ${j1}\n${message.guild.member(client.user.id).displayName} : ${ordi}`);
         }
     }
 };

@@ -11,13 +11,13 @@ module.exports = {
 
         if (cleanMsg > 0) {
                 message.channel.bulkDelete(cleanMsg).then(() => {
-                    console.log("Cleaned " + cleanMsg + " messages");
+                    console.log(`Cleaned ${cleanMsg} messages`);
                 }).catch(() => {
                     if (cleanMsg === 1) {
                         message.channel.send("Impossible de supprimer le message");
                     }
                     else {
-                        message.channel.send("Impossible de supprimer les " + cleanMsg + " messages");
+                        message.channel.send(`Impossible de supprimer les ${cleanMsg} messages`);
                     }
                 });
         }

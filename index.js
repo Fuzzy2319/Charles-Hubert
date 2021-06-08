@@ -13,7 +13,7 @@ const commandFiles = Fs.readdirSync("./commands").filter(file => file.endsWith("
 for (const file of commandFiles) {
     const command = require("./commands/" + file);
     client.commands.set(command.name, command);
-    console.log("Info: commande " + command.name + " chargée avec succès");
+    console.log(`Info: commande ${command.name} chargée avec succès`);
 }
 
 client.login(token);
@@ -25,10 +25,10 @@ client.on("ready", () => {
 
     Schedule.scheduleJob("0 0 9 * * *", () => {
         Object.entries(birthdays).forEach((birthday) => {
-            let now = new Date();
-            if (birthday[1] === (now.getMonth() + 1) + "-" + now.getDate()) {
+            const now = new Date();
+            if (birthday[1] === `${now.getMonth() + 1}-${now.getDate()}`) {
                 client.guilds.fetch("454688325651922944").then(guild => {
-                    guild.channels.resolve("454688325651922946").send("Joyeux anniversire <@" + birthday[0] + "> !!!");
+                    guild.channels.resolve("454688325651922946").send(`Joyeux anniversire <@${birthday[0]}> !!!`);
                 });
             }
         });
@@ -52,7 +52,7 @@ client.on("message", message => {
         client.commands.get(command).execute(client, message, args);
     } catch (error) {
         client.users.fetch("454682288563683329").then(user => {
-            user.send("Une erreur est survenue: **" + error.name + "**: " + error.message);
+            user.send(`Une erreur est survenue: **${error.name}**: ${error.message}`);
         });
     }
 });

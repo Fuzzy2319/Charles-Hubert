@@ -7,6 +7,6 @@ module.exports = {
         const Utils = require("../utils.js");
 
         Utils.log(this.name, message);
-        message.channel.send("Charles-Hubert v3.0 by ALEX");
+        message.channel.send("Charles-Hubert v3.2 by ALEX");
     }
 }

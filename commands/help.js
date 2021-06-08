@@ -15,7 +15,7 @@ module.exports = {
         .setTitle("Menu d'aide")
         .setThumbnail(client.user.avatarURL())
         .addFields(
-            { name: message.guild.member(client.user.id).displayName, value: "Le préfixe est actuellement \"" + prefix + "\" utilisez le devant une commande pour effectuer une action.", inline: true },
+            { name: message.guild.member(client.user.id).displayName, value: `Le préfixe est actuellement "${prefix}" utilisez le devant une commande pour effectuer une action.`, inline: true },
             { name: "\u200B", value: "\u200B" },
         );
 
@@ -24,7 +24,7 @@ module.exports = {
                 if (typeof descriptionCommands[command.category] === "undefined") {
                     descriptionCommands[command.category] = "";
                 }
-                descriptionCommands[command.category] += "__**" + command.name + "**__ " + command.args + ": " + command.description + "\n";
+                descriptionCommands[command.category] += `__**${command.name}**__ ${command.args}: ${command.description}\n`;
             });
         }
         else {
@@ -32,12 +32,12 @@ module.exports = {
                 if (typeof descriptionCommands[command.category] === "undefined") {
                     descriptionCommands[command.category] = "";
                 }
-                descriptionCommands[command.category] += "__**" + command.name + "**__ " + command.args + ": " + command.description + "\n";
+                descriptionCommands[command.category] += `__**${command.name}**__ ${command.args}: ${command.description}\n`;
             });
         }
 
         for (const [key, value] of Object.entries(descriptionCommands)) {
-            msgembed.addField("Commandes " + key, value, true);
+            msgembed.addField(`Commandes ${key}`, value, true);
         }
         
         message.channel.send(msgembed);

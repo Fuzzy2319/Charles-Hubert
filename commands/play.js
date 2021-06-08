@@ -30,7 +30,7 @@ module.exports = {
                                     client.queue.push(item);
                                 }
                                 else {
-                                    message.channel.send("Url non valide " + item.shortUrl);
+                                    message.channel.send(`Url non valide ${item.shortUrl}`);
                                 }
                             });
                         }).then(() => {
