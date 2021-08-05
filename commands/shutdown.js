@@ -20,7 +20,8 @@ module.exports = {
                     Utils.sleep(1000);
                     message.edit("Arrêt de Charles-Hubert..").then(message => {
                         Utils.sleep(1000);
-                        message.edit("Arrêt de Charles-Hubert...").then(message => {
+                        message.edit("Arrêt de Charles-Hubert...").then(() => {
+                            client.job.cancel();
                             client.destroy();
                         });
                     });

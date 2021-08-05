@@ -9,6 +9,8 @@ module.exports = {
 		Utils.log(this.name, message);
 		if (typeof client.audio !== "undefined" && client.audio !== null) {
 			client.audio.resume();
+			client.audio.pause();
+			client.audio.resume();
 			message.react("▶");
 		}
 	}

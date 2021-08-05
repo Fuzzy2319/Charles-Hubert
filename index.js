@@ -23,7 +23,7 @@ client.on("ready", () => {
     client.user.setStatus("online");//Statut du bot
     client.user.setActivity("les oiseaux chanter", { type: "LISTENING" });//Activité du bot
 
-    Schedule.scheduleJob("0 0 9 * * *", () => {
+    client.job = Schedule.scheduleJob("0 0 9 * * *", () => {
         Object.entries(birthdays).forEach((birthday) => {
             const now = new Date();
             if (birthday[1] === `${now.getMonth() + 1}-${now.getDate()}`) {
