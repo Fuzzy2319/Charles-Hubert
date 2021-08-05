@@ -12,7 +12,7 @@
     "ffmpeg-static": "^4.4.0",
     "libsodium-wrappers": "^0.7.9",
     "node-schedule": "^2.0.0",
-    "ytdl-core": "^4.9.0",
-    "ytpl": "^2.2.1"
+    "ytdl-core": "^4.9.1",
+    "ytpl": "^2.2.3"
   }
 }
