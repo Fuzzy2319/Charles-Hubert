@@ -19,9 +19,9 @@ for (const file of commandFiles) {
 client.login(token);
 
 client.on("ready", () => {
-    console.log("Connected !");//Signifie que le bot a bien démarré
-    client.user.setStatus("online");//Statut du bot
-    client.user.setActivity("les oiseaux chanter", { type: "LISTENING" });//Activité du bot
+    console.log("Connected !");
+    client.user.setStatus("online");
+    client.user.setActivity("les oiseaux chanter", { type: "LISTENING" });
 
     client.job = Schedule.scheduleJob("0 0 9 * * *", () => {
         Object.entries(birthdays).forEach((birthday) => {
@@ -36,12 +36,12 @@ client.on("ready", () => {
 });
 
 client.on("message", message => {
+    if (!message.content.startsWith(prefix) || message.author.bot) return;
+
     if (message.channel.type === "dm" && message.author.id !== client.user.id) {
         message.channel.send("Je ne réponds pas aux messages privés");
         return;
     }
-
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     const args = message.content.slice(prefix.length).trim().split(" ");
     const command = args.shift();
