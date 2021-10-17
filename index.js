@@ -28,7 +28,7 @@ client.on("ready", () => {
             const now = new Date();
             if (birthday[1] === `${now.getMonth() + 1}-${now.getDate()}`) {
                 client.guilds.fetch("454688325651922944").then(guild => {
-                    guild.channels.resolve("454688325651922946").send(`Joyeux anniversire <@${birthday[0]}> !!!`);
+                    guild.channels.resolve("454688325651922946").send(`Joyeux anniversaire <@${birthday[0]}> !!!`);
                 });
             }
         });
