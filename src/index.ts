@@ -10,6 +10,8 @@ import { Utils } from './utils.js'
 const client: Client = new Client({ intents: [Intents.FLAGS.GUILDS] } as ClientOptions)
 const commands = []
 
+let job: Schedule.Job
+
 const commandFiles: string[] = Fs.readdirSync("./commands").filter((file: string) => file.endsWith(".js"))
 
 for (const file of commandFiles) {
@@ -21,13 +23,14 @@ for (const file of commandFiles) {
 
 client.login(token)
 
-const rest: REST = new REST({ version: '9' }).setToken(token);
+const rest: REST = new REST({ version: '9' }).setToken(token)
 
 const preInit = async () => {
     try {
-        console.log('Mise à jour des commandes (/) en cours')
+        console.log('Ajout des commandes (/) en cours')
         const body = []
-        commands.forEach(command => {
+
+        commands.forEach((command) => {
             body.push({ name: command.name, description: command.description })
         })
 
@@ -36,7 +39,7 @@ const preInit = async () => {
             { body }
         )
 
-        console.log('Mise à jour des commandes (/) terminée')
+        console.log('Ajout des commandes (/) terminée')
     } catch (e) {
         console.error(e)
     }
@@ -50,7 +53,7 @@ client.on('ready', async () => {
     client.user.setStatus('online')
     client.user.setActivity('les oiseaux chanter', { type: "LISTENING" })
 
-    Schedule.scheduleJob('0 0 9 * * *', () => {
+    job = Schedule.scheduleJob('0 0 9 * * *', () => {
         Object.entries(birthdays).forEach(birthday => {
             const now: Date = new Date()
 
@@ -104,4 +107,14 @@ client.on('interactionCreate', async interaction => {
     }
 
     //console.log(interaction);
+})
+
+client.on('shardDisconnect', async () => {
+    job.cancel()
+    console.log('Suppression des commandes (/) en cours')
+    await rest.put(
+        Routes.applicationGuildCommands('633351951089664010', '454688325651922944'),
+        { body: [] }
+    )
+    console.log('Suppression des commandes (/) terminée')
 })

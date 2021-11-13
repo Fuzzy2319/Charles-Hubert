@@ -2,9 +2,9 @@ import * as Fs from 'fs';
 export class Utils {
 }
 Utils.log = (command, integration) => {
-    console.log(`${command} send by ${integration.user.username} on ${integration.createdAt}`);
+    console.log(`${command} envoyé par ${integration.user.username} le ${integration.createdAt.toLocaleDateString('fr-FR')} à ${integration.createdAt.toLocaleTimeString('fr-FR')}`);
     try {
-        Fs.appendFile('./command.log', `${command} send by ${integration.user.username} on ${integration.createdAt}\n`, error => {
+        Fs.appendFile('./command.log', `${command} envoyé par ${integration.user.username} le ${integration.createdAt.toLocaleDateString('fr-FR')} à ${integration.createdAt.toLocaleTimeString('fr-FR')}\n`, error => {
             if (error) {
                 throw error;
             }
