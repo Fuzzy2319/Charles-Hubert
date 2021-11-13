@@ -21,10 +21,27 @@ const preInit = async () => {
     try {
         console.log('Ajout des commandes (/) en cours');
         const body = [];
-        commands.forEach((command) => {
-            body.push({ name: command.name, description: command.description });
+        commands.forEach(command => {
+            body.push({
+                name: command.name,
+                description: command.description
+            });
         });
-        await rest.put(Routes.applicationGuildCommands('633351951089664010', '454688325651922944'), { body });
+        client.guilds.fetch().then((guilds) => {
+            guilds.forEach(async (guild) => {
+                await rest.put(Routes.applicationGuildCommands('633351951089664010', guild.id), { body });
+                const fullGuild = await guild.fetch();
+                commands.forEach(async (command) => {
+                    const appCommands = await fullGuild.commands.fetch();
+                    appCommands.forEach((appCommand) => {
+                        if (appCommand.name === command.name && command?.permissions !== undefined) {
+                            command.permissions.push({ id: fullGuild.id, type: 'ROLE', permission: false });
+                            appCommand.permissions.set({ permissions: command.permissions });
+                        }
+                    });
+                });
+            });
+        });
         console.log('Ajout des commandes (/) terminée');
     }
     catch (e) {
@@ -33,7 +50,7 @@ const preInit = async () => {
 };
 client.on('ready', async () => {
     await preInit();
-    console.log('Connected !');
+    console.log('Connecté !');
     client.user.setStatus('online');
     client.user.setActivity('les oiseaux chanter', { type: "LISTENING" });
     job = Schedule.scheduleJob('0 0 9 * * *', () => {

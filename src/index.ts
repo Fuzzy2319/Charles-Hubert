@@ -1,5 +1,5 @@
 import * as Fs from 'fs'
-import { Channel, Client, ClientOptions, Intents } from 'discord.js'
+import { ApplicationCommand, Channel, Client, ClientOptions, Collection, Guild, Intents, OAuth2Guild} from 'discord.js'
 import { REST } from '@discordjs/rest'
 import { Routes } from 'discord-api-types/v9'
 import * as Schedule from 'node-schedule'
@@ -30,14 +30,37 @@ const preInit = async () => {
         console.log('Ajout des commandes (/) en cours')
         const body = []
 
-        commands.forEach((command) => {
-            body.push({ name: command.name, description: command.description })
+        commands.forEach(command => {
+            body.push(
+                {
+                    name: command.name,
+                    description: command.description
+                }
+            )            
         })
 
-        await rest.put(
-            Routes.applicationGuildCommands('633351951089664010', '454688325651922944'),
-            { body }
-        )
+        client.guilds.fetch().then((guilds: Collection<string, OAuth2Guild>) => {
+            guilds.forEach(async (guild: OAuth2Guild) => {
+                await rest.put(
+                    Routes.applicationGuildCommands('633351951089664010', guild.id),
+                    { body }
+                )
+
+                const fullGuild: Guild = await guild.fetch()
+
+                commands.forEach(async command => {
+                    const appCommands: Collection<string, ApplicationCommand> = await fullGuild.commands.fetch()
+                    appCommands.forEach((appCommand: ApplicationCommand) => {
+                        if (appCommand.name === command.name && command?.permissions !== undefined) {
+                            command.permissions.push({ id: fullGuild.id, type: 'ROLE', permission: false })
+
+                            appCommand.permissions.set({permissions: command.permissions })
+                        }
+                        //console.log(appCommand)
+                    })
+                })
+            })
+        })
 
         console.log('Ajout des commandes (/) terminée')
     } catch (e) {
