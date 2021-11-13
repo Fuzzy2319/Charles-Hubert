@@ -3,10 +3,10 @@ import * as Fs from 'fs'
 
 export class Utils {
     public static log = (command: string, integration) => {
-        console.log(`${command} send by ${integration.user.username} on ${integration.createdAt}`)
+        console.log(`${command} envoyé par ${integration.user.username} le ${(integration.createdAt as Date).toLocaleDateString('fr-FR')} à ${(integration.createdAt as Date).toLocaleTimeString('fr-FR')}`)
 
         try {
-            Fs.appendFile('./command.log', `${command} send by ${integration.user.username} on ${integration.createdAt}\n`, error => {
+            Fs.appendFile('./command.log', `${command} envoyé par ${integration.user.username} le ${(integration.createdAt as Date).toLocaleDateString('fr-FR')} à ${(integration.createdAt as Date).toLocaleTimeString('fr-FR')}\n`, error => {
                 if (error) {
                     throw error
                 }

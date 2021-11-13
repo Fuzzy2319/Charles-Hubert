@@ -8,6 +8,7 @@ import { birthdays } from './birthdays.js';
 import { Utils } from './utils.js';
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 const commands = [];
+let job;
 const commandFiles = Fs.readdirSync("./commands").filter((file) => file.endsWith(".js"));
 for (const file of commandFiles) {
     const { command } = await import(`./commands/${file}`);
@@ -18,13 +19,13 @@ client.login(token);
 const rest = new REST({ version: '9' }).setToken(token);
 const preInit = async () => {
     try {
-        console.log('Mise à jour des commandes (/) en cours');
+        console.log('Ajout des commandes (/) en cours');
         const body = [];
-        commands.forEach(command => {
+        commands.forEach((command) => {
             body.push({ name: command.name, description: command.description });
         });
         await rest.put(Routes.applicationGuildCommands('633351951089664010', '454688325651922944'), { body });
-        console.log('Mise à jour des commandes (/) terminée');
+        console.log('Ajout des commandes (/) terminée');
     }
     catch (e) {
         console.error(e);
@@ -35,7 +36,7 @@ client.on('ready', async () => {
     console.log('Connected !');
     client.user.setStatus('online');
     client.user.setActivity('les oiseaux chanter', { type: "LISTENING" });
-    Schedule.scheduleJob('0 0 9 * * *', () => {
+    job = Schedule.scheduleJob('0 0 9 * * *', () => {
         Object.entries(birthdays).forEach(birthday => {
             const now = new Date();
             if (birthday[1] === `${now.getMonth() + 1}-${now.getDate()}`) {
@@ -64,4 +65,10 @@ client.on('interactionCreate', async (interaction) => {
             user.send(`Une erreur est survenue: **${error.name}**: ${error.message}`);
         });
     }
+});
+client.on('shardDisconnect', async () => {
+    job.cancel();
+    console.log('Suppression des commandes (/) en cours');
+    await rest.put(Routes.applicationGuildCommands('633351951089664010', '454688325651922944'), { body: [] });
+    console.log('Suppression des commandes (/) terminée');
 });

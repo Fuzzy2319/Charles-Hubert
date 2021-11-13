@@ -65,11 +65,9 @@
     <Content Include="src\*.ts">
       <SubType>Code</SubType>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="src\commands\test.ts">
+	<Content Include="src\commands\*.ts">
       <SubType>Code</SubType>
-    </TypeScriptCompile>
+    </Content>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>
