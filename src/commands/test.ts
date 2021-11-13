@@ -8,6 +8,7 @@ export const command = {
 	//args: ""
 	execute: function (client: Client, interaction: CommandInteraction) {
 		Utils.log(this.name, interaction)
+
 		interaction.reply(`Test OK ${client.emojis.resolve("681518586493272088").toString()}`)
 	}
 }
