@@ -49,7 +49,7 @@ const preInit = async () => {
 client.on('ready', async () => {
     await preInit()
 
-    console.log('Connected !')
+    console.log('Connecté !')
     client.user.setStatus('online')
     client.user.setActivity('les oiseaux chanter', { type: "LISTENING" })
 
