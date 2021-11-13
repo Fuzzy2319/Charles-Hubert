@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src/",
+    "outDir": "./",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "noEmitOnError": true,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "resolveJsonModule": true,
+    "sourceMap": false,
+    "target": "ES2021"
+  },
+  "exclude": [
+    "node_modules",
+    "node_modules_old"
+  ],
+  "include": [
+    "./src/*"
+  ]
+}

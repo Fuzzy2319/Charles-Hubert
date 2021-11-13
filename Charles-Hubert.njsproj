@@ -5,6 +5,9 @@
     <Name>Charles-Hubert</Name>
     <RootNamespace>Charles-Hubert</RootNamespace>
     <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
+    <EnableTypeScript>true</EnableTypeScript>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -29,82 +32,42 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="birthday.json">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="commands\clean.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="commands\current.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="commands\fiesta.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="commands\help.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="commands\invite.js">
-      <SubType>Code</SubType>
-    </Content>
-	<Content Include="commands\next.js">
-      <SubType>Code</SubType>
-    </Content>
-	<Content Include="commands\pause.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="commands\pfc.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="commands\play.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="commands\prefix.js">
-      <SubType>Code</SubType>
-    </Content>
-	<Content Include="commands\queue.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="commands\randomTTS.js">
-      <SubType>Code</SubType>
-    </Content>
-	<Content Include="commands\resume.js">
-      <SubType>Code</SubType>
-    </Content>
-	<Content Include="commands\shuffle.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="commands\shutdown.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="commands\someone.js">
-      <SubType>Code</SubType>
-    </Content>
-	<Content Include="commands\stop.js">
-      <SubType>Code</SubType>
-    </Content>
-	<Content Include="commands\test.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="commands\version.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="config.json">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="index.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="utils.js">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="package.json" />
-    <Content Include="commands\test.js">
+	<Content Include="birthdays.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="config.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="tsconfig.json">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="package.json">
       <SubType>Code</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="commands\" />
+    <Folder Include="src\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="src\index.ts">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\utils.ts">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\birthdays.ts">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\config.ts">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>
