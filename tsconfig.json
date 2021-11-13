@@ -16,6 +16,7 @@
     "node_modules_old"
   ],
   "include": [
-    "./src/*"
+    "./src/*",
+    "./src/commands/*"
   ]
 }

@@ -38,7 +38,7 @@
     <Content Include="utils.js">
       <SubType>Code</SubType>
     </Content>
-	<Content Include="birthdays.js">
+    <Content Include="birthdays.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="config.js">
@@ -52,22 +52,24 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="commands\" />
-    <Folder Include="src\" />
+    <Content Include="commands\*.js">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="src\index.ts">
+    <Folder Include="commands\" />
+    <Folder Include="src\" />
+    <Folder Include="src\commands\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="src\*.ts">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\utils.ts">
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="src\commands\test.ts">
       <SubType>Code</SubType>
-    </Content>
-    <Content Include="src\birthdays.ts">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="src\config.ts">
-      <SubType>Code</SubType>
-    </Content>
+    </TypeScriptCompile>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>

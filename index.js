@@ -10,7 +10,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 const commands = [];
 const commandFiles = Fs.readdirSync("./commands").filter((file) => file.endsWith(".js"));
 for (const file of commandFiles) {
-    const command = await import(`./commands/${file}`);
+    const { command } = await import(`./commands/${file}`);
     commands.push(command);
     console.info(`Info: commande ${command.name} chargée avec succès`);
 }

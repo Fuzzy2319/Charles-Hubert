@@ -13,7 +13,7 @@ const commands = []
 const commandFiles: string[] = Fs.readdirSync("./commands").filter((file: string) => file.endsWith(".js"))
 
 for (const file of commandFiles) {
-    const command = await import(`./commands/${file}`)
+    const { command } = await import(`./commands/${file}`)
     //client.commands.set(command.name, command);
     commands.push(command)
     console.info(`Info: commande ${command.name} chargée avec succès`)
