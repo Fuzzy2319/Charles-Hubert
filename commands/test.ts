@@ -4,8 +4,8 @@ import { Utils } from '../utils.js'
 export const command = {
 	name: 'test',
 	description: 'Permet de vérifier si le bot est fonctionnel',
-	//category: "Utilisateur"
-	//args: ""
+	type: 1,
+	options: [],
 	execute: function (client: Client, interaction: CommandInteraction) {
 		Utils.log(this.name, interaction)
 

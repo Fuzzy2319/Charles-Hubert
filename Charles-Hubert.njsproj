@@ -43,10 +43,25 @@
     <Folder Include="commands\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="*.ts">
+    <Content Include="birthdays.ts">
       <SubType>Code</SubType>
     </Content>
-	<Content Include="commands\*.ts">
+    <Content Include="config.ts">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="index.ts">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="utils.ts">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="commands\emote.ts">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="commands\shutdown.ts">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="commands\test.ts">
       <SubType>Code</SubType>
     </Content>
   </ItemGroup>
