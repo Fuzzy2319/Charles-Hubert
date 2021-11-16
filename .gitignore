@@ -339,10 +339,8 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-/birthdays.js
-/config.js
-/src/birthdays.ts
-/src/config.ts
+/birthdays.ts
+/config.ts
 /node_modules_old/
 /commands_old/
-/build
+/build/
