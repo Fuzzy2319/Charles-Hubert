@@ -34,7 +34,9 @@ const preInit = async () => {
             body.push(
                 {
                     name: command.name,
-                    description: command.description
+                    description: command.description,
+                    type: command.type,
+                    options: command.options
                 }
             )            
         })
@@ -51,7 +53,7 @@ const preInit = async () => {
                 commands.forEach(async command => {
                     const appCommands: Collection<string, ApplicationCommand> = await fullGuild.commands.fetch()
                     appCommands.forEach((appCommand: ApplicationCommand) => {
-                        if (appCommand.name === command.name && command?.permissions !== undefined) {
+                        if (command?.permissions !== undefined && appCommand.name === command.name) {
                             command.permissions.push({ id: fullGuild.id, type: 'ROLE', permission: false })
 
                             appCommand.permissions.set({permissions: command.permissions })

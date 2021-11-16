@@ -3,7 +3,9 @@ import { Utils } from '../utils.js'
 
 export const command = {
 	name: 'shutdown',
-	description: 'Arrête le bot. Utilisable uniquement par Le créateur du bot',
+    description: 'Arrête le bot. Utilisable uniquement par Le créateur du bot',
+    type: 1,
+    options: [],
     permissions: [
         { 
             id: '454682288563683329',
