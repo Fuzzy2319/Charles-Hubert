@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "rootDir": "./src/",
-    "outDir": "./",
+    "rootDir": "./",
+    "outDir": "./build/",
     "module": "ESNext",
     "moduleResolution": "Node",
     "noEmitOnError": true,
@@ -16,7 +16,7 @@
     "node_modules_old"
   ],
   "include": [
-    "./src/*",
-    "./src/commands/*"
+    "./*.ts",
+    "./commands/*.ts"
   ]
 }
