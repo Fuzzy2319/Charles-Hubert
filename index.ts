@@ -3,7 +3,7 @@ import { ApplicationCommand, Channel, Client, ClientOptions, Collection, Guild, 
 import { REST } from '@discordjs/rest'
 import { Routes } from 'discord-api-types/v9'
 import * as Schedule from 'node-schedule'
-import { token } from './config.js'
+import { adminId, appId, defaultChanId, qgId, token } from './config.js'
 import { birthdays } from './birthdays.js'
 import { Utils } from './utils.js'
 
@@ -44,7 +44,7 @@ const preInit = async () => {
         client.guilds.fetch().then((guilds: Collection<string, OAuth2Guild>) => {
             guilds.forEach(async (guild: OAuth2Guild) => {
                 await rest.put(
-                    Routes.applicationGuildCommands('633351951089664010', guild.id),
+                    Routes.applicationGuildCommands(appId, guild.id),
                     { body }
                 )
 
@@ -83,8 +83,8 @@ client.on('ready', async () => {
             const now: Date = new Date()
 
             if (birthday[1] === `${now.getMonth() + 1}-${now.getDate()}`) {
-                client.guilds.fetch('454688325651922944').then(guild => {
-                    guild.channels.resolve('454688325651922946').fetch().then((channel: Channel) => {
+                client.guilds.fetch(qgId).then(guild => {
+                    guild.channels.resolve(defaultChanId).fetch().then((channel: Channel) => {
                         if (channel.isText()) {
                             channel.sendTyping().then(() => {
                                 Utils.sleep(100)
@@ -126,7 +126,7 @@ client.on('interactionCreate', async interaction => {
     try {
         commands.find(command => command.name === interaction.commandName).execute(client, interaction)
     } catch (error) {
-        client.users.fetch('454682288563683329').then(user => {
+        client.users.fetch(adminId).then(user => {
             user.send(`Une erreur est survenue: **${error.name}**: ${error.message}`)
         })
     }
@@ -136,10 +136,13 @@ client.on('interactionCreate', async interaction => {
 
 client.on('shardDisconnect', async () => {
     job.cancel()
+
     console.log('Suppression des commandes (/) en cours')
+
     await rest.put(
         Routes.applicationGuildCommands('633351951089664010', '454688325651922944'),
         { body: [] }
     )
+
     console.log('Suppression des commandes (/) terminée')
 })
