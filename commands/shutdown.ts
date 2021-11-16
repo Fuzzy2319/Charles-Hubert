@@ -1,4 +1,5 @@
 import { Client, CommandInteraction, Message } from 'discord.js'
+import { adminId } from '../config.js'
 import { Utils } from '../utils.js'
 
 export const command = {
@@ -8,7 +9,7 @@ export const command = {
     options: [],
     permissions: [
         { 
-            id: '454682288563683329',
+            id: adminId,
             type: 'USER',
             permission: true
         }
