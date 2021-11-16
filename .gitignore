@@ -345,3 +345,4 @@ healthchecksdb
 /src/config.ts
 /node_modules_old/
 /commands_old/
+/build
