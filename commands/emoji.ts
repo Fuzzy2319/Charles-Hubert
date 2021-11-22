@@ -2,7 +2,7 @@ import { Client, CommandInteraction, CommandInteractionOption, Emoji } from 'dis
 import { Utils } from '../utils.js'
 
 export const command = {
-    name: 'emote',
+    name: 'emoji',
     description: 'Envoie un emoji animé',
     type: 1,
     options: [

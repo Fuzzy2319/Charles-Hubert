@@ -2,7 +2,7 @@ import { Client, Collection, CommandInteraction, Invite } from 'discord.js'
 import { Utils } from '../utils.js'
 
 export const command = {
-    name: 'invite',
+    name: 'invitation',
     description: 'Envoie une invitation pour le serveur',
     type: 1,
     options: [],
