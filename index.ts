@@ -139,10 +139,12 @@ client.on('shardDisconnect', async () => {
 
     console.log('Suppression des commandes (/) en cours')
 
-    await rest.put(
-        Routes.applicationGuildCommands('633351951089664010', '454688325651922944'),
-        { body: [] }
-    )
+    client.guilds.cache.forEach(async (guild: Guild) => {
+        await rest.put(
+            Routes.applicationGuildCommands(appId, guild.id),
+            { body: [] }
+        )
+    })
 
     console.log('Suppression des commandes (/) terminée')
 })
