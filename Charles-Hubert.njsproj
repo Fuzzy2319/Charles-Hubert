@@ -72,6 +72,9 @@
     <TypeScriptCompile Include="commands\clean.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="commands\invite.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="commands\version.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
