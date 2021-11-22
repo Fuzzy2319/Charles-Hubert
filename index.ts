@@ -31,14 +31,7 @@ const preInit = async () => {
         const body = []
 
         commands.forEach(command => {
-            body.push(
-                {
-                    name: command.name,
-                    description: command?.description,
-                    type: command.type,
-                    options: command.options
-                }
-            )            
+            body.push(command)            
         })
 
         client.guilds.fetch().then((guilds: Collection<string, OAuth2Guild>) => {
