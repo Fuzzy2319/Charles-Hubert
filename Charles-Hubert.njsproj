@@ -66,6 +66,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="commands\birthday.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="commands\clean.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
