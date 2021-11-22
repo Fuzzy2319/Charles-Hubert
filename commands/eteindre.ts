@@ -3,7 +3,7 @@ import { adminId } from '../config.js'
 import { Utils } from '../utils.js'
 
 export const command = {
-    name: 'shutdown',
+    name: 'eteindre',
     description: 'Arrête le bot. Utilisable uniquement par Le créateur du bot',
     type: 1,
     options: [],

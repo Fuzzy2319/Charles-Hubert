@@ -3,7 +3,7 @@ import { Utils } from '../utils.js'
 import { birthdays } from '../birthdays.js'
 
 export const command = {
-    name: 'birthday',
+    name: 'anniversaire',
     //description: 'Affiche la date d\'anniversaire de l\'utilisateur',
     type: 2,
     options: [],

@@ -2,7 +2,7 @@ import { Client, CommandInteraction, CommandInteractionOption, TextChannel } fro
 import { Utils } from '../utils.js'
 
 export const command = {
-    name: 'clean',
+    name: 'nettoyer',
     description: 'Permet de vérifier si le bot est fonctionnel',
     type: 1,
     options: [
