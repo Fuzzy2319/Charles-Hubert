@@ -1,5 +1,5 @@
 import * as Fs from 'fs'
-import { ApplicationCommand, Channel, Client, ClientOptions, Collection, Guild, Intents, OAuth2Guild} from 'discord.js'
+import { ApplicationCommand, Channel, Client, ClientOptions, Collection, CommandInteraction, Guild, Intents, OAuth2Guild} from 'discord.js'
 import { REST } from '@discordjs/rest'
 import { Routes } from 'discord-api-types/v9'
 import * as Schedule from 'node-schedule'
@@ -34,7 +34,7 @@ const preInit = async () => {
             body.push(
                 {
                     name: command.name,
-                    description: command.description,
+                    description: command?.description,
                     type: command.type,
                     options: command.options
                 }
@@ -121,7 +121,7 @@ client.on('ready', async () => {
 });*/
 
 client.on('interactionCreate', async interaction => {
-    if (!interaction.isCommand()) return
+    if (!interaction.isCommand() && !interaction.isContextMenu()) return
 
     try {
         commands.find(command => command.name === interaction.commandName).execute(client, interaction)
