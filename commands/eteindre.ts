@@ -19,10 +19,6 @@ export const command = {
 
         console.log('Arrêt de Charles-Hubert...')
 
-        client.voice.adapters?.forEach(connexion => {
-            connexion.destroy()
-        })
-
         integration.reply('Arrêt de Charles-Hubert')
         integration.fetchReply().then((message: Message) => {
             Utils.sleep(500)

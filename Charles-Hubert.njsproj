@@ -69,6 +69,9 @@
     <TypeScriptCompile Include="commands\anniversaire.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="commands\musique.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="commands\nettoyer.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

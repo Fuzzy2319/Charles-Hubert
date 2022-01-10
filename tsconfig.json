@@ -9,11 +9,12 @@
     "removeComments": true,
     "resolveJsonModule": true,
     "sourceMap": false,
-    "target": "ES2021"
+    "target": "ES2021",
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
-    "node_modules",
-    "node_modules_old"
+    "./node_modules/",
+    "./node_modules_old/"
   ],
   "include": [
     "./*.ts",
