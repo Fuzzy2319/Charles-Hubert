@@ -1,5 +1,5 @@
 import * as Fs from 'fs'
-import { ApplicationCommand, Channel, Client, ClientOptions, Collection, CommandInteraction, Guild, Intents, OAuth2Guild} from 'discord.js'
+import { ApplicationCommand, Channel, Client, ClientOptions, Collection, Guild, Intents, OAuth2Guild } from 'discord.js'
 import { REST } from '@discordjs/rest'
 import { Routes } from 'discord-api-types/v9'
 import * as Schedule from 'node-schedule'
@@ -7,12 +7,12 @@ import { adminId, appId, defaultChanId, qgId, token } from './config.js'
 import { birthdays } from './birthdays.js'
 import { Utils } from './utils.js'
 
-const client: Client = new Client({ intents: [Intents.FLAGS.GUILDS] } as ClientOptions)
+const client: Client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES] } as ClientOptions)
 const commands = []
 
 let job: Schedule.Job
 
-const commandFiles: string[] = Fs.readdirSync("./commands").filter((file: string) => file.endsWith(".js"))
+const commandFiles: string[] = Fs.readdirSync('./commands').filter((file: string) => file.endsWith('.js'))
 
 for (const file of commandFiles) {
     const { command } = await import(`./commands/${file}`)
@@ -28,17 +28,12 @@ const rest: REST = new REST({ version: '9' }).setToken(token)
 const preInit = async () => {
     try {
         console.log('Ajout des commandes (/) en cours')
-        const body = []
-
-        commands.forEach(command => {
-            body.push(command)            
-        })
 
         client.guilds.fetch().then((guilds: Collection<string, OAuth2Guild>) => {
             guilds.forEach(async (guild: OAuth2Guild) => {
                 await rest.put(
                     Routes.applicationGuildCommands(appId, guild.id),
-                    { body }
+                    { body: commands }
                 )
 
                 const fullGuild: Guild = await guild.fetch()
@@ -51,6 +46,7 @@ const preInit = async () => {
 
                             appCommand.permissions.set({permissions: command.permissions })
                         }
+
                         //console.log(appCommand)
                     })
                 })
@@ -69,7 +65,7 @@ client.on('ready', async () => {
 
     console.log('Connecté !')
     client.user.setStatus('online')
-    client.user.setActivity('les oiseaux chanter', { type: "LISTENING" })
+    client.user.setActivity('les oiseaux chanter', { type: 'LISTENING' })
 
     job = Schedule.scheduleJob('0 0 9 * * *', () => {
         Object.entries(birthdays).forEach(birthday => {
@@ -90,28 +86,6 @@ client.on('ready', async () => {
         })
     })
 })
-
-/*client.on("message", message => {
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
-
-    if (message.channel.type === "dm" && message.author.id !== client.user.id) {
-        message.channel.send("Je ne réponds pas aux messages privés");
-        return;
-    }
-
-    const args = message.content.slice(prefix.length).trim().split(" ");
-    const command = args.shift();
-
-    if (!client.commands.has(command)) return;
-    
-    try {
-        client.commands.get(command).execute(client, message, args);
-    } catch (error) {
-        client.users.fetch("454682288563683329").then(user => {
-            user.send(`Une erreur est survenue: **${error.name}**: ${error.message}`);
-        });
-    }
-});*/
 
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand() && !interaction.isContextMenu()) return

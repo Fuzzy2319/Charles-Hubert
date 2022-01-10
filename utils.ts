@@ -1,5 +1,5 @@
 import * as Fs from 'fs'
-//import * as Ytdl from 'ytdl-core'
+import * as Voice from '@discordjs/voice'
 
 export class Utils {
     public static log = (command: string, integration) => {
@@ -42,6 +42,21 @@ export class Utils {
             array[index] = temp
         }
         return array
+    }
+
+    public static play = (audio: Voice.AudioPlayer, queue: Array<any>) => {
+        audio.play(Voice.createAudioResource(queue[0]))
+
+        audio.on('debug', console.log)
+        audio.on('error', console.error)
+
+        audio.on(Voice.AudioPlayerStatus.Idle, () => {
+            queue.shift()
+
+            if (queue.length > 0) {
+                Utils.play(audio, queue)
+            }
+        })
     }
 
     /*public static play = (client) => {
