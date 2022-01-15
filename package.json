@@ -8,11 +8,11 @@
     "name": "Fuzzy2319"
   },
   "dependencies": {
-    "@discordjs/opus": "^0.5",
+    "@discordjs/opus": "^0.7",
     "@discordjs/rest": "^0.2.0-canary",
     "@discordjs/voice": "^0.7",
-    "discord-api-types": "^0.24",
-    "discord.js": "^13.3",
+    "discord-api-types": "^0.26",
+    "discord.js": "^13.6",
     "ffmpeg-static": "^4.4",
     "libsodium-wrappers": "^0.7",
     "node-schedule": "^2.0",
