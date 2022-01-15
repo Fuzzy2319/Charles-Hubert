@@ -9,14 +9,14 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.5",
-    "@discordjs/rest": "^0.1.0-canary",
+    "@discordjs/rest": "^0.2.0-canary",
     "@discordjs/voice": "^0.7",
     "discord-api-types": "^0.24",
     "discord.js": "^13.3",
     "ffmpeg-static": "^4.4",
     "libsodium-wrappers": "^0.7",
     "node-schedule": "^2.0",
-    "typescript": "^4.5.4",
+    "typescript": "^4.5",
     "ytdl-core": "^4.9",
     "ytpl": "^2.2"
   },
