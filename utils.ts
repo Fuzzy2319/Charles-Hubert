@@ -45,9 +45,10 @@ export class Utils {
     }
 
     public static play = (audio: Voice.AudioPlayer, queue: Array<any>) => {
-        audio.play(Voice.createAudioResource(queue[0]))
+        audio.play(Voice.createAudioResource(queue[0].stream, {
+            inputType: queue[0].type
+        }))
 
-        audio.on('debug', console.log)
         audio.on('error', console.error)
 
         audio.on(Voice.AudioPlayerStatus.Idle, () => {

@@ -14,10 +14,11 @@
     "discord-api-types": "^0.26",
     "discord.js": "^13.6",
     "ffmpeg-static": "^4.4",
-    "libsodium-wrappers": "^0.7",
-    "node-schedule": "^2.0",
+    "libsodium-wrappers": "^0.7.9",
+    "node-schedule": "^2.1",
+    "play-dl": "^1.8.1",
     "typescript": "^4.5",
-    "ytdl-core": "^4.9",
+    "ytdl-core": "^4.10",
     "ytpl": "^2.2"
   },
   "scripts": {

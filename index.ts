@@ -1,5 +1,5 @@
 import * as Fs from 'fs'
-import { ApplicationCommand, Channel, Client, ClientOptions, Collection, Guild, Intents, OAuth2Guild } from 'discord.js'
+import { ApplicationCommand, Channel, Client, ClientOptions, Collection, Guild, Intents, Interaction, OAuth2Guild, User } from 'discord.js'
 import { REST } from '@discordjs/rest'
 import { Routes } from 'discord-api-types/v9'
 import * as Schedule from 'node-schedule'
@@ -68,34 +68,30 @@ client.on('ready', async () => {
     client.user.setActivity('les oiseaux chanter', { type: 'LISTENING' })
 
     job = Schedule.scheduleJob('0 0 9 * * *', () => {
-        Object.entries(birthdays).forEach(birthday => {
+        Object.entries(birthdays).forEach(async birthday => {
             const now: Date = new Date()
 
             if (birthday[1] === `${now.getMonth() + 1}-${now.getDate()}`) {
-                client.guilds.fetch(qgId).then(guild => {
-                    guild.channels.resolve(defaultChanId).fetch().then((channel: Channel) => {
-                        if (channel.isText()) {
-                            channel.sendTyping().then(() => {
-                                Utils.sleep(100)
-                                channel.send(`Joyeux anniversaire <@${birthday[0]}> !!!`)
-                            })
-                        }
-                    })
-                })
+                const guild: Guild = await client.guilds.fetch(qgId)
+                const channel: Channel = await guild.channels.resolve(defaultChanId).fetch()
+                if (channel.isText()) {
+                    await channel.sendTyping()
+                    Utils.sleep(100)
+                    channel.send(`Joyeux anniversaire <@${birthday[0]}> !!!`)
+                }
             }
         })
     })
 })
 
-client.on('interactionCreate', async interaction => {
+client.on('interactionCreate', async (interaction: Interaction) => {
     if (!interaction.isCommand() && !interaction.isContextMenu()) return
 
     try {
         commands.find(command => command.name === interaction.commandName).execute(client, interaction)
     } catch (error) {
-        client.users.fetch(adminId).then(user => {
-            user.send(`Une erreur est survenue: **${error.name}**: ${error.message}`)
-        })
+        const user: User = await client.users.fetch(adminId)
+        user.send(`Une erreur est survenue: **${error.name}**: ${error.message}`)
     }
 
     //console.log(interaction);
