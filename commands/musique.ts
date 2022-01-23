@@ -2,6 +2,7 @@ import { Client, CommandInteraction, CommandInteractionOption, GuildMember, Voic
 import { Utils } from '../utils.js'
 import * as Voice from '@discordjs/voice'
 import ytdl from 'ytdl-core'
+import play from 'play-dl';
 import ytpl from 'ytpl'
 
 export const command = {
@@ -32,12 +33,11 @@ export const command = {
             const connection = Voice.joinVoiceChannel({
                 channelId: voiceChan.id,
                 guildId: voiceChan.guild.id,
-                adapterCreator: voiceChan.guild.voiceAdapterCreator
+                adapterCreator: voiceChan.guild.voiceAdapterCreator as unknown as Voice.DiscordGatewayAdapterCreator
             })
             const audio: Voice.AudioPlayer = Voice.createAudioPlayer({
-                debug: true,
                 behaviors: {
-                    maxMissedFrames: 500
+                    noSubscriber: Voice.NoSubscriberBehavior.Play
                 }
             })
             const queue: Array<any> = []
@@ -45,24 +45,28 @@ export const command = {
             connection.subscribe(audio)
 
             if (ytdl.validateURL(url)) {
-                const music = ytdl(url, {
-                    filter: 'audioonly',
-                    quality: 'highestaudio'
-                })
+                const music = await play.stream(url)
 
                 queue.push(music)
             } else {
                 if (ytpl.validateID(url)) {
                     const playlist = await ytpl(url)
 
-                    playlist.items.forEach((item: ytpl.Item) => {
-                        const music = ytdl(item.shortUrl, {
-                            filter: 'audioonly',
-                            quality: 'highestaudio'
-                        })
+                    await new Promise<void>(resolve => {
+                        playlist.items.forEach(async (item: ytpl.Item) => {
+                            const music = await play.stream(item.shortUrl)
 
-                        queue.push(music)
+                            console.log(music)
+
+                            queue.push(music)
+
+                            if (item === playlist.items[playlist.items.length - 1]) {
+                                resolve()
+                            }
+                        })
                     })
+
+                    console.log('ok')
                 }
             }
 
