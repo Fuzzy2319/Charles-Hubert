@@ -1,9 +1,7 @@
 import { Client, CommandInteraction, CommandInteractionOption, GuildMember, VoiceChannel } from 'discord.js'
 import { Utils } from '../utils.js'
 import * as Voice from '@discordjs/voice'
-import ytdl from 'ytdl-core'
-import play from 'play-dl';
-import ytpl from 'ytpl'
+import play, { YouTubeStream } from 'play-dl'
 
 export const command = {
     name: 'musique',
@@ -40,33 +38,29 @@ export const command = {
                     noSubscriber: Voice.NoSubscriberBehavior.Play
                 }
             })
-            const queue: Array<any> = []
+            const queue: Array<YouTubeStream> = []
 
             connection.subscribe(audio)
 
-            if (ytdl.validateURL(url)) {
-                const music = await play.stream(url)
+            if (url.startsWith('http') && play.yt_validate(url) === 'video') {
+                const music = await play.stream(url, { quality: 2 })
 
-                queue.push(music)
+                queue.push(music as YouTubeStream)
             } else {
-                if (ytpl.validateID(url)) {
-                    const playlist = await ytpl(url)
+                if (play.yt_validate(url) === 'playlist') {
+                    const playlist = await (await play.playlist_info(url, { incomplete: true })).all_videos()
 
                     await new Promise<void>(resolve => {
-                        playlist.items.forEach(async (item: ytpl.Item) => {
-                            const music = await play.stream(item.shortUrl)
+                        playlist.forEach(async (item) => {
+                            const music = await play.stream(item.url, { quality: 2 })
 
-                            console.log(music)
+                            queue.push(music as YouTubeStream)
 
-                            queue.push(music)
-
-                            if (item === playlist.items[playlist.items.length - 1]) {
+                            if (item === playlist[playlist.length - 1]) {
                                 resolve()
                             }
                         })
                     })
-
-                    console.log('ok')
                 }
             }
 

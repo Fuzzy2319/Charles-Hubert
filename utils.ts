@@ -1,8 +1,10 @@
 import * as Fs from 'fs'
 import * as Voice from '@discordjs/voice'
+import { YouTubeStream } from 'play-dl'
+import { Interaction } from 'discord.js'
 
 export class Utils {
-    public static log = (command: string, integration) => {
+    public static log = (command: string, integration: Interaction) => {
         console.log(`${command} envoyé par ${integration.user.username} le ${(integration.createdAt as Date).toLocaleDateString('fr-FR')} à ${(integration.createdAt as Date).toLocaleTimeString('fr-FR')}`)
 
         try {
@@ -44,7 +46,7 @@ export class Utils {
         return array
     }
 
-    public static play = (audio: Voice.AudioPlayer, queue: Array<any>) => {
+    public static play = (audio: Voice.AudioPlayer, queue: Array<YouTubeStream>) => {
         audio.play(Voice.createAudioResource(queue[0].stream, {
             inputType: queue[0].type
         }))
@@ -52,6 +54,7 @@ export class Utils {
         audio.on('error', console.error)
 
         audio.on(Voice.AudioPlayerStatus.Idle, () => {
+            audio.removeAllListeners()
             queue.shift()
 
             if (queue.length > 0) {
@@ -80,23 +83,4 @@ export class Utils {
             }
         })
     }*/
-}
-
-export class Vid {
-    public title: string
-    public shortUrl: string
-    public bestThumbnail: Thumb
-
-    constructor(title: string, shortUrl: string, bestThumbnail: Thumb) {
-        this.title = title
-        this.shortUrl = shortUrl
-        this.bestThumbnail = bestThumbnail
-    }
-}
-
-export class Thumb {
-    public url: string
-    constructor(url: string) {
-        this.url = url;
-    }
 }
