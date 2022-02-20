@@ -68,7 +68,7 @@ client.on('ready', async () => {
     client.user.setActivity('les oiseaux chanter', { type: 'LISTENING' })
 
     job = Schedule.scheduleJob('0 0 9 * * *', () => {
-        Object.entries(birthdays).forEach(async birthday => {
+        Object.entries(birthdays).forEach(async (birthday: Array<string>) => {
             const now: Date = new Date()
 
             if (birthday[1] === `${now.getMonth() + 1}-${now.getDate()}`) {
@@ -110,4 +110,5 @@ client.on('shardDisconnect', async () => {
     })
 
     console.log('Suppression des commandes (/) terminée')
+    process.exit()
 })

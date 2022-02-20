@@ -46,20 +46,24 @@ export class Utils {
         return array
     }
 
-    public static play = (audio: Voice.AudioPlayer, queue: Array<YouTubeStream>) => {
-        audio.play(Voice.createAudioResource(queue[0].stream, {
-            inputType: queue[0].type
-        }))
+    public static play = async (audio: Voice.AudioPlayer, queue: Array<YouTubeStream>) => {
+        await new Promise<void>(resolve => {
+            audio.play(Voice.createAudioResource(queue[0].stream, {
+                inputType: queue[0].type
+            }))
 
-        audio.on('error', console.error)
+            audio.on('error', console.error)
 
-        audio.on(Voice.AudioPlayerStatus.Idle, () => {
-            audio.removeAllListeners()
-            queue.shift()
+            audio.on(Voice.AudioPlayerStatus.Idle, () => {
+                audio.removeAllListeners()
+                queue.shift()
 
-            if (queue.length > 0) {
-                Utils.play(audio, queue)
-            }
+                if (queue.length > 0) {
+                    Utils.play(audio, queue)
+                } else {
+                    resolve()
+                }
+            })
         })
     }
 

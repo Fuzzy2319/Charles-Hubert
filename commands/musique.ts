@@ -65,7 +65,8 @@ export const command = {
             }
 
             if (queue.length > 0) {
-                Utils.play(audio, queue)
+                await Utils.play(audio, queue)
+                connection.destroy()
             }
         }
     }
