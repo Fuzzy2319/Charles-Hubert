@@ -1,5 +1,5 @@
-import { Client, CommandInteraction, CommandInteractionOption, Emoji } from 'discord.js'
-import { Utils } from '../utils.js'
+import {Client, CommandInteraction, CommandInteractionOption, Emoji} from 'discord.js'
+import Utils from '../utils.js'
 
 export const command = {
     name: 'emoji',

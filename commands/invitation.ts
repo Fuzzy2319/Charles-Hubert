@@ -1,5 +1,5 @@
-import { Client, Collection, CommandInteraction, Invite } from 'discord.js'
-import { Utils } from '../utils.js'
+import {Client, Collection, CommandInteraction, Invite} from 'discord.js'
+import Utils from '../utils.js'
 
 export const command = {
     name: 'invitation',
@@ -13,7 +13,9 @@ export const command = {
             if (invites.size === 0) {
                 interaction.reply(`Il n'y a pas d'invitation pour ${interaction.guild.name}`)
             } else {
-                interaction.reply(`Utilise cette invitation pour inviter de nouveaux membres \n${invites.first().url}`)
+                interaction.reply(
+                    `Utilise cette invitation pour inviter de nouveaux membres!!\n${invites.first().url}`
+                )
             }
         })
     }

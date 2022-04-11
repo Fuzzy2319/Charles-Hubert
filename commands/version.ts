@@ -1,6 +1,6 @@
-import { Client, CommandInteraction } from 'discord.js'
-import { version } from '../config.js'
-import { Utils } from '../utils.js'
+import {Client, CommandInteraction} from 'discord.js'
+import {version} from '../config.js'
+import Utils from '../utils.js'
 
 export const command = {
     name: 'version',

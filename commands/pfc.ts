@@ -1,5 +1,5 @@
-import { Client, CommandInteraction, CommandInteractionOption } from 'discord.js'
-import { Utils } from '../utils.js'
+import {Client, CommandInteraction, CommandInteractionOption} from 'discord.js'
+import Utils from '../utils.js'
 
 export const command = {
     name: 'pfc',
@@ -37,7 +37,7 @@ export const command = {
             .data
             .find((option: CommandInteractionOption) => option.name === 'choix')
             .value as string
-        let botChoice: number | string = Utils.randomInt(1,3)
+        let botChoice: number | string = Utils.randomInt(1, 3)
         let result: string
 
         switch (choice) {

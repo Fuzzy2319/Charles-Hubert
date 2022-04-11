@@ -1,5 +1,5 @@
-import { Client, CommandInteraction, CommandInteractionOption, TextChannel } from 'discord.js'
-import { Utils } from '../utils.js'
+import {Client, CommandInteraction, CommandInteractionOption, TextChannel} from 'discord.js'
+import Utils from '../utils.js'
 
 export const command = {
     name: 'nettoyer',

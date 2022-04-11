@@ -1,40 +1,30 @@
 import * as Fs from 'fs'
 import * as Voice from '@discordjs/voice'
-import { YouTubeStream } from 'play-dl'
-import { Interaction } from 'discord.js'
+import {YouTubeStream} from 'play-dl'
+import {Interaction} from 'discord.js'
 
-export class Utils {
-    public static log = (command: string, integration: Interaction) => {
+export default class Utils {
+    public static log(command: string, integration: Interaction) {
         console.log(`${command} envoyé par ${integration.user.username} le ${(integration.createdAt as Date).toLocaleDateString('fr-FR')} à ${(integration.createdAt as Date).toLocaleTimeString('fr-FR')}`)
 
-        try {
-            Fs.appendFile('./command.log', `${command} envoyé par ${integration.user.username} le ${(integration.createdAt as Date).toLocaleDateString('fr-FR')} à ${(integration.createdAt as Date).toLocaleTimeString('fr-FR')}\n`, error => {
-                if (error) {
-                    throw error
-                }
-            })
-        }
-        catch (error) {
-            console.log(error)
-        }
+        Fs.appendFile('./command.log', `${command} envoyé par ${integration.user.username} le ${(integration.createdAt as Date).toLocaleDateString('fr-FR')} à ${(integration.createdAt as Date).toLocaleTimeString('fr-FR')}\n`, error => {
+            if (error) {
+                console.log(error)
+            }
+        })
     }
 
-    public static sleep = (ms: number) => {
-        const date: number = Date.now()
-        let currentDate: number = null
-
-        do {
-            currentDate = Date.now()
-        } while (currentDate - date < ms)
+    public static async sleep(ms: number) {
+        return new Promise<void>(resolve => setTimeout(resolve, ms))
     }
 
-    public static randomInt = (min: number, max: number) => {
+    public static randomInt(min: number, max: number) {
         min = Math.ceil(min)
         max = Math.floor(max)
         return Math.floor(Math.random() * (max - min + 1)) + min
     }
 
-    public static shuffle = (array: []) => {
+    public static shuffle(array: []) {
         let counter = array.length
         while (counter > 0) {
             const index = Math.floor(Math.random() * counter)

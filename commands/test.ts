@@ -1,5 +1,5 @@
-import { Client, CommandInteraction } from 'discord.js'
-import { Utils } from '../utils.js'
+import {Client, CommandInteraction} from 'discord.js'
+import Utils from '../utils.js'
 
 export const command = {
     name: 'test',
@@ -9,6 +9,6 @@ export const command = {
     execute: function (client: Client, interaction: CommandInteraction) {
         Utils.log(this.name, interaction)
 
-        interaction.reply(`Test OK ${client.emojis.resolve("681518586493272088").toString()}`)
+        interaction.reply(`Test OK ${client.emojis.resolve('681518586493272088').toString()}`)
     }
 }
