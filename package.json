@@ -11,13 +11,13 @@
         "@discordjs/opus": "^0.7",
         "@discordjs/rest": "^0.3",
         "@discordjs/voice": "^0.8",
-        "discord-api-types": "^0.26",
+        "discord-api-types": "^0.31",
         "discord.js": "^13.6",
         "ffmpeg-static": "^4.4",
         "libsodium-wrappers": "^0.7",
         "node-schedule": "^2.1",
-        "play-dl": "^1.8",
-        "typescript": "^4.5"
+        "play-dl": "^1.9",
+        "typescript": "^4.6"
     },
     "scripts": {
         "build": "tsc --build",
