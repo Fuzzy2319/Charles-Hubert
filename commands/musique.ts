@@ -60,60 +60,116 @@ export const command = {
                 const music: YouTubeVideo = (await play.video_info(url)).video_details
 
                 queue.push(music)
+            } else if (url.startsWith('https') && play.yt_validate(url) === 'playlist') {
+                (await (await play.playlist_info(
+                    url,
+                    {incomplete: true}
+                )).all_videos()).map((music: YouTubeVideo) => {
+                    if (!music.private) queue.push(music)
+                })
             }
 
             if (queue.length > 0) {
-                const embed = new MessageEmbed()
-                const actions = new MessageActionRow()
-                embed.setColor('#00ff00')
-                    .setTitle('Charle-Hubert FM')
-                    .setThumbnail(client.user.avatarURL())
-                    .addField('Musique', queue[0].title)
-                    .setImage(queue[0].thumbnails[queue[0].thumbnails.length - 1].url)
-                actions.addComponents(
-                    new MessageButton()
-                        .setCustomId('pause-resume')
-                        .setStyle('PRIMARY')
-                        .setLabel('⏯'),
-                    new MessageButton()
-                        .setCustomId('stop')
-                        .setStyle('DANGER')
-                        .setLabel('🛑'),
-                    new MessageButton()
-                        .setCustomId('next')
-                        .setStyle('PRIMARY')
-                        .setLabel('⏭')
-                        .setDisabled(queue.length <= 1)
-                )
-                interaction.followUp({embeds: [embed], components: [actions]})
+                const getEmbed = () => {
+                    const embed = new MessageEmbed()
+                    embed.setColor('#00ff00')
+                        .setTitle('Charle-Hubert FM')
+                        .setThumbnail(client.user.avatarURL())
+                        .addField('Musique', queue[0].title)
+                        .setImage(queue[0].thumbnails[queue[0].thumbnails.length - 1].url)
+
+                    return embed
+                }
+                const getActions = () => {
+                    const actions = new MessageActionRow()
+                    actions.addComponents(
+                        new MessageButton()
+                            .setCustomId('pause-resume')
+                            .setStyle('PRIMARY')
+                            .setLabel(
+                                audio.state.status === 'playing' || audio.state.status === 'buffering' ? '⏸' : '▶'
+                            ),
+                        new MessageButton()
+                            .setCustomId('stop')
+                            .setStyle('DANGER')
+                            .setLabel('🛑'),
+                        new MessageButton()
+                            .setCustomId('next')
+                            .setStyle('PRIMARY')
+                            .setLabel('⏭')
+                            .setDisabled(queue.length <= 1),
+                        new MessageButton()
+                            .setCustomId('shuffle')
+                            .setStyle('PRIMARY')
+                            .setLabel('🔀')
+                            .setDisabled(queue.length <= 1),
+                        new MessageButton()
+                            .setLabel('Voir la vidéo sur Youtube')
+                            .setStyle('LINK')
+                            .setURL(queue[0].url)
+                    )
+
+                    return actions
+                }
+                const playMusic = async () => {
+                    const resource: YouTubeStream = await play.stream(queue[0].url, {quality: 2})
+                    audio.play(Voice.createAudioResource(resource.stream, {
+                        inputType: resource.type
+                    }))
+                }
+                connection.subscribe(audio)
+                await playMusic()
+                interaction.followUp({embeds: [getEmbed()], components: [getActions()]})
                 const cPauseResume: InteractionCollector<MessageComponentInteraction> = interaction.channel.createMessageComponentCollector({
                     filter: i => i.customId === 'pause-resume'
                 })
                 const cStop: InteractionCollector<MessageComponentInteraction> = interaction.channel.createMessageComponentCollector({
                     filter: i => i.customId === 'stop'
                 })
-                connection.subscribe(audio)
-                const resource: YouTubeStream = await play.stream(queue[0].url, {quality: 2})
-                audio.play(Voice.createAudioResource(resource.stream, {
-                    inputType: resource.type
-                }))
-                cPauseResume.on('collect', async (i: MessageComponentInteraction) => {
+                const cNext: InteractionCollector<MessageComponentInteraction> = interaction.channel.createMessageComponentCollector({
+                    filter: i => i.customId === 'next'
+                })
+                const cShuffle: InteractionCollector<MessageComponentInteraction> = interaction.channel.createMessageComponentCollector({
+                    filter: i => i.customId === 'shuffle'
+                })
+                cPauseResume.on('collect', (i: MessageComponentInteraction) => {
                     if (audio.pause()) {
                         i.reply('Musique en pause')
                     } else {
                         audio.unpause()
                         i.reply('Lecture de la musique')
                     }
+                    interaction.editReply({embeds: [getEmbed()], components: [getActions()]})
                 })
-                const stop = async (i: MessageComponentInteraction | CommandInteraction) => {
-                    interaction.editReply({embeds: [embed], components: []})
-                    i.deferred ? i.followUp('Déconnexion') : i.reply('Déconnexion')
+                cShuffle.on('collect', (i: MessageComponentInteraction) => {
+                    i.reply('Changement de musique')
+                    Utils.shuffle(queue)
+                    playMusic()
+                    interaction.editReply({embeds: [getEmbed()], components: [getActions()]})
+                })
+                const stop = (i: MessageComponentInteraction | CommandInteraction) => {
+                    const message: string = 'Déconnexion'
+                    interaction.editReply({embeds: [getEmbed()], components: []})
+                    i.deferred ? i.followUp(message) : i.reply(message)
                     audio.removeAllListeners()
+                    audio.stop()
+                    cStop.stop()
+                    cShuffle.stop()
+                    cNext.stop()
+                    cPauseResume.stop()
                     connection.destroy()
                 }
+                const next = (i: MessageComponentInteraction | CommandInteraction) => {
+                    const message: string = 'Musique suivante'
+                    queue.shift()
+                    playMusic()
+                    interaction.editReply({embeds: [getEmbed()], components: [getActions()]})
+                    i.deferred ? i.followUp(message) : i.reply(message)
+                }
                 cStop.on('collect', stop)
+                cNext.on('collect', next)
                 audio.on(AudioPlayerStatus.Idle, () => {
-                    stop(interaction)
+                    queue.length > 1 ? next(interaction) : stop(interaction)
                 })
             }
         }
