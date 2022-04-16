@@ -13,7 +13,7 @@
         "@discordjs/voice": "^0.8",
         "discord-api-types": "^0.31",
         "discord.js": "^13.6",
-        "ffmpeg-static": "^4.4",
+        "ffmpeg-static": "^5.0",
         "libsodium-wrappers": "^0.7",
         "node-schedule": "^2.1",
         "play-dl": "^1.9",
