@@ -29,11 +29,8 @@ export const command = {
     ],
     execute: async function (client: Client, interaction: CommandInteraction) {
         Utils.log(this.name, interaction)
-
         await interaction.deferReply()
-
         const voiceChan: VoiceChannel = (interaction.member as GuildMember)?.voice.channel as VoiceChannel
-
         if (voiceChan === null) {
             interaction.followUp('Vous devez être connecté à un channel vocal pour utiliser la commande')
         } else {
@@ -42,34 +39,34 @@ export const command = {
                 .data
                 .find((option: CommandInteractionOption) => option.name === 'url')
                 .value as string
-            const connection = Voice.joinVoiceChannel({
-                channelId: voiceChan.id,
-                guildId: voiceChan.guild.id,
-                adapterCreator: voiceChan.guild.voiceAdapterCreator as unknown as Voice.DiscordGatewayAdapterCreator
-            })
-            const audio: Voice.AudioPlayer = Voice.createAudioPlayer({
-                behaviors: {
-                    noSubscriber: Voice.NoSubscriberBehavior.Play
-                }
-            })
             const queue: YouTubeVideo[] = []
-
-            connection.subscribe(audio)
-
             if (url.startsWith('https') && play.yt_validate(url) === 'video') {
                 const music: YouTubeVideo = (await play.video_info(url)).video_details
 
                 queue.push(music)
             } else if (url.startsWith('https') && play.yt_validate(url) === 'playlist') {
-                (await (await play.playlist_info(
-                    url,
-                    {incomplete: true}
-                )).all_videos()).map((music: YouTubeVideo) => {
-                    if (!music.private) queue.push(music)
-                })
+                // (await (await play.playlist_info(
+                //     url,
+                //     {incomplete: true}
+                // )).all_videos()).map((music: YouTubeVideo) => {
+                //     if (!music.private) queue.push(music)
+                // })
+                interaction.followUp('Temporairement désactivé à cause d\'un bug')
+            } else {
+                interaction.followUp('Lien invalide le lien doit être un lien youtube valide')
             }
-
             if (queue.length > 0) {
+                const connection = Voice.joinVoiceChannel({
+                    channelId: voiceChan.id,
+                    guildId: voiceChan.guild.id,
+                    adapterCreator: voiceChan.guild.voiceAdapterCreator as unknown as Voice.DiscordGatewayAdapterCreator
+                })
+                const audio: Voice.AudioPlayer = Voice.createAudioPlayer({
+                    behaviors: {
+                        noSubscriber: Voice.NoSubscriberBehavior.Play
+                    }
+                })
+                connection.subscribe(audio)
                 const getEmbed = () => {
                     const embed = new MessageEmbed()
                     embed.setColor('#00ff00')
