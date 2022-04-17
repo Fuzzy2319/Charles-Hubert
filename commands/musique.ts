@@ -141,10 +141,10 @@ export const command = {
                     }
                     interaction.editReply({embeds: [getEmbed()], components: [getActions()]})
                 })
-                cShuffle.on('collect', (i: MessageComponentInteraction) => {
+                cShuffle.on('collect', async (i: MessageComponentInteraction) => {
                     i.reply('Changement de musique')
                     Utils.shuffle(queue)
-                    playMusic()
+                    await playMusic()
                     interaction.editReply({embeds: [getEmbed()], components: [getActions()]})
                 })
                 const stop = (i: MessageComponentInteraction | CommandInteraction) => {
@@ -159,10 +159,10 @@ export const command = {
                     cPauseResume.stop()
                     connection.destroy()
                 }
-                const next = (i: MessageComponentInteraction | CommandInteraction) => {
+                const next = async (i: MessageComponentInteraction | CommandInteraction) => {
                     const message: string = 'Musique suivante'
                     queue.shift()
-                    playMusic()
+                    await playMusic()
                     interaction.editReply({embeds: [getEmbed()], components: [getActions()]})
                     i.deferred ? i.followUp(message) : i.reply(message)
                 }
