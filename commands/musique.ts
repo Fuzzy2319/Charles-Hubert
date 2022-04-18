@@ -4,6 +4,7 @@ import {
     CommandInteractionOption,
     GuildMember,
     InteractionCollector,
+    Message,
     MessageActionRow,
     MessageButton,
     MessageComponentInteraction,
@@ -45,13 +46,13 @@ export const command = {
 
                 queue.push(music)
             } else if (url.startsWith('https') && play.yt_validate(url) === 'playlist') {
-                // (await (await play.playlist_info(
-                //     url,
-                //     {incomplete: true}
-                // )).all_videos()).map((music: YouTubeVideo) => {
-                //     if (!music.private) queue.push(music)
-                // })
-                interaction.followUp('Temporairement désactivé à cause d\'un bug')
+                (await (await play.playlist_info(
+                    url,
+                    {incomplete: true}
+                )).all_videos()).map((music: YouTubeVideo) => {
+                    if (!music.private) queue.push(music)
+                })
+                //interaction.followUp('Temporairement désactivé à cause d\'un bug')
             } else {
                 interaction.followUp('Lien invalide le lien doit être un lien youtube valide')
             }
@@ -116,38 +117,41 @@ export const command = {
                 }
                 connection.subscribe(audio)
                 await playMusic()
-                interaction.followUp({embeds: [getEmbed()], components: [getActions()]})
-                const cPauseResume: InteractionCollector<MessageComponentInteraction> = interaction.channel.createMessageComponentCollector({
-                    filter: i => i.customId === 'pause-resume'
+                let message: Message =
+                    await interaction.followUp({embeds: [getEmbed()], components: [getActions()]}) as Message
+                const cPauseResume: InteractionCollector<MessageComponentInteraction> = interaction.channel
+                    .createMessageComponentCollector({
+                        filter: i => i.customId === 'pause-resume'
+                    })
+                const cStop: InteractionCollector<MessageComponentInteraction> = interaction.channel
+                    .createMessageComponentCollector({
+                        filter: i => i.customId === 'stop'
+                    })
+                const cNext: InteractionCollector<MessageComponentInteraction> = interaction.channel
+                    .createMessageComponentCollector({
+                        filter: i => i.customId === 'next'
+                    })
+                const cShuffle: InteractionCollector<MessageComponentInteraction> = interaction.channel
+                    .createMessageComponentCollector({
+                        filter: i => i.customId === 'shuffle'
+                    })
+                cPauseResume.on('collect', async () => {
+                    audio.pause() || audio.unpause()
+                    await message.delete()
+                    message =
+                        await message.channel.send({embeds: [getEmbed()], components: [getActions()]})
                 })
-                const cStop: InteractionCollector<MessageComponentInteraction> = interaction.channel.createMessageComponentCollector({
-                    filter: i => i.customId === 'stop'
-                })
-                const cNext: InteractionCollector<MessageComponentInteraction> = interaction.channel.createMessageComponentCollector({
-                    filter: i => i.customId === 'next'
-                })
-                const cShuffle: InteractionCollector<MessageComponentInteraction> = interaction.channel.createMessageComponentCollector({
-                    filter: i => i.customId === 'shuffle'
-                })
-                cPauseResume.on('collect', (i: MessageComponentInteraction) => {
-                    if (audio.pause()) {
-                        i.reply('Musique en pause')
-                    } else {
-                        audio.unpause()
-                        i.reply('Lecture de la musique')
-                    }
-                    interaction.editReply({embeds: [getEmbed()], components: [getActions()]})
-                })
-                cShuffle.on('collect', async (i: MessageComponentInteraction) => {
-                    i.reply('Changement de musique')
+                cShuffle.on('collect', async () => {
                     Utils.shuffle(queue)
                     await playMusic()
-                    interaction.editReply({embeds: [getEmbed()], components: [getActions()]})
+                    await message.delete()
+                    message =
+                        await message.channel.send({embeds: [getEmbed()], components: [getActions()]})
                 })
-                const stop = (i: MessageComponentInteraction | CommandInteraction) => {
-                    const message: string = 'Déconnexion'
-                    interaction.editReply({embeds: [getEmbed()], components: []})
-                    i.deferred ? i.followUp(message) : i.reply(message)
+                const stop = async () => {
+                    await message.delete()
+                    message =
+                        await message.channel.send(`Fin de la lecture de ${url}, déconnexion`)
                     audio.removeAllListeners()
                     audio.stop()
                     cStop.stop()
@@ -156,17 +160,17 @@ export const command = {
                     cPauseResume.stop()
                     connection.destroy()
                 }
-                const next = async (i: MessageComponentInteraction | CommandInteraction) => {
-                    const message: string = 'Musique suivante'
+                const next = async () => {
                     queue.shift()
                     await playMusic()
-                    interaction.editReply({embeds: [getEmbed()], components: [getActions()]})
-                    i.deferred ? i.followUp(message) : i.reply(message)
+                    await message.delete()
+                    message =
+                        await message.channel.send({embeds: [getEmbed()], components: [getActions()]})
                 }
                 cStop.on('collect', stop)
                 cNext.on('collect', next)
                 audio.on(AudioPlayerStatus.Idle, () => {
-                    queue.length > 1 ? next(interaction) : stop(interaction)
+                    queue.length > 1 ? next() : stop()
                 })
             }
         }
