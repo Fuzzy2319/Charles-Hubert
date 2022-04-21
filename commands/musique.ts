@@ -137,19 +137,19 @@ export const command = {
                     })
                 cPauseResume.on('collect', async () => {
                     audio.pause() || audio.unpause()
-                    await message.delete()
+                    message = await message.delete()
                     message =
                         await message.channel.send({embeds: [getEmbed()], components: [getActions()]})
                 })
                 cShuffle.on('collect', async () => {
                     Utils.shuffle(queue)
                     await playMusic()
-                    await message.delete()
+                    message = await message.delete()
                     message =
                         await message.channel.send({embeds: [getEmbed()], components: [getActions()]})
                 })
                 const stop = async () => {
-                    await message.delete()
+                    message = await message.delete()
                     message =
                         await message.channel.send(`Fin de la lecture de ${url}, déconnexion`)
                     audio.removeAllListeners()
@@ -163,7 +163,7 @@ export const command = {
                 const next = async () => {
                     queue.shift()
                     await playMusic()
-                    await message.delete()
+                    message = await message.delete()
                     message =
                         await message.channel.send({embeds: [getEmbed()], components: [getActions()]})
                 }
