@@ -1,19 +1,28 @@
 import {Client, CommandInteraction, CommandInteractionOption, TextChannel} from 'discord.js'
-import Utils from '../utils.js'
+import Utils from '../Utils.js'
+import {AppCommandOption, AppCommandWithOptions} from '../App'
 
-export const command = {
-    name: 'nettoyer',
-    description: 'Permet de vérifier si le bot est fonctionnel',
-    type: 1,
-    options: [
-        {
-            name: 'message',
-            description: 'nombre de messages à supprimer',
-            type: 4,
-            required: true
-        }
-    ],
-    execute: function (client: Client, interaction: CommandInteraction) {
+export default class NettoyerCommand implements AppCommandWithOptions {
+    public name: string
+    public description: string
+    public type: 1
+    public options: AppCommandOption[]
+
+    constructor() {
+        this.name = 'nettoyer'
+        this.description = 'Permet de vérifier si le bot est fonctionnel'
+        this.type = 1
+        this.options = [
+            {
+                name: 'message',
+                description: 'nombre de messages à supprimer',
+                type: 4,
+                required: true
+            }
+        ]
+    }
+
+    execute(client: Client, interaction: CommandInteraction) {
         Utils.log(this.name, interaction)
 
         const messageNumber: number = interaction

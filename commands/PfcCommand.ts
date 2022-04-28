@@ -1,33 +1,42 @@
 import {Client, CommandInteraction, CommandInteractionOption} from 'discord.js'
-import Utils from '../utils.js'
+import Utils from '../Utils.js'
+import {AppCommandChoiceOption, AppCommandWithOptions} from '../App'
 
-export const command = {
-    name: 'pfc',
-    description: 'Lance un pierre-feuille-ciseaux contre Charles-Hubert',
-    type: 1,
-    options: [
-        {
-            name: 'choix',
-            description: 'votre choix',
-            type: 3,
-            choices: [
-                {
-                    name: 'pierre',
-                    value: 'pierre'
-                },
-                {
-                    name: 'feuille',
-                    value: 'feuille'
-                },
-                {
-                    name: 'ciseaux',
-                    value: 'ciseaux'
-                }
-            ],
-            required: true
-        }
-    ],
-    execute: async function (client: Client, interaction: CommandInteraction) {
+export default class PfcCommand implements AppCommandWithOptions {
+    public name: string
+    public description: string
+    public type: 1
+    public options: AppCommandChoiceOption[]
+
+    constructor() {
+        this.name = 'pfc'
+        this.description = 'Lance un pierre-feuille-ciseaux contre Charles-Hubert'
+        this.type = 1
+        this.options = [
+            {
+                name: 'choix',
+                description: 'votre choix',
+                type: 3,
+                choices: [
+                    {
+                        name: 'pierre',
+                        value: 'pierre'
+                    },
+                    {
+                        name: 'feuille',
+                        value: 'feuille'
+                    },
+                    {
+                        name: 'ciseaux',
+                        value: 'ciseaux'
+                    }
+                ],
+                required: true
+            }
+        ]
+    }
+
+    async execute(client: Client, interaction: CommandInteraction) {
         Utils.log(this.name, interaction)
 
         const playerName = (await interaction.guild.members.fetch(interaction.member.user.id)).displayName

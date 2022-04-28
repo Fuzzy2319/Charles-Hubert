@@ -1,13 +1,18 @@
 import {Client, ContextMenuInteraction, GuildMember} from 'discord.js'
-import Utils from '../utils.js'
+import Utils from '../Utils.js'
 import {birthdays} from '../birthdays.js'
+import {AppContextMenuCommand} from '../App'
 
-export const command = {
-    name: 'anniversaire',
-    //description: 'Affiche la date d\'anniversaire de l\'utilisateur',
-    type: 2,
-    options: [],
-    execute: async function (client: Client, interaction: ContextMenuInteraction) {
+export default class AnniversaireCommand implements AppContextMenuCommand {
+    public name: string
+    public type: 2
+
+    constructor() {
+        this.name = 'anniversaire'
+        this.type = 2
+    }
+
+    async execute(client: Client, interaction: ContextMenuInteraction) {
         Utils.log(this.name, interaction)
 
         const user: GuildMember = await interaction.guild.members.fetch(interaction.targetId)

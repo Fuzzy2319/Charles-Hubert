@@ -1,19 +1,28 @@
 import {Client, CommandInteraction, CommandInteractionOption, Emoji} from 'discord.js'
-import Utils from '../utils.js'
+import Utils from '../Utils.js'
+import {AppCommandOption, AppCommandWithOptions} from '../App'
 
-export const command = {
-    name: 'emoji',
-    description: 'Envoie un emoji animé',
-    type: 1,
-    options: [
-        {
-            name: 'emoji',
-            description: 'nom de l\'emoji',
-            type: 3,
-            required: true
-        }
-    ],
-    execute: function (client: Client, interaction: CommandInteraction) {
+export default class EmojiCommand implements AppCommandWithOptions {
+    public name: string
+    public description: string
+    public type: 1
+    public options: AppCommandOption[]
+
+    constructor() {
+        this.name = 'emoji'
+        this.description = 'Envoie un emoji animé'
+        this.type = 1
+        this.options = [
+            {
+                name: 'emoji',
+                description: 'nom de l\'emoji',
+                type: 3,
+                required: true
+            }
+        ]
+    }
+
+    execute(client: Client, interaction: CommandInteraction) {
         Utils.log(this.name, interaction)
 
         const emojiName: string = interaction

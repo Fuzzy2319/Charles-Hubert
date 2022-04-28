@@ -11,24 +11,33 @@ import {
     MessageEmbed,
     VoiceChannel
 } from 'discord.js'
-import Utils from '../utils.js'
+import Utils from '../Utils.js'
 import * as Voice from '@discordjs/voice'
 import {AudioPlayerStatus} from '@discordjs/voice'
 import play, {YouTubeStream, YouTubeVideo} from 'play-dl'
+import {AppCommandOption, AppCommandWithOptions} from '../App'
 
-export const command = {
-    name: 'musique',
-    description: 'Joue une musique dans un channel vocal',
-    type: 1,
-    options: [
-        {
-            name: 'url',
-            description: 'Lien de la musique à jouer',
-            type: 3,
-            required: true
-        }
-    ],
-    execute: async function (client: Client, interaction: CommandInteraction) {
+export default class MusicCommand implements AppCommandWithOptions {
+    public name: string
+    public description: string
+    public type: 1
+    public options: AppCommandOption[]
+
+    constructor() {
+        this.name = 'musique'
+        this.description = 'Joue une musique dans un channel vocal'
+        this.type = 1
+        this.options = [
+            {
+                name: 'url',
+                description: 'Lien de la musique à jouer',
+                type: 3,
+                required: true
+            }
+        ]
+    }
+
+    async execute(client: Client, interaction: CommandInteraction) {
         Utils.log(this.name, interaction)
         await interaction.deferReply()
         const voiceChan: VoiceChannel = (interaction.member as GuildMember)?.voice.channel as VoiceChannel
