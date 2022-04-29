@@ -59,9 +59,10 @@ const preInit = async () => {
         commands.map(async (command: AppCommandRestricted) => {
             appCommands.map((appCommand: ApplicationCommand) => {
                 if (command.permissions !== undefined && appCommand.name === command.name) {
-                    command.permissions.push({id: fullGuild.id, type: 'ROLE', permission: false})
-
-                    appCommand.permissions.set({permissions: command.permissions})
+                    appCommand.setDefaultPermission(false)
+                    // command.permissions.push({id: fullGuild.id, type: 'ROLE', permission: false})
+                    //
+                    // appCommand.permissions.set({permissions: command.permissions})
                 }
             })
         })
