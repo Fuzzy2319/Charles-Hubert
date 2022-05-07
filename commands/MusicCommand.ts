@@ -118,10 +118,17 @@ export default class MusicCommand implements AppCommandWithOptions {
                     return actions
                 }
                 const playMusic = async () => {
-                    const resource: YouTubeStream = await play.stream(queue[0].url, {quality: 2})
-                    audio.play(Voice.createAudioResource(resource.stream, {
-                        inputType: resource.type
-                    }))
+                    try {
+                        const resource: YouTubeStream = await play.stream(queue[0].url, {quality: 2})
+                        audio.play(Voice.createAudioResource(resource.stream, {
+                            inputType: resource.type
+                        }))
+                    } catch {
+                        const resource: YouTubeStream = await play.stream('https://youtu.be/t69tmdgqKFk', {quality: 2})
+                        audio.play(Voice.createAudioResource(resource.stream, {
+                            inputType: resource.type
+                        }))
+                    }
                 }
                 connection.subscribe(audio)
                 await playMusic()
