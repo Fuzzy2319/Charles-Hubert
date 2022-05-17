@@ -1,10 +1,15 @@
-import {ApplicationCommandOptionChoiceData, ApplicationCommandPermissionData, Client, Interaction} from 'discord.js'
+import {
+    ApplicationCommandOptionChoice as ApplicationCommandOptionChoiceData,
+    ApplicationCommandPermissionData,
+    Client,
+    Interaction
+} from 'discord.js'
 
 export interface AppBaseCommand {
     name: string
     type: 1 | 2 | 3
 
-    execute(client: Client, interaction: Interaction)
+    execute(client: Client, interaction: Interaction): void
 }
 
 export interface AppContextMenuCommand extends AppBaseCommand {

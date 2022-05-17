@@ -1,23 +1,22 @@
 {
-  "compilerOptions": {
-    "rootDir": "./",
-    "outDir": "./build/",
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "noEmitOnError": true,
-    "noImplicitAny": false,
-    "removeComments": true,
-    "resolveJsonModule": true,
-    "sourceMap": false,
-    "target": "ES2021",
-    "allowSyntheticDefaultImports": true
-  },
-  "exclude": [
-    "./node_modules/",
-    "./node_modules_old/"
-  ],
-  "include": [
-    "./*.ts",
-    "./commands/*.ts"
-  ]
+    "compilerOptions": {
+        "rootDir": "./",
+        "outDir": "./build/",
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "noEmitOnError": true,
+        "noImplicitAny": true,
+        "removeComments": true,
+        "resolveJsonModule": true,
+        "sourceMap": false,
+        "target": "ESNext",
+        "allowSyntheticDefaultImports": true
+    },
+    "exclude": [
+        "./node_modules/"
+    ],
+    "include": [
+        "./*.ts",
+        "./commands/*.ts"
+    ]
 }

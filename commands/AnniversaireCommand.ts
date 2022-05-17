@@ -16,7 +16,7 @@ export default class AnniversaireCommand implements AppContextMenuCommand {
         Utils.log(this.name, interaction)
 
         const user: GuildMember = await interaction.guild.members.fetch(interaction.targetId)
-        const {1: day, 0: month} = birthdays[user.id].split('-')
+        const {1: day, 0: month} = birthdays.get(user.id).split('-')
         const birthday: Date = new Date(0, Number.parseInt(month) - 1, Number.parseInt(day))
 
         interaction.reply(
