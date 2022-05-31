@@ -1,9 +1,4 @@
-import {
-    ApplicationCommandOptionChoice as ApplicationCommandOptionChoiceData,
-    ApplicationCommandPermissionData,
-    Client,
-    Interaction
-} from 'discord.js'
+import {ApplicationCommandOptionChoiceData, ApplicationCommandPermissionData, Client, Interaction} from 'discord.js'
 
 export interface AppBaseCommand {
     name: string

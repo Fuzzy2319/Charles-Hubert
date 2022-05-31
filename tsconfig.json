@@ -10,7 +10,8 @@
         "resolveJsonModule": true,
         "sourceMap": false,
         "target": "ESNext",
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "skipLibCheck": true
     },
     "exclude": [
         "./node_modules/"
