@@ -10,7 +10,7 @@
     "dependencies": {
         "@discordjs/opus": "^0.7",
         "@discordjs/rest": "^0.4",
-        "@discordjs/voice": "^0.9",
+        "@discordjs/voice": "^0.10",
         "@types/node-schedule": "^2.1",
         "discord-api-types": "^0.33",
         "discord.js": "^13.7",
