@@ -9,7 +9,7 @@ jobs:
                 with:
                     node-version: 16
             -   run: npm install
-            -   run: mv ./birthday.template.ts ./birthdays.ts
+            -   run: mv ./birthdays.template.ts ./birthdays.ts
             -   run: mv ./config.template.ts ./config.ts
             -   run: npm run build
 
