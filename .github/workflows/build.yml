@@ -12,4 +12,3 @@ jobs:
             -   run: mv ./birthdays.template.ts ./birthdays.ts
             -   run: mv ./config.template.ts ./config.ts
             -   run: npm run build
-
