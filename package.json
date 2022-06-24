@@ -12,7 +12,7 @@
         "@discordjs/rest": "^0.5",
         "@discordjs/voice": "^0.10",
         "@types/node-schedule": "^2.1",
-        "discord-api-types": "^0.34",
+        "discord-api-types": "^0.35",
         "discord.js": "^13.8",
         "ffmpeg-static": "^5.0",
         "libsodium-wrappers": "^0.7",
