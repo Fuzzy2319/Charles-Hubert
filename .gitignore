@@ -1,5 +1,5 @@
 /.idea/
 /node_modules/
 /build/
-/birthdays.ts
-/config.ts
+/data/birthdays.json
+/src/.env

@@ -1,23 +1,25 @@
 {
     "compilerOptions": {
-        "rootDir": "./",
-        "outDir": "./build/",
+        "allowSyntheticDefaultImports": true,
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "alwaysStrict": true,
         "module": "ESNext",
-        "moduleResolution": "Node",
+        "moduleResolution": "NodeNext",
         "noEmitOnError": true,
         "noImplicitAny": true,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "outDir": "./build/",
         "removeComments": true,
         "resolveJsonModule": true,
+        "rootDir": "./src/",
         "sourceMap": false,
-        "target": "ESNext",
-        "allowSyntheticDefaultImports": true,
-        "skipLibCheck": true
+        "target": "ESNext"
     },
-    "exclude": [
-        "./node_modules/"
-    ],
     "include": [
-        "./*.ts",
-        "./commands/*.ts"
+        "./src/"
     ]
 }

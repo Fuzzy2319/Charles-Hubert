@@ -2,13 +2,11 @@ name: build
 on: [ push, pull_request ]
 jobs:
     build:
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-22.04
         steps:
             -   uses: actions/checkout@v3
             -   uses: actions/setup-node@v3
                 with:
-                    node-version: 16
+                    node-version: lts
             -   run: npm install
-            -   run: mv ./birthdays.template.ts ./birthdays.ts
-            -   run: mv ./config.template.ts ./config.ts
             -   run: npm run build

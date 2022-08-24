@@ -1,5 +1,5 @@
 import {Client, CommandInteraction} from 'discord.js'
-import {version} from '../config.js'
+import {version} from '../build/.env'
 import Utils from '../Utils.js'
 import {AppCommand} from '../App'
 

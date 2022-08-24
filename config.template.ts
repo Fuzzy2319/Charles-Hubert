@@ -1,6 +1,0 @@
-export const token = 'Secret token here'
-export const version = '0.0.0'
-export const adminId = '000000000000000000'
-export const appId = '000000000000000000'
-export const qgId = '000000000000000000'
-export const defaultChanId = '000000000000000000'
