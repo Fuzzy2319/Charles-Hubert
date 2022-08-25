@@ -15,7 +15,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
     .addNumberOption(
         (new SlashCommandNumberOption())
             .setName('message')
-            .setDescription('nombre de messages à supprimer')
+            .setDescription('Nombre de messages à supprimer')
             .setRequired(true)
             .setMinValue(1)
     )

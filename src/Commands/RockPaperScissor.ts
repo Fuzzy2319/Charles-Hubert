@@ -1,52 +1,40 @@
-import {Client, CommandInteraction, CommandInteractionOption} from 'discord.js'
-import Utils from '../Utils.js'
-import {AppCommandChoiceOption, AppCommandWithOptions} from '../App'
+import {Client, CommandInteraction, CommandInteractionOption, SlashCommandStringOption} from 'discord.js'
+import {AppSlashCommandBuilder} from '../Utils/Builder.js'
+import randomInt from '../Utils/Random.js'
 
-export default class PfcCommand implements AppCommandWithOptions {
-    public name: string
-    public description: string
-    public type: 1
-    public options: AppCommandChoiceOption[]
-
-    constructor() {
-        this.name = 'pfc'
-        this.description = 'Lance un pierre-feuille-ciseaux contre Charles-Hubert'
-        this.type = 1
-        this.options = [
-            {
-                name: 'choix',
-                description: 'votre choix',
-                type: 3,
-                choices: [
-                    {
-                        name: 'pierre',
-                        value: 'pierre'
-                    },
-                    {
-                        name: 'feuille',
-                        value: 'feuille'
-                    },
-                    {
-                        name: 'ciseaux',
-                        value: 'ciseaux'
-                    }
-                ],
-                required: true
-            }
-        ]
-    }
-
-    async execute(client: Client, interaction: CommandInteraction) {
-        Utils.log(this.name, interaction)
-
-        const playerName = (await interaction.guild.members.fetch(interaction.member.user.id)).displayName
+const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
+    .setName('pierre-feuille-ciseaux')
+    .setDescription('Lance un pierre-feuille-ciseaux contre Charles-Hubert')
+    .setDMPermission(false)
+    .addStringOption(
+        (new SlashCommandStringOption())
+            .setName('choix')
+            .setDescription('Votre choix')
+            .setRequired(true)
+            .addChoices(
+                {
+                    name: 'pierre',
+                    value: 'pierre'
+                },
+                {
+                    name: 'feuille',
+                    value: 'feuille'
+                },
+                {
+                    name: 'ciseaux',
+                    value: 'ciseaux'
+                }
+            )
+    )
+    .setCallback(async (client: Client, interaction: CommandInteraction) => {
+        const playerName = (await interaction.guild.members.fetch(interaction.user.id)).displayName
         const botName = (await interaction.guild.members.fetch(client.user.id)).displayName
         const choice: string = interaction
             .options
             .data
             .find((option: CommandInteractionOption) => option.name === 'choix')
             .value as string
-        let botChoice: number | string = Utils.randomInt(1, 3)
+        let botChoice: number | string = randomInt(1, 3)
         let result: string
 
         switch (choice) {
@@ -54,7 +42,7 @@ export default class PfcCommand implements AppCommandWithOptions {
                 switch (botChoice) {
                     case 1:
                         botChoice = 'pierre'
-                        result = 'Egalité'
+                        result = 'Égalité'
                         break
                     case 2:
                         botChoice = 'feuille'
@@ -74,7 +62,7 @@ export default class PfcCommand implements AppCommandWithOptions {
                         break
                     case 2:
                         botChoice = 'feuille'
-                        result = 'Egalité'
+                        result = 'Égalité'
                         break
                     case 3:
                         botChoice = 'ciseaux'
@@ -94,12 +82,13 @@ export default class PfcCommand implements AppCommandWithOptions {
                         break
                     case 3:
                         botChoice = 'ciseaux'
-                        result = 'Egalité'
+                        result = 'Égalité'
                         break
                 }
                 break
         }
 
-        interaction.reply(`${result}\n${playerName} : ${choice}\n${botName} : ${botChoice}`)
-    }
-}
+        await interaction.reply(`${result}\n${playerName} : ${choice}\n${botName} : ${botChoice}`)
+    })
+
+export default command
