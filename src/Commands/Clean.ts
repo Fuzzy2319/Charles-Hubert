@@ -28,9 +28,10 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         await interaction.channel.bulkDelete(messageNumber)
         if (messageNumber === 1) {
             await interaction.reply(`${messageNumber} message supprimé`)
-        } else {
-            await interaction.reply(`${messageNumber} messages supprimés`)
+
+            return
         }
+        await interaction.reply(`${messageNumber} messages supprimés`)
     })
 
 export default command

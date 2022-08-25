@@ -10,11 +10,12 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
 
         if (invites.size === 0) {
             await interaction.reply(`Il n'y a pas d'invitation pour ${interaction.guild.name}`)
-        } else {
-            await interaction.reply(
-                `Utilise cette invitation pour inviter de nouveaux membres !!!\n${invites.first().url}`
-            )
+
+            return
         }
+        await interaction.reply(
+            `Utilise cette invitation pour inviter de nouveaux membres !!!\n${invites.first().url}`
+        )
     })
 
 export default command

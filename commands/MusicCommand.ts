@@ -40,7 +40,7 @@ export default class MusicCommand implements AppCommandWithOptions {
     async execute(client: Client, interaction: CommandInteraction) {
         Utils.log(this.name, interaction)
         await interaction.deferReply()
-        const voiceChan: VoiceChannel = (interaction.member as GuildMember)?.voice.channel as VoiceChannel
+        const voiceChan: VoiceChannel | null = (interaction.member as GuildMember)?.voice.channel as VoiceChannel
         if (voiceChan === null) {
             interaction.followUp('Vous devez être connecté à un channel vocal pour utiliser la commande')
         } else {

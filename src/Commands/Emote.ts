@@ -21,11 +21,12 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             (emoji: Emoji) => emoji.name.toLowerCase() === emojiName.toLowerCase()
         )
 
-        if (emoji !== undefined) {
-            await interaction.reply(`${emoji.toString()} ${emoji.toString()} ${emoji.toString()}`)
-        } else {
+        if (emoji === undefined) {
             await interaction.reply(`Impossible de trouver l'emoji ${emojiName}`)
+
+            return
         }
+        await interaction.reply(`${emoji.toString()} ${emoji.toString()} ${emoji.toString()}`)
     })
 
 export default command

@@ -6,7 +6,9 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
     .setDescription('Donne la version actuelle de Charles-Hubert')
     .setDMPermission(false)
     .setCallback(async (client: Client, interaction: CommandInteraction) => {
-        await interaction.reply(`Charles-Hubert est actuellement en version : **${process.env.npm_package_version}**`)
+        await interaction.reply(
+            `Charles-Hubert est actuellement en version : **${process.env.npm_package_version}**`
+        )
     })
 
 export default command
