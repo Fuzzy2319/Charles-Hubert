@@ -2,6 +2,7 @@ import {Client, CommandInteraction, Message} from 'discord.js'
 import {AppSlashCommandBuilder} from '../Utils/Builder.js'
 import log from '../Utils/Logger.js'
 import sleep from '../Utils/Sleep.js'
+import {DiscordGatewayAdapterLibraryMethods} from '@discordjs/voice'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
     .setName('éteindre')
@@ -18,6 +19,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         await sleep(500)
         await message.edit('Arrêt de Charles-Hubert.')
         await sleep(500)
+        client.voice.adapters.forEach((adapter: DiscordGatewayAdapterLibraryMethods) => adapter.destroy())
         await message.edit('Arrêt de Charles-Hubert..')
         await sleep(500)
         await message.edit('Arrêt de Charles-Hubert...')

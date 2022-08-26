@@ -21,14 +21,18 @@ export default class BirthdayProvider {
 
     static async getGuildAnnonceChannel(guild: Guild): Promise<GuildChannel> | null {
         const data: Map<Snowflake, Map<Snowflake, string>> = BirthdayProvider.unserialize()
-        if (data.get(guild.id) === null) return null
+        if (data.get(guild.id) === null) {
+            return null
+        }
 
         return await guild.channels.fetch(data.get(guild.id).get('_announceChannel'))
     }
 
     static getGuildBirthdays(guild: Guild): Map<Snowflake, Date> | null {
         const data: Map<Snowflake, Map<Snowflake, string>> = BirthdayProvider.unserialize()
-        if (data.get(guild.id) === null) return null
+        if (data.get(guild.id) === null) {
+            return null
+        }
 
         const birthdays: Map<Snowflake, Date> = new Map<Snowflake, Date>()
         data.get(guild.id).delete('_announceChannel')

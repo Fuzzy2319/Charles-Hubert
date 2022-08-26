@@ -72,6 +72,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
     } catch (error) {
         const user: User = await client.users.fetch(process.env.ADMIN_ID)
         log.error(`${error.name}: ${error.message}`)
+        log.trace(error)
         await user.send(`Une erreur est survenue: **${error.name}**: ${error.message}`)
     }
 })
