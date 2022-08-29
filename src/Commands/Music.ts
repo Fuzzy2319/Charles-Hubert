@@ -62,9 +62,11 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             QueueProvider.AddToGuildQueue(interaction.guild, ...(await playlist.all_videos()))
         }
 
-        if (queue.length > 0 && Voice.getVoiceConnection(voiceChan.guild.id) !== undefined) {
-            await interaction.followUp('Votre vidéo a été ajouté à queue')
+        if (queue.length > 0) {
+            await interaction.followUp('Votre vidéo ou votre playlist a été ajouté à queue')
+        }
 
+        if (Voice.getVoiceConnection(voiceChan.guild.id) !== undefined) {
             return
         }
 
@@ -99,7 +101,10 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
                     inline: false,
                     value: QueueProvider.GetGuildQueue(interaction.guild)[0].title
                 })
-                .setImage(QueueProvider.GetGuildQueue(interaction.guild)[0].thumbnail.url)
+                .setImage(
+                    // @ts-ignore TS2551 TODO provisoire à changer
+                    QueueProvider.GetGuildQueue(interaction.guild)[0].thumbnail.url
+                )
         }
 
         const getActions = () => {
