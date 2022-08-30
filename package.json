@@ -1,6 +1,6 @@
 {
     "name": "charles-hubert",
-    "version": "4.0.0-dev",
+    "version": "4.0.0",
     "type": "module",
     "private": true,
     "description": "Discord Bot",
