@@ -84,11 +84,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             adapterCreator: voiceChan.guild.voiceAdapterCreator
         })
 
-        const audio: Voice.AudioPlayer = Voice.createAudioPlayer({
-            behaviors: {
-                noSubscriber: Voice.NoSubscriberBehavior.Play
-            }
-        })
+        const audio: Voice.AudioPlayer = Voice.createAudioPlayer()
 
         connection.subscribe(audio)
 
@@ -207,7 +203,9 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             connection.removeAllListeners()
             audio.removeAllListeners()
             message = await message.delete()
-            message = await message.channel.send(`Fin de la lecture de ${url}, déconnexion`)
+            message = await message.channel.send(
+                `Fin de la lecture de ${QueueProvider.GetGuildQueue(interaction.guild)[0].url}, déconnexion`
+            )
             QueueProvider.ClearQueue(interaction.guild)
             audio.stop()
             cStop.stop()

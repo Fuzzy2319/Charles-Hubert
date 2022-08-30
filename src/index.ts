@@ -88,4 +88,5 @@ client.on('shardDisconnect', () => {
         )
     })
     log.info('Suppression des commandes (/) terminée')
+    process.exit()
 })
