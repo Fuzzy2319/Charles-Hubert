@@ -3,13 +3,14 @@ import {Snowflake} from 'discord-api-types/globals'
 import {YouTubeVideo} from 'play-dl'
 import {Guild} from 'discord.js'
 import shuffle from '../Utils/Shuffle.js'
+import {YoutubeVideoInfo} from '../App.js'
 
 export default class QueueProvider {
     private static get dataPath(): string {
         return '../data/queues.json'
     }
 
-    private static serialize(data: Map<Snowflake, Array<YouTubeVideo>>): void {
+    private static serialize(data: Map<Snowflake, Array<YoutubeVideoInfo>>): void {
         const buffer: Array<any> = []
         data.forEach((value, key) => {
             buffer.push(key, value)
@@ -18,7 +19,7 @@ export default class QueueProvider {
         Fs.writeFileSync(QueueProvider.dataPath, JSON.stringify(buffer))
     }
 
-    private static unserialize(): Map<Snowflake, Array<YouTubeVideo>> {
+    private static unserialize(): Map<Snowflake, Array<YoutubeVideoInfo>> {
         return new Map(
             [
                 JSON.parse(
@@ -29,18 +30,18 @@ export default class QueueProvider {
         )
     }
 
-    public static GetGuildQueue(guild: Guild): Array<YouTubeVideo> {
+    public static GetGuildQueue(guild: Guild): Array<YoutubeVideoInfo> {
         return QueueProvider.unserialize().get(guild.id) === undefined ? [] : QueueProvider.unserialize().get(guild.id)
     }
 
-    public static SetGuildQueue(guild: Guild, videos: Array<YouTubeVideo>): void {
-        const data: Map<Snowflake, Array<YouTubeVideo>> = QueueProvider.unserialize()
+    public static SetGuildQueue(guild: Guild, videos: Array<YouTubeVideo | YoutubeVideoInfo>): void {
+        const data: Map<Snowflake, Array<YoutubeVideoInfo>> = QueueProvider.unserialize()
         data.set(guild.id, videos)
         QueueProvider.serialize(data)
     }
 
     public static AddToGuildQueue(guild: Guild, ...videos: Array<YouTubeVideo>): void {
-        const queue: Array<YouTubeVideo> = QueueProvider.GetGuildQueue(guild)
+        const queue: Array<YoutubeVideoInfo | YouTubeVideo> = QueueProvider.GetGuildQueue(guild)
         queue.push(...videos)
         QueueProvider.SetGuildQueue(guild, queue)
     }
@@ -50,13 +51,13 @@ export default class QueueProvider {
     }
 
     public static ShuffleGuildQueue(guild: Guild): void {
-        const queue: Array<YouTubeVideo> = QueueProvider.GetGuildQueue(guild)
+        const queue: Array<YoutubeVideoInfo> = QueueProvider.GetGuildQueue(guild)
         shuffle(queue)
         QueueProvider.SetGuildQueue(guild, queue)
     }
 
     public static ShiftGuildQueue(guild: Guild): void {
-        const queue: Array<YouTubeVideo> = QueueProvider.GetGuildQueue(guild)
+        const queue: Array<YoutubeVideoInfo> = QueueProvider.GetGuildQueue(guild)
         queue.shift()
         QueueProvider.SetGuildQueue(guild, queue)
     }

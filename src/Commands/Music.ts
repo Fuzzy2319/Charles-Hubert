@@ -15,9 +15,10 @@ import {
     VoiceBasedChannel
 } from 'discord.js'
 import {AppSlashCommandBuilder} from '../Utils/Builder.js'
-import play, {YouTubePlayList, YouTubeStream, YouTubeVideo} from 'play-dl'
+import play from 'play-dl'
 import * as Voice from '@discordjs/voice'
 import QueueProvider from '../DataProviders/QueueProvider.js'
+import {YoutubeVideoInfo} from '../App.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
     .setName('musique')
@@ -39,7 +40,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             .data
             .find((option: CommandInteractionOption) => option.name === 'url')
             .value as string
-        const queue: YouTubeVideo[] = QueueProvider.GetGuildQueue(interaction.guild)
+        const queue: YoutubeVideoInfo[] = QueueProvider.GetGuildQueue(interaction.guild)
 
         if (voiceChan === null) {
             await interaction.followUp('Vous devez être connecté à un channel vocal pour utiliser la commande')
@@ -58,7 +59,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         }
 
         if (play.yt_validate(url) === 'playlist') {
-            const playlist: YouTubePlayList = await play.playlist_info(url, {incomplete: true})
+            const playlist: play.YouTubePlayList = await play.playlist_info(url, {incomplete: true})
             QueueProvider.AddToGuildQueue(interaction.guild, ...(await playlist.all_videos()))
         }
 
@@ -102,7 +103,6 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
                     value: QueueProvider.GetGuildQueue(interaction.guild)[0].title
                 })
                 .setImage(
-                    // @ts-ignore TS2551 TODO provisoire à changer
                     QueueProvider.GetGuildQueue(interaction.guild)[0].thumbnail.url
                 )
         }
@@ -142,13 +142,13 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
 
         const playMusic = async () => {
             try {
-                const resource: YouTubeStream = await play.stream(QueueProvider.GetGuildQueue(interaction.guild)[0].url, {quality: 2})
+                const resource: play.YouTubeStream = await play.stream(QueueProvider.GetGuildQueue(interaction.guild)[0].url, {quality: 2})
 
                 audio.play(Voice.createAudioResource(resource.stream, {
                     inputType: resource.type
                 }))
             } catch {
-                const resource: YouTubeStream = await play.stream('https://youtu.be/t69tmdgqKFk', {quality: 2})
+                const resource: play.YouTubeStream = await play.stream('https://youtu.be/t69tmdgqKFk', {quality: 2})
 
                 audio.play(Voice.createAudioResource(resource.stream, {
                     inputType: resource.type
