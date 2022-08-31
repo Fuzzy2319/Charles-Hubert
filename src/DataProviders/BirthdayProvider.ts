@@ -12,7 +12,9 @@ export default class BirthdayProvider {
 
     private static unserialize(): Map<Snowflake, Map<Snowflake, string>> {
         const data: Map<Snowflake, Map<Snowflake, string>> = new Map(
-            JSON.parse(Fs.readFileSync(BirthdayProvider.dataPath).toString())
+            [
+                JSON.parse(Fs.readFileSync(BirthdayProvider.dataPath).toString())
+            ]
         )
         data.forEach((value, key) => data.set(key, new Map(value)))
 
