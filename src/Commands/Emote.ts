@@ -1,32 +1,36 @@
-import {Client, CommandInteraction, CommandInteractionOption, Emoji, SlashCommandStringOption} from 'discord.js'
+import {Client, CommandInteraction, CommandInteractionOption, Emoji, Locale, SlashCommandStringOption} from 'discord.js'
 import {AppSlashCommandBuilder} from '../Utils/Builder.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
-    .setName('emoji')
-    .setDescription('Envoie un emoji')
+    .setName('emote')
+    .setNameLocalization(Locale.French, 'emoji')
+    .setDescription('Send an emote')
+    .setDescriptionLocalization(Locale.French, 'Envoie un emoji')
     .setDMPermission(false)
     .addStringOption(
         (new SlashCommandStringOption())
-            .setName('emoji')
-            .setDescription('Nom de l\'emoji')
+            .setName('emote')
+            .setNameLocalization(Locale.French, 'emoji')
+            .setDescription('Emote\'s name')
+            .setDescriptionLocalization(Locale.French, 'Nom de l\'emoji')
             .setRequired(true)
     )
     .setCallback(async (client: Client, interaction: CommandInteraction) => {
-        const emojiName: string = interaction
+        const emoteName: string = interaction
             .options
             .data
-            .find((option: CommandInteractionOption) => option.name === 'emoji')
+            .find((option: CommandInteractionOption) => option.name === 'emote')
             .value as string
-        const emoji: undefined | Emoji = client.emojis.cache.find(
-            (emoji: Emoji) => emoji.name.toLowerCase() === emojiName.toLowerCase()
+        const emote: undefined | Emoji = client.emojis.cache.find(
+            (emote: Emoji) => emote.name.toLowerCase() === emoteName.toLowerCase()
         )
 
-        if (emoji === undefined) {
-            await interaction.reply(`Impossible de trouver l'emoji ${emojiName}`)
+        if (emote === undefined) {
+            await interaction.reply(`Impossible de trouver l'emoji ${emoteName}`)
 
             return
         }
-        await interaction.reply(`${emoji.toString()} ${emoji.toString()} ${emoji.toString()}`)
+        await interaction.reply(`${emote.toString()} ${emote.toString()} ${emote.toString()}`)
     })
 
 export default command

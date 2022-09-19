@@ -10,6 +10,7 @@ import {
     CommandInteractionOption,
     EmbedBuilder,
     InteractionCollector,
+    Locale,
     Message,
     SlashCommandStringOption,
     VoiceBasedChannel
@@ -21,13 +22,16 @@ import QueueProvider from '../DataProviders/QueueProvider.js'
 import {YoutubeVideoInfo} from '../App.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
-    .setName('musique')
-    .setDescription('Joue une musique dans un channel vocal')
+    .setName('music')
+    .setNameLocalization(Locale.French, 'musique')
+    .setDescription('Play music in a voice channel')
+    .setDescriptionLocalization(Locale.French, 'Joue une musique dans un channel vocal')
     .setDMPermission(false)
     .addStringOption(
         (new SlashCommandStringOption())
             .setName('url')
-            .setDescription('Lien Youtube de la musique à jouer')
+            .setDescription('Youtube link of music to play')
+            .setDescriptionLocalization(Locale.French, 'Lien Youtube de la musique à jouer')
             .setRequired(true)
     )
     .setCallback(async (client: Client, interaction: CommandInteraction) => {

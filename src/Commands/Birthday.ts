@@ -1,9 +1,10 @@
-import {ApplicationCommandType, Client, ContextMenuCommandInteraction, GuildMember} from 'discord.js'
+import {ApplicationCommandType, Client, ContextMenuCommandInteraction, GuildMember, Locale} from 'discord.js'
 import {AppContextMenuCommandBuilder} from '../Utils/Builder.js'
 import BirthdayProvider from '../DataProviders/BirthdayProvider.js'
 
 const command: AppContextMenuCommandBuilder = (new AppContextMenuCommandBuilder())
-    .setName('anniversaire')
+    .setName('birthday')
+    .setNameLocalization(Locale.French, 'anniversaire')
     .setType(ApplicationCommandType.User)
     .setDMPermission(false)
     .setCallback(async (client: Client, interaction: ContextMenuCommandInteraction) => {

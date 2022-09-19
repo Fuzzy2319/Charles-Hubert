@@ -2,20 +2,27 @@ import {
     Client,
     CommandInteraction,
     CommandInteractionOption,
+    Locale,
     PermissionsBitField,
     SlashCommandNumberOption
 } from 'discord.js'
 import {AppSlashCommandBuilder} from '../Utils/Builder.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
-    .setName('nettoyer')
-    .setDescription('Permet de supprimer un nombre de messages donné. Utilisable seulement par les modérateurs')
+    .setName('clean')
+    .setNameLocalization(Locale.French, 'nettoyer')
+    .setDescription('Allows you to delete a given number of messages. Can only be used by moderators')
+    .setDescriptionLocalization(
+        Locale.French,
+        'Permet de supprimer un nombre de messages donné. Utilisable seulement par les modérateurs'
+    )
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageMessages)
     .addNumberOption(
         (new SlashCommandNumberOption())
             .setName('message')
-            .setDescription('Nombre de messages à supprimer')
+            .setDescription('Number of messages to delete')
+            .setDescriptionLocalization(Locale.French, 'Nombre de messages à supprimer')
             .setRequired(true)
             .setMinValue(1)
     )

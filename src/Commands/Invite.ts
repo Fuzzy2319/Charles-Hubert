@@ -1,9 +1,11 @@
-import {Client, Collection, CommandInteraction, Invite} from 'discord.js'
+import {Client, Collection, CommandInteraction, Invite, Locale} from 'discord.js'
 import {AppSlashCommandBuilder} from '../Utils/Builder.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
-    .setName('invitation')
-    .setDescription('Envoie une invitation pour le serveur')
+    .setName('invite')
+    .setNameLocalization(Locale.French, 'invitation')
+    .setDescription('Send an invite for the server')
+    .setDescriptionLocalization(Locale.French, 'Envoie une invitation pour le serveur')
     .setDMPermission(false)
     .setCallback(async (client: Client, interaction: CommandInteraction) => {
         const invites: Collection<string, Invite> = await interaction.guild.invites.fetch()

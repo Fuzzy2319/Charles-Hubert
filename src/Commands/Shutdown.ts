@@ -1,12 +1,14 @@
-import {Client, CommandInteraction, Message} from 'discord.js'
+import {Client, CommandInteraction, Locale, Message} from 'discord.js'
 import {AppSlashCommandBuilder} from '../Utils/Builder.js'
 import log from '../Utils/Logger.js'
 import sleep from '../Utils/Sleep.js'
 import {DiscordGatewayAdapterLibraryMethods} from '@discordjs/voice'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
-    .setName('éteindre')
-    .setDescription('Arrête le bot. Utilisable uniquement par Le créateur du bot')
+    .setName('shutdown')
+    .setNameLocalization(Locale.French, 'éteindre')
+    .setDescription('Shutdown bot')
+    .setDescriptionLocalization(Locale.French, 'Arrête le bot')
     .setDMPermission(false)
     .setDefaultMemberPermissions(0)
     .setCallback(async (client: Client, interaction: CommandInteraction) => {

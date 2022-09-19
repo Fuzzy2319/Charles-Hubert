@@ -1,27 +1,34 @@
-import {Client, CommandInteraction, CommandInteractionOption, SlashCommandStringOption} from 'discord.js'
+import {Client, CommandInteraction, CommandInteractionOption, Locale, SlashCommandStringOption} from 'discord.js'
 import {AppSlashCommandBuilder} from '../Utils/Builder.js'
 import randomInt from '../Utils/Random.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
-    .setName('pierre-feuille-ciseaux')
-    .setDescription('Lance un pierre-feuille-ciseaux contre Charles-Hubert')
+    .setName('rock-paper-scissor')
+    .setNameLocalization(Locale.French, 'pierre-feuille-ciseaux')
+    .setDescription('Play rock-paper-scissor versus Charles-Hubert')
+    .setDescriptionLocalization(Locale.French, 'Lance un pierre-feuille-ciseaux contre Charles-Hubert')
     .setDMPermission(false)
     .addStringOption(
         (new SlashCommandStringOption())
-            .setName('choix')
-            .setDescription('Votre choix')
+            .setName('choice')
+            .setNameLocalization(Locale.French, 'choix')
+            .setDescription('Your choice')
+            .setDescriptionLocalization(Locale.French, 'Votre choix')
             .setRequired(true)
             .addChoices(
                 {
-                    name: 'pierre',
+                    name: 'rock',
+                    name_localizations: {fr: 'pierre'},
                     value: 'pierre'
                 },
                 {
-                    name: 'feuille',
+                    name: 'paper',
+                    name_localizations: {fr: 'feuille'},
                     value: 'feuille'
                 },
                 {
-                    name: 'ciseaux',
+                    name: 'scissor',
+                    name_localizations: {fr: 'ciseaux'},
                     value: 'ciseaux'
                 }
             )
@@ -32,7 +39,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         const choice: string = interaction
             .options
             .data
-            .find((option: CommandInteractionOption) => option.name === 'choix')
+            .find((option: CommandInteractionOption) => option.name === 'choice')
             .value as string
         let botChoice: number | string = randomInt(1, 3)
         let result: string
