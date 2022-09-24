@@ -1,6 +1,6 @@
 import * as Fs from 'fs'
 import {Snowflake} from 'discord-api-types/globals'
-import {Guild, GuildChannel, GuildMember} from 'discord.js'
+import {Guild, GuildBasedChannel, GuildMember} from 'discord.js'
 
 export default class BirthdayProvider {
     private static get dataPath(): string {
@@ -21,7 +21,7 @@ export default class BirthdayProvider {
         return data
     }
 
-    static async getGuildAnnonceChannel(guild: Guild): Promise<GuildChannel> | null {
+    static async getGuildAnnonceChannel(guild: Guild): Promise<GuildBasedChannel> | null {
         const data: Map<Snowflake, Map<Snowflake, string>> = BirthdayProvider.unserialize()
         if (data.get(guild.id) === null) {
             return null

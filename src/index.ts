@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import {ActivityType, Client, GatewayIntentBits, Guild, GuildChannel, Interaction, Routes, User} from 'discord.js'
+import {ActivityType, Client, GatewayIntentBits, Guild, GuildBasedChannel, Interaction, Routes, User} from 'discord.js'
 import log from './Utils/Logger.js'
 import * as Fs from 'fs'
 import {AppContextMenuCommandBuilder, AppSlashCommandBuilder} from './Utils/Builder.js'
@@ -52,7 +52,7 @@ client.on('ready', () => {
             BirthdayProvider.getGuildBirthdays(guild).forEach(async (birthday: Date, userId: Snowflake) => {
                 const now: Date = new Date()
                 if (`${birthday.getMonth()}-${birthday.getDate()}` === `${now.getMonth()}-${now.getDate()}`) {
-                    const channel: GuildChannel = await BirthdayProvider.getGuildAnnonceChannel(guild)
+                    const channel: GuildBasedChannel = await BirthdayProvider.getGuildAnnonceChannel(guild)
                     if (channel.isTextBased()) {
                         await channel.sendTyping()
                         await sleep(100)
