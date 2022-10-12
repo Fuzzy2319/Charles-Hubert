@@ -8,7 +8,21 @@ import BirthdayProvider from './DataProviders/BirthdayProvider.js'
 import {Snowflake} from 'discord-api-types/globals'
 import sleep from './Utils/Sleep.js'
 
-let job: Schedule.Job
+const job: Schedule.Job = Schedule.scheduleJob('0 0 9 * * *', () => {
+    client.guilds.cache.map((guild: Guild) => {
+        BirthdayProvider.getGuildBirthdays(guild).forEach(async (birthday: Date, userId: Snowflake) => {
+            const now: Date = new Date()
+            if (`${birthday.getMonth()}-${birthday.getDate()}` === `${now.getMonth()}-${now.getDate()}`) {
+                const channel: GuildBasedChannel = await BirthdayProvider.getGuildAnnonceChannel(guild)
+                if (channel.isTextBased()) {
+                    await channel.sendTyping()
+                    await sleep(100)
+                    await channel.send(`Joyeux anniversaire <@${userId}> !!!`)
+                }
+            }
+        })
+    })
+})
 const client: Client = new Client(
     {
         intents: [
@@ -35,7 +49,6 @@ const registerCommands = () => {
 
 for (const commandFile of commandFiles) {
     const {default: command} = await import(`./Commands/${commandFile}`)
-    log.debug(command)
     commands.push(command)
     log.debug(`Commande ${command.name} chargée avec succès`)
 }
@@ -47,21 +60,6 @@ client.on('ready', () => {
     registerCommands()
     client.user.setStatus('online')
     client.user.setActivity('les oiseaux chanter', {type: ActivityType.Listening})
-    job = Schedule.scheduleJob('0 0 9 * * *', () => {
-        client.guilds.cache.map((guild: Guild) => {
-            BirthdayProvider.getGuildBirthdays(guild).forEach(async (birthday: Date, userId: Snowflake) => {
-                const now: Date = new Date()
-                if (`${birthday.getMonth()}-${birthday.getDate()}` === `${now.getMonth()}-${now.getDate()}`) {
-                    const channel: GuildBasedChannel = await BirthdayProvider.getGuildAnnonceChannel(guild)
-                    if (channel.isTextBased()) {
-                        await channel.sendTyping()
-                        await sleep(100)
-                        await channel.send(`Joyeux anniversaire <@${userId}> !!!`)
-                    }
-                }
-            })
-        })
-    })
 })
 
 client.on('interactionCreate', async (interaction: Interaction) => {

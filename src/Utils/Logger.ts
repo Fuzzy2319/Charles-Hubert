@@ -1,7 +1,20 @@
-import log, {LogLevelDesc} from 'loglevel'
+import log, {LogLevelDesc, LogLevelNumbers} from 'loglevel'
 import prefix from 'loglevel-plugin-prefix'
 import chalk from 'chalk'
+import * as Fs from 'fs'
 
+const originalFactory = log.methodFactory
+log.methodFactory = function (methodName: string, logLevel: LogLevelNumbers, loggerName: string) {
+    const rawMethod = originalFactory(methodName, logLevel, loggerName)
+
+    return function (message) {
+        rawMethod(message)
+        Fs.appendFileSync(
+            process.env.LOG_FILE,
+            message.replaceAll(new RegExp('\\[\\d{2}m', 'g'), '') + '\n'
+        )
+    }
+}
 log.setLevel(process.env.LOG_LEVEL as LogLevelDesc)
 prefix.reg(log)
 prefix.apply(log, {
@@ -24,6 +37,7 @@ prefix.apply(log, {
                 logPrefix = chalk.red(logPrefix)
                 break
         }
+
         return logPrefix
     }
 })
