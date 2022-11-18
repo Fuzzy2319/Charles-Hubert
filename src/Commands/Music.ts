@@ -85,7 +85,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         const connection: Voice.VoiceConnection = Voice.joinVoiceChannel({
             channelId: voiceChan.id,
             guildId: voiceChan.guild.id,
-            adapterCreator: voiceChan.guild.voiceAdapterCreator
+            adapterCreator: voiceChan.guild.voiceAdapterCreator as unknown as Voice.DiscordGatewayAdapterCreator
         })
 
         const audio: Voice.AudioPlayer = Voice.createAudioPlayer()
@@ -169,25 +169,25 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         const cPauseResume: InteractionCollector<ButtonInteraction> = interaction
             .channel
             .createMessageComponentCollector({
-                filter: i => i.customId === 'pause-resume'
+                filter: (i: ButtonInteraction) => i.customId === 'pause-resume'
             }) as InteractionCollector<ButtonInteraction>
 
         const cStop: InteractionCollector<ButtonInteraction> = interaction
             .channel
             .createMessageComponentCollector({
-                filter: i => i.customId === 'stop'
+                filter: (i: ButtonInteraction) => i.customId === 'stop'
             }) as InteractionCollector<ButtonInteraction>
 
         const cNext: InteractionCollector<ButtonInteraction> = interaction
             .channel
             .createMessageComponentCollector({
-                filter: i => i.customId === 'next'
+                filter: (i: ButtonInteraction) => i.customId === 'next'
             }) as InteractionCollector<ButtonInteraction>
 
         const cShuffle: InteractionCollector<ButtonInteraction> = interaction
             .channel
             .createMessageComponentCollector({
-                filter: i => i.customId === 'shuffle'
+                filter: (i: ButtonInteraction) => i.customId === 'shuffle'
             }) as InteractionCollector<ButtonInteraction>
 
         cPauseResume.on('collect', async () => {

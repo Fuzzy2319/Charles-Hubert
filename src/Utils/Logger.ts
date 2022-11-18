@@ -1,10 +1,10 @@
-import log, {LogLevelDesc, LogLevelNumbers} from 'loglevel'
+import log, {LogLevelDesc, LogLevelNames, LogLevelNumbers} from 'loglevel'
 import prefix from 'loglevel-plugin-prefix'
 import chalk from 'chalk'
 import * as Fs from 'fs'
 
 const originalFactory = log.methodFactory
-log.methodFactory = function (methodName: string, logLevel: LogLevelNumbers, loggerName: string) {
+log.methodFactory = function (methodName: LogLevelNames, logLevel: LogLevelNumbers, loggerName: string) {
     const rawMethod = originalFactory(methodName, logLevel, loggerName)
 
     return function (message) {
@@ -18,7 +18,7 @@ log.methodFactory = function (methodName: string, logLevel: LogLevelNumbers, log
 log.setLevel(process.env.LOG_LEVEL as LogLevelDesc)
 prefix.reg(log)
 prefix.apply(log, {
-    format(level: string, name: string | undefined, timestamp: Date): string {
+    format(level: LogLevelNames, name: string | undefined, timestamp: Date): string {
         let logPrefix: string = `[${(new Date()).toLocaleDateString()} ${timestamp}] ${level}:`
         switch (level.toUpperCase()) {
             case 'TRACE':
