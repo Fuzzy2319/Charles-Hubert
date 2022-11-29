@@ -17,8 +17,7 @@
         "resolveJsonModule": true,
         "rootDir": "./src/",
         "sourceMap": false,
-        "target": "ESNext",
-        "skipLibCheck": true
+        "target": "ESNext"
     },
     "include": [
         "./src/"
