@@ -1,5 +1,16 @@
 import 'dotenv/config'
-import {ActivityType, Client, GatewayIntentBits, Guild, GuildBasedChannel, Interaction, Routes, User} from 'discord.js'
+import {
+    ActivityType,
+    Client,
+    GatewayIntentBits,
+    Guild,
+    GuildBasedChannel,
+    Interaction,
+    Locale,
+    Routes,
+    User,
+    userMention
+} from 'discord.js'
 import log from './Utils/Logger.js'
 import * as Fs from 'fs'
 import {AppContextMenuCommandBuilder, AppSlashCommandBuilder} from './Utils/Builder.js'
@@ -7,6 +18,9 @@ import * as Schedule from 'node-schedule'
 import BirthdayProvider from './DataProviders/BirthdayProvider.js'
 import {Snowflake} from 'discord-api-types/globals'
 import sleep from './Utils/Sleep.js'
+import translator from './Utils/Translator.js'
+
+log.debug(translator.getTranslation(Locale.French, 'translator.test', ['module de traduction', '!']))
 
 const job: Schedule.Job = Schedule.scheduleJob('0 0 9 * * *', () => {
     client.guilds.cache.map((guild: Guild) => {
@@ -17,7 +31,7 @@ const job: Schedule.Job = Schedule.scheduleJob('0 0 9 * * *', () => {
                 if (channel.isTextBased()) {
                     await channel.sendTyping()
                     await sleep(100)
-                    await channel.send(`Joyeux anniversaire <@${userId}> !!!`)
+                    await channel.send(`Joyeux anniversaire ${userMention(userId)} !!!`)
                 }
             }
         })
