@@ -1,3 +1,13 @@
 {
-    "translator.test": "Le $1 est OK $2"
+    "announcement.birthday": "Joyeux anniversaire $1 !!!",
+    "bot.online": "Connecté !",
+    "command.error": "Une erreur est survenue: **$1**: $2",
+    "command.loaded": "Commande $1 chargée avec succès",
+    "command.used": "$1 a utilisé la commande $2",
+    "commands.add.start": "Ajout des commandes (/) en cours",
+    "commands.add.progress": "Ajout des commandes (/) sur la guild: $1",
+    "commands.add.end": "Ajout des commandes (/) terminée",
+    "commands.delete.start": "Suppression des commandes (/) en cours",
+    "commands.delete.progress": "Suppression des commandes (/) sur la guild: $1",
+    "commands.delete.end": "Suppression des commandes (/) terminée"
 }

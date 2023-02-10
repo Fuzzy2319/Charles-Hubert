@@ -19,18 +19,26 @@ class Translator {
     }
 
     private applyTranslationParams(translation: string, args: Array<string>): string {
-        return translation.replace(/\$(\d+)/g, (match, p1) => args[p1 as number - 1])
+        return translation.replace(/\$(\d+)/g, (match: string, index: number) => args[index - 1])
     }
 
-    public getTranslation(locale: Locale, key: string, args: Array<string>): string {
+    public getTranslation(key: string, locale: Locale = this.defaultLocale, args: Array<string> = []): string {
         const path: string = this.getTranslationPath(locale)
         const tranlations: object = JSON.parse(Fs.readFileSync(path).toString())
         if (!tranlations.hasOwnProperty(key)) {
+            log.warn(`Missing translation key ${key} for locale ${locale}`)
+
             return key
         }
 
         // @ts-ignore TS7053
         return this.applyTranslationParams(tranlations[key], args)
+    }
+
+    public getAvailableLocales(): Array<Locale> {
+        const translationFiles: Array<string> = Fs.readdirSync('../translation/').filter((file: string) => file.endsWith('.json'))
+
+        return translationFiles.map<Locale>((translationFile: string) => translationFile.replace('.json', '') as Locale)
     }
 }
 

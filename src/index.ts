@@ -7,6 +7,7 @@ import {
     GuildBasedChannel,
     Interaction,
     Locale,
+    PresenceUpdateStatus,
     Routes,
     User,
     userMention
@@ -20,7 +21,7 @@ import {Snowflake} from 'discord-api-types/globals'
 import sleep from './Utils/Sleep.js'
 import translator from './Utils/Translator.js'
 
-log.debug(translator.getTranslation(Locale.French, 'translator.test', ['module de traduction', '!']))
+log.debug(translator.getAvailableLocales().toString())
 
 const job: Schedule.Job = Schedule.scheduleJob('0 0 9 * * *', () => {
     client.guilds.cache.map((guild: Guild) => {
@@ -31,7 +32,7 @@ const job: Schedule.Job = Schedule.scheduleJob('0 0 9 * * *', () => {
                 if (channel.isTextBased()) {
                     await channel.sendTyping()
                     await sleep(100)
-                    await channel.send(`Joyeux anniversaire ${userMention(userId)} !!!`)
+                    await channel.send(translator.getTranslation('announcement.birthday', guild.preferredLocale, [userMention(userId)]))
                 }
             }
         })
@@ -48,57 +49,57 @@ const client: Client = new Client(
 const commandFiles: string[] = Fs.readdirSync('./Commands/').filter((file: string) => file.endsWith('.js'))
 const commands: Array<AppSlashCommandBuilder | AppContextMenuCommandBuilder> = []
 const registerCommands = () => {
-    log.info('Ajout des commandes (/) en cours')
+    log.info(translator.getTranslation('commands.add.start'))
 
     client.guilds.cache.map(async (guild: Guild) => {
-        log.debug(`Ajout des commandes (/) sur la guild: ${guild.name}`)
+        log.debug(translator.getTranslation('commands.add.progress', process.env.DEFAULT_LOCALE as Locale, [guild.name]))
         await client.rest.put(
             Routes.applicationGuildCommands(client.application.id, guild.id),
             {body: commands}
         )
     })
 
-    log.info('Ajout des commandes (/) terminée')
+    log.info(translator.getTranslation('commands.add.end'))
 }
 
 for (const commandFile of commandFiles) {
     const {default: command} = await import(`./Commands/${commandFile}`)
     commands.push(command)
-    log.debug(`Commande ${command.name} chargée avec succès`)
+    log.debug(translator.getTranslation('command.loaded', process.env.DEFAULT_LOCALE as Locale, [command.name]))
 }
 
 await client.login(process.env.TOKEN)
 
 client.on('ready', () => {
-    log.info('Connecté !')
+    log.info(translator.getTranslation('bot.online'))
     registerCommands()
-    client.user.setStatus('online')
+    client.user.setStatus(PresenceUpdateStatus.Online)
     client.user.setActivity('les oiseaux chanter', {type: ActivityType.Listening})
 })
 
 client.on('interactionCreate', async (interaction: Interaction) => {
     if ((!interaction.isChatInputCommand()) && (!interaction.isContextMenuCommand())) return
     try {
-        log.info(`${interaction.user.tag} a utilisé la commande ${interaction.commandName}`)
+        log.info(translator.getTranslation('command.used', process.env.DEFAULT_LOCALE as Locale, [interaction.user.tag, interaction.commandName]))
         await commands.find(command => command.name === interaction.commandName).execute(client, interaction)
     } catch (error) {
         const user: User = await client.users.fetch(process.env.ADMIN_ID)
         log.error(`${error.name}: ${error.message}`)
         log.trace(error)
-        await user.send(`Une erreur est survenue: **${error.name}**: ${error.message}`)
+        await user.send(translator.getTranslation('command.error', process.env.DEFAULT_LOCALE as Locale, [error.name, error.message]))
     }
 })
 
 client.on('shardDisconnect', () => {
     job.cancel()
-    log.info('Suppression des commandes (/) en cours')
+    log.info(translator.getTranslation('commands.delete.start'))
     client.guilds.cache.map(async (guild: Guild) => {
-        log.debug(`Suppression des commandes (/) sur la guild: ${guild.name}`)
+        log.debug(translator.getTranslation('commands.delete.progress', process.env.DEFAULT_LOCALE as Locale, [guild.name]))
         await client.rest.setToken(process.env.TOKEN).put(
             Routes.applicationGuildCommands(client.application.id, guild.id),
             {body: []}
         )
     })
-    log.info('Suppression des commandes (/) terminée')
+    log.info(translator.getTranslation('commands.delete.end'))
     process.exit()
 })
