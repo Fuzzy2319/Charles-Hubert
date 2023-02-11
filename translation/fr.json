@@ -1,6 +1,8 @@
 {
     "announcement.birthday": "Joyeux anniversaire $1 !!!",
     "bot.online": "Connecté !",
+    "command.birthday.announcement": "$1 fête son anniversaire le $2",
+    "command.birthday.name": "anniversaire",
     "command.error": "Une erreur est survenue: **$1**: $2",
     "command.loaded": "Commande $1 chargée avec succès",
     "command.used": "$1 a utilisé la commande $2",

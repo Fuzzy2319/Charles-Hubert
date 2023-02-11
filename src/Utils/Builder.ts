@@ -1,8 +1,23 @@
-import {Client, CommandInteraction, ContextMenuCommandBuilder, SlashCommandBuilder} from 'discord.js'
+import {
+    Client,
+    CommandInteraction,
+    ContextMenuCommandBuilder,
+    Locale,
+    LocaleString,
+    SlashCommandBuilder
+} from 'discord.js'
 import {AppCommandBuilder} from '../App.js'
+import translator from "./Translator.js";
 
 export class AppSlashCommandBuilder extends SlashCommandBuilder implements AppCommandBuilder {
     private callback: (client: Client, interaction: CommandInteraction) => Promise<void>
+
+    public override setName(translationKey: string): this {
+        super.setName(translator.getTranslation(translationKey))
+        translator.getAvailableLocales().map((locale: Locale) => super.setNameLocalization(locale as LocaleString, translator.getTranslation(translationKey, locale)))
+
+        return this
+    }
 
     public setCallback(callback: (client: Client, interaction: CommandInteraction) => Promise<void>): this {
         this.callback = callback
@@ -17,6 +32,13 @@ export class AppSlashCommandBuilder extends SlashCommandBuilder implements AppCo
 
 export class AppContextMenuCommandBuilder extends ContextMenuCommandBuilder implements AppCommandBuilder {
     private callback: (client: Client, interaction: CommandInteraction) => Promise<void>
+
+    public override setName(translationKey: string): this {
+        super.setName(translator.getTranslation(translationKey))
+        translator.getAvailableLocales().map((locale: Locale) => super.setNameLocalization(locale as LocaleString, translator.getTranslation(translationKey, locale)))
+
+        return this
+    }
 
     public setCallback(callback: (client: Client, interaction: CommandInteraction) => Promise<void>): this {
         this.callback = callback
