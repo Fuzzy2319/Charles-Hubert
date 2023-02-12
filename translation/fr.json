@@ -36,6 +36,17 @@
     "command.music.option.url.description": "Lien Youtube de la musique à jouer",
     "command.music.option.url.name": "url",
 
+    "command.rock_paper_scissor.action.lost": "Perdu",
+    "command.rock_paper_scissor.action.tied": "Égalité",
+    "command.rock_paper_scissor.action.won": "Gagné",
+    "command.rock_paper_scissor.description": "Lance un pierre-feuille-ciseaux contre Charles-Hubert",
+    "command.rock_paper_scissor.name": "pierre-feuille-ciseaux",
+    "command.rock_paper_scissor.option.choice.description": "Votre choix",
+    "command.rock_paper_scissor.option.choice.name": "choix",
+    "command.rock_paper_scissor.option.choice.paper": "feuille",
+    "command.rock_paper_scissor.option.choice.rock": "pierre",
+    "command.rock_paper_scissor.option.choice.scissor": "ciseaux",
+
     "command.error": "Une erreur est survenue: **$1**: $2",
     "command.loaded": "Commande $1 chargée avec succès",
     "command.used": "$1 a utilisé la commande $2",

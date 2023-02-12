@@ -1,99 +1,99 @@
-import {Client, CommandInteraction, CommandInteractionOption, Locale, SlashCommandStringOption} from 'discord.js'
-import {AppSlashCommandBuilder} from '../Utils/Builder.js'
+import {APIApplicationCommandOptionChoice, Client, CommandInteraction, CommandInteractionOption} from 'discord.js'
+import {AppSlashCommandBuilder, AppCommandOptionChoice, AppSlashCommandStringOption} from '../Utils/Builder.js'
 import randomInt from '../Utils/Random.js'
+import translator from '../Utils/Translator.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
-    .setName('rock-paper-scissor')
-    .setNameLocalization(Locale.French, 'pierre-feuille-ciseaux')
-    .setDescription('Play rock-paper-scissor versus Charles-Hubert')
-    .setDescriptionLocalization(Locale.French, 'Lance un pierre-feuille-ciseaux contre Charles-Hubert')
+    .setName('command.rock_paper_scissor.name')
+    .setDescription('command.rock_paper_scissor.description')
     .setDMPermission(false)
     .addStringOption(
-        (new SlashCommandStringOption())
-            .setName('choice')
-            .setNameLocalization(Locale.French, 'choix')
-            .setDescription('Your choice')
-            .setDescriptionLocalization(Locale.French, 'Votre choix')
+        (new AppSlashCommandStringOption())
+            .setName('command.rock_paper_scissor.option.choice.name')
+            .setDescription('command.rock_paper_scissor.option.choice.description')
             .setRequired(true)
             .addChoices(
-                {
-                    name: 'rock',
-                    name_localizations: {fr: 'pierre'},
-                    value: 'pierre'
-                },
-                {
-                    name: 'paper',
-                    name_localizations: {fr: 'feuille'},
-                    value: 'feuille'
-                },
-                {
-                    name: 'scissor',
-                    name_localizations: {fr: 'ciseaux'},
-                    value: 'ciseaux'
-                }
+                new AppCommandOptionChoice()
+                    .setName('command.rock_paper_scissor.option.choice.rock')
+                    .setValue('1')
+                    .toJSON() as APIApplicationCommandOptionChoice<string>,
+                new AppCommandOptionChoice()
+                    .setName('command.rock_paper_scissor.option.choice.paper')
+                    .setValue('2')
+                    .toJSON() as APIApplicationCommandOptionChoice<string>,
+                new AppCommandOptionChoice()
+                    .setName('command.rock_paper_scissor.option.choice.scissor')
+                    .setValue('3')
+                    .toJSON() as APIApplicationCommandOptionChoice<string>
             )
     )
     .setCallback(async (client: Client, interaction: CommandInteraction) => {
         const playerName = (await interaction.guild.members.fetch(interaction.user.id)).displayName
         const botName = (await interaction.guild.members.fetch(client.user.id)).displayName
-        const choice: string = interaction
+        let choice: string = interaction
             .options
             .data
-            .find((option: CommandInteractionOption) => option.name === 'choice')
+            .find((option: CommandInteractionOption) => option.name === translator.getTranslation('command.rock_paper_scissor.option.choice.name'))
             .value as string
         let botChoice: number | string = randomInt(1, 3)
         let result: string
 
         switch (choice) {
-            case 'pierre':
+            case '1':
+                choice = 'command.rock_paper_scissor.option.choice.rock'
                 switch (botChoice) {
                     case 1:
-                        botChoice = 'pierre'
-                        result = 'Égalité'
+                        botChoice = 'command.rock_paper_scissor.option.choice.rock'
+                        result = 'command.rock_paper_scissor.action.tied'
                         break
                     case 2:
-                        botChoice = 'feuille'
-                        result = 'Perdu'
+                        botChoice = 'command.rock_paper_scissor.option.choice.paper'
+                        result = 'command.rock_paper_scissor.action.lost'
                         break
                     case 3:
-                        botChoice = 'ciseaux'
-                        result = 'Gagné'
+                        botChoice = 'command.rock_paper_scissor.option.choice.scissor'
+                        result = 'command.rock_paper_scissor.action.won'
                         break
                 }
                 break
-            case 'feuille':
+            case '2':
+                choice = 'command.rock_paper_scissor.option.choice.paper'
                 switch (botChoice) {
                     case 1:
-                        botChoice = 'pierre'
-                        result = 'Gagné'
+                        botChoice = 'command.rock_paper_scissor.option.choice.rock'
+                        result = 'command.rock_paper_scissor.action.won'
                         break
                     case 2:
-                        botChoice = 'feuille'
-                        result = 'Égalité'
+                        botChoice = 'command.rock_paper_scissor.option.choice.paper'
+                        result = 'command.rock_paper_scissor.action.tied'
                         break
                     case 3:
-                        botChoice = 'ciseaux'
-                        result = 'Perdu'
+                        botChoice = 'command.rock_paper_scissor.option.choice.scissor'
+                        result = 'command.rock_paper_scissor.action.lost'
                         break
                 }
                 break
-            case 'ciseaux':
+            case '3':
+                choice = 'command.rock_paper_scissor.option.choice.scissor'
                 switch (botChoice) {
                     case 1:
-                        botChoice = 'pierre'
-                        result = 'Perdu'
+                        botChoice = 'command.rock_paper_scissor.option.choice.rock'
+                        result = 'command.rock_paper_scissor.action.lost'
                         break
                     case 2:
-                        botChoice = 'feuille'
-                        result = 'Gagné'
+                        botChoice = 'command.rock_paper_scissor.option.choice.paper'
+                        result = 'command.rock_paper_scissor.action.won'
                         break
                     case 3:
-                        botChoice = 'ciseaux'
-                        result = 'Égalité'
+                        botChoice = 'command.rock_paper_scissor.option.choice.scissor'
+                        result = 'command.rock_paper_scissor.action.tied'
                         break
                 }
                 break
         }
+        botChoice = translator.getTranslation(botChoice as string, interaction.guild.preferredLocale)
+        choice = translator.getTranslation(choice, interaction.guild.preferredLocale)
+        result = translator.getTranslation(result, interaction.guild.preferredLocale)
 
         await interaction.reply(`${result}\n${playerName} : ${choice}\n${botName} : ${botChoice}`)
     })
