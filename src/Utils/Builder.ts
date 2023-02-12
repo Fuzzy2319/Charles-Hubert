@@ -4,7 +4,8 @@ import {
     ContextMenuCommandBuilder,
     Locale,
     LocaleString,
-    SlashCommandBuilder
+    SlashCommandBuilder,
+    SlashCommandNumberOption
 } from 'discord.js'
 import {AppCommandBuilder} from '../App.js'
 import translator from "./Translator.js";
@@ -15,6 +16,13 @@ export class AppSlashCommandBuilder extends SlashCommandBuilder implements AppCo
     public override setName(translationKey: string): this {
         super.setName(translator.getTranslation(translationKey))
         translator.getAvailableLocales().map((locale: Locale) => super.setNameLocalization(locale as LocaleString, translator.getTranslation(translationKey, locale)))
+
+        return this
+    }
+
+    public override setDescription(translationKey: string): this {
+        super.setDescription(translator.getTranslation(translationKey))
+        translator.getAvailableLocales().map((locale: Locale) => super.setDescriptionLocalization(locale as LocaleString, translator.getTranslation(translationKey, locale)))
 
         return this
     }
@@ -48,5 +56,21 @@ export class AppContextMenuCommandBuilder extends ContextMenuCommandBuilder impl
 
     public async execute(client: Client, interaction: CommandInteraction): Promise<void> {
         await this.callback(client, interaction)
+    }
+}
+
+export class AppSlashCommandNumberOption extends SlashCommandNumberOption {
+    public override setName(translationKey: string): this {
+        super.setName(translator.getTranslation(translationKey))
+        translator.getAvailableLocales().map((locale: Locale) => super.setNameLocalization(locale as LocaleString, translator.getTranslation(translationKey, locale)))
+
+        return this
+    }
+
+    public override setDescription(translationKey: string): this {
+        super.setDescription(translator.getTranslation(translationKey))
+        translator.getAvailableLocales().map((locale: Locale) => super.setDescriptionLocalization(locale as LocaleString, translator.getTranslation(translationKey, locale)))
+
+        return this
     }
 }

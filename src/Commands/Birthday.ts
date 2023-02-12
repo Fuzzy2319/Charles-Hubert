@@ -12,7 +12,8 @@ const command: AppContextMenuCommandBuilder = (new AppContextMenuCommandBuilder(
         const birthday: Date = BirthdayProvider.getUserBirthday(interaction.guild, user)
         await interaction.reply(
             translator.getTranslation('command.birthday.announcement', interaction.guild.preferredLocale, [
-                user.displayName, birthday.toLocaleString(interaction.guild.preferredLocale, {day: '2-digit', month: 'long'})
+                user.displayName,
+                birthday.toLocaleString(interaction.guild.preferredLocale, {day: '2-digit', month: 'long'})
             ])
         )
     })

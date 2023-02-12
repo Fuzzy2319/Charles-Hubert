@@ -2,27 +2,20 @@ import {
     Client,
     CommandInteraction,
     CommandInteractionOption,
-    Locale,
-    PermissionsBitField,
-    SlashCommandNumberOption
+    PermissionsBitField
 } from 'discord.js'
-import {AppSlashCommandBuilder} from '../Utils/Builder.js'
+import {AppSlashCommandBuilder, AppSlashCommandNumberOption} from '../Utils/Builder.js'
+import translator from "../Utils/Translator.js";
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
-    .setName('clean')
-    .setNameLocalization(Locale.French, 'nettoyer')
-    .setDescription('Allows you to delete a given number of messages. Can only be used by moderators')
-    .setDescriptionLocalization(
-        Locale.French,
-        'Permet de supprimer un nombre de messages donné. Utilisable seulement par les modérateurs'
-    )
+    .setName('command.clean.name')
+    .setDescription('command.clean.description')
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageMessages)
     .addNumberOption(
-        (new SlashCommandNumberOption())
-            .setName('message')
-            .setDescription('Number of messages to delete')
-            .setDescriptionLocalization(Locale.French, 'Nombre de messages à supprimer')
+        (new AppSlashCommandNumberOption())
+            .setName('command.clean.option.message.name')
+            .setDescription('command.clean.option.message.description')
             .setRequired(true)
             .setMinValue(1)
     )
@@ -30,15 +23,15 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         const messageNumber: number = interaction
             .options
             .data
-            .find((option: CommandInteractionOption) => option.name === 'message')
+            .find((option: CommandInteractionOption) => option.name === translator.getTranslation('command.clean.option.message.name'))
             .value as number
         await interaction.channel.bulkDelete(messageNumber)
         if (messageNumber === 1) {
-            await interaction.reply(`${messageNumber} message supprimé`)
+            await interaction.reply(translator.getTranslation('command.clean.action.done.singular', interaction.guild.preferredLocale, [messageNumber.toString()]))
 
             return
         }
-        await interaction.reply(`${messageNumber} messages supprimés`)
+        await interaction.reply(translator.getTranslation('command.clean.action.done.plural', interaction.guild.preferredLocale, [messageNumber.toString()]))
     })
 
 export default command
