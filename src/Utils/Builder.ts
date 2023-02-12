@@ -5,10 +5,11 @@ import {
     Locale,
     LocaleString,
     SlashCommandBuilder,
-    SlashCommandNumberOption
+    SlashCommandNumberOption,
+    SlashCommandStringOption
 } from 'discord.js'
 import {AppCommandBuilder} from '../App.js'
-import translator from "./Translator.js";
+import translator from './Translator.js'
 
 export class AppSlashCommandBuilder extends SlashCommandBuilder implements AppCommandBuilder {
     private callback: (client: Client, interaction: CommandInteraction) => Promise<void>
@@ -60,6 +61,22 @@ export class AppContextMenuCommandBuilder extends ContextMenuCommandBuilder impl
 }
 
 export class AppSlashCommandNumberOption extends SlashCommandNumberOption {
+    public override setName(translationKey: string): this {
+        super.setName(translator.getTranslation(translationKey))
+        translator.getAvailableLocales().map((locale: Locale) => super.setNameLocalization(locale as LocaleString, translator.getTranslation(translationKey, locale)))
+
+        return this
+    }
+
+    public override setDescription(translationKey: string): this {
+        super.setDescription(translator.getTranslation(translationKey))
+        translator.getAvailableLocales().map((locale: Locale) => super.setDescriptionLocalization(locale as LocaleString, translator.getTranslation(translationKey, locale)))
+
+        return this
+    }
+}
+
+export class AppSlashCommandStringOption extends SlashCommandStringOption {
     public override setName(translationKey: string): this {
         super.setName(translator.getTranslation(translationKey))
         translator.getAvailableLocales().map((locale: Locale) => super.setNameLocalization(locale as LocaleString, translator.getTranslation(translationKey, locale)))

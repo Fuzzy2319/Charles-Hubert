@@ -5,7 +5,7 @@ import {
     PermissionsBitField
 } from 'discord.js'
 import {AppSlashCommandBuilder, AppSlashCommandNumberOption} from '../Utils/Builder.js'
-import translator from "../Utils/Translator.js";
+import translator from '../Utils/Translator.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
     .setName('command.clean.name')

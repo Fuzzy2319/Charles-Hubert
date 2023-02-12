@@ -1,32 +1,29 @@
-import {Client, CommandInteraction, CommandInteractionOption, Emoji, Locale, SlashCommandStringOption} from 'discord.js'
-import {AppSlashCommandBuilder} from '../Utils/Builder.js'
+import {Client, CommandInteraction, CommandInteractionOption, Emoji} from 'discord.js'
+import {AppSlashCommandBuilder, AppSlashCommandStringOption} from '../Utils/Builder.js'
+import translator from '../Utils/Translator.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
-    .setName('emote')
-    .setNameLocalization(Locale.French, 'emoji')
-    .setDescription('Send an emote')
-    .setDescriptionLocalization(Locale.French, 'Envoie un emoji')
+    .setName('command.emote.name')
+    .setDescription('command.emote.description')
     .setDMPermission(false)
     .addStringOption(
-        (new SlashCommandStringOption())
-            .setName('emote')
-            .setNameLocalization(Locale.French, 'emoji')
-            .setDescription('Emote\'s name')
-            .setDescriptionLocalization(Locale.French, 'Nom de l\'emoji')
+        (new AppSlashCommandStringOption())
+            .setName('command.emote.option.emote.name')
+            .setDescription('command.emote.option.emote.description')
             .setRequired(true)
     )
     .setCallback(async (client: Client, interaction: CommandInteraction) => {
         const emoteName: string = interaction
             .options
             .data
-            .find((option: CommandInteractionOption) => option.name === 'emote')
+            .find((option: CommandInteractionOption) => option.name === translator.getTranslation('command.emote.option.emote.name'))
             .value as string
         const emote: undefined | Emoji = client.emojis.cache.find(
             (emote: Emoji) => emote.name.toLowerCase() === emoteName.toLowerCase()
         )
 
         if (emote === undefined) {
-            await interaction.reply(`Impossible de trouver l'emoji ${emoteName}`)
+            await interaction.reply(translator.getTranslation('command.emote.action.error', interaction.guild.preferredLocale, [emoteName]))
 
             return
         }

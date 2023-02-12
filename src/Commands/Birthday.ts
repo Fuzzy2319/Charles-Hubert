@@ -1,7 +1,7 @@
 import {ApplicationCommandType, Client, ContextMenuCommandInteraction, GuildMember} from 'discord.js'
 import {AppContextMenuCommandBuilder} from '../Utils/Builder.js'
 import BirthdayProvider from '../DataProviders/BirthdayProvider.js'
-import translator from "../Utils/Translator.js";
+import translator from '../Utils/Translator.js'
 
 const command: AppContextMenuCommandBuilder = (new AppContextMenuCommandBuilder())
     .setName('command.birthday.name')
