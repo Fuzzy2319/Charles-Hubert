@@ -1,25 +1,37 @@
 {
     "announcement.birthday": "Joyeux anniversaire $1 !!!",
+
     "bot.online": "Connecté !",
+
     "command.birthday.announcement": "$1 fête son anniversaire le $2",
     "command.birthday.name": "anniversaire",
+
     "command.clean.action.done.plural": "$1 messages supprimés",
     "command.clean.action.done.singular": "$1 message supprimé",
     "command.clean.description": "Permet de supprimer un nombre de messages donné. Utilisable seulement par les modérateurs",
     "command.clean.name": "nettoyer",
     "command.clean.option.message.description": "Nombre de messages à supprimer",
     "command.clean.option.message.name": "message",
+
     "command.emote.action.error": "Impossible de trouver l'emoji $1",
     "command.emote.description": "Envoie un emoji",
     "command.emote.name": "emoji",
     "command.emote.option.emote.description": "Nom de l'emoji",
     "command.emote.option.emote.name": "emoji",
+
+    "command.invite.action.done": "Utilise cette invitation pour inviter de nouveaux membres !!!\n$1",
+    "command.invite.action.error": "Il n'y a pas d'invitation pour $1",
+    "command.invite.description": "Envoie une invitation pour le serveur",
+    "command.invite.name": "invitation",
+
     "command.error": "Une erreur est survenue: **$1**: $2",
     "command.loaded": "Commande $1 chargée avec succès",
     "command.used": "$1 a utilisé la commande $2",
+
     "commands.add.start": "Ajout des commandes (/) en cours",
     "commands.add.progress": "Ajout des commandes (/) sur la guild: $1",
     "commands.add.end": "Ajout des commandes (/) terminée",
+
     "commands.delete.start": "Suppression des commandes (/) en cours",
     "commands.delete.progress": "Suppression des commandes (/) sur la guild: $1",
     "commands.delete.end": "Suppression des commandes (/) terminée"
