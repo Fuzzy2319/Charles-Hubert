@@ -10,7 +10,6 @@ import {
     CommandInteractionOption,
     EmbedBuilder,
     InteractionCollector,
-    InteractionResponse,
     Message,
     VoiceBasedChannel
 } from 'discord.js'
