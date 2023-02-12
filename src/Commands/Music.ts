@@ -10,50 +10,53 @@ import {
     CommandInteractionOption,
     EmbedBuilder,
     InteractionCollector,
-    Locale,
+    InteractionResponse,
     Message,
-    SlashCommandStringOption,
     VoiceBasedChannel
 } from 'discord.js'
-import {AppSlashCommandBuilder} from '../Utils/Builder.js'
+import {AppSlashCommandBuilder, AppSlashCommandStringOption} from '../Utils/Builder.js'
 import play from 'play-dl'
 import * as Voice from '@discordjs/voice'
 import QueueProvider from '../DataProviders/QueueProvider.js'
 import {YoutubeVideoInfo} from '../App.js'
+import translator from '../Utils/Translator.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
-    .setName('music')
-    .setNameLocalization(Locale.French, 'musique')
-    .setDescription('Play music in a voice channel')
-    .setDescriptionLocalization(Locale.French, 'Joue une musique dans un channel vocal')
+    .setName('command.music.name')
+    .setDescription('command.music.description')
     .setDMPermission(false)
     .addStringOption(
-        (new SlashCommandStringOption())
-            .setName('url')
-            .setDescription('Youtube link of music to play')
-            .setDescriptionLocalization(Locale.French, 'Lien Youtube de la musique à jouer')
+        (new AppSlashCommandStringOption())
+            .setName('command.music.option.url.name')
+            .setDescription('command.music.option.url.description')
             .setRequired(true)
     )
     .setCallback(async (client: Client, interaction: CommandInteraction) => {
-        await interaction.deferReply()
+        let rep: boolean = false
         const voiceChan: VoiceBasedChannel | null = (await interaction.guild.members.fetch(interaction.user.id))
             ?.voice
             .channel
         const url: string = interaction
             .options
             .data
-            .find((option: CommandInteractionOption) => option.name === 'url')
+            .find((option: CommandInteractionOption) => option.name === translator.getTranslation('command.music.option.url.name'))
             .value as string
         const queue: YoutubeVideoInfo[] = QueueProvider.GetGuildQueue(interaction.guild)
 
         if (voiceChan === null) {
-            await interaction.followUp('Vous devez être connecté à un channel vocal pour utiliser la commande')
+            await interaction.reply({
+                content: translator.getTranslation('command.music.action.error.not_connected', interaction.guild.preferredLocale),
+                ephemeral: true
+            })
 
             return
         }
 
-        if (!url.startsWith('https')) {
-            await interaction.followUp('Lien invalide le lien doit être un lien youtube valide')
+        if (!url.startsWith('https') || !play.yt_validate(url)) {
+            await interaction.reply({
+                content: translator.getTranslation('command.music.action.error.link_not_valid', interaction.guild.preferredLocale),
+                ephemeral: true
+            })
 
             return
         }
@@ -68,7 +71,11 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         }
 
         if (queue.length > 0) {
-            await interaction.followUp('Votre vidéo ou votre playlist a été ajouté à queue')
+            rep = true
+            await interaction.reply({
+                content: translator.getTranslation('command.music.action.added_to_queue', interaction.guild.preferredLocale),
+                ephemeral: true
+            })
         }
 
         if (Voice.getVoiceConnection(voiceChan.guild.id) !== undefined) {
@@ -76,12 +83,17 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         }
 
         if (QueueProvider.GetGuildQueue(interaction.guild).length === 0) {
-            await interaction.followUp('Votre vidéo ou votre playlist est privée impossible de la lire')
+            await interaction.reply({
+                content: translator.getTranslation('command.music.action.error.private', interaction.guild.preferredLocale),
+                ephemeral: true
+            })
 
             return
         }
 
-
+        if(!rep) {
+            await interaction.deferReply()
+        }
         const connection: Voice.VoiceConnection = Voice.joinVoiceChannel({
             channelId: voiceChan.id,
             guildId: voiceChan.guild.id,
@@ -98,7 +110,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
                 .setTitle('Charle-Hubert FM')
                 .setThumbnail(client.user.avatarURL())
                 .addFields({
-                    name: 'Musique',
+                    name: translator.getTranslation('command.music.embed.field.name', interaction.guild.preferredLocale),
                     inline: false,
                     value: QueueProvider.GetGuildQueue(interaction.guild)[0].title
                 })
@@ -133,7 +145,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
                         .setLabel('🔀')
                         .setDisabled(QueueProvider.GetGuildQueue(interaction.guild).length <= 1),
                     new ButtonBuilder()
-                        .setLabel('Voir la vidéo sur Youtube')
+                        .setLabel(translator.getTranslation('command.music.embed.button.link', interaction.guild.preferredLocale))
                         .setStyle(ButtonStyle.Link)
                         .setURL(QueueProvider.GetGuildQueue(interaction.guild)[0].url)
                 )
@@ -207,9 +219,11 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             connection.removeAllListeners()
             audio.removeAllListeners()
             message = await message.delete()
-            message = await message.channel.send(
-                `Fin de la lecture de ${QueueProvider.GetGuildQueue(interaction.guild)[0].url}, déconnexion`
-            )
+            message = await message.channel.send(translator.getTranslation(
+                'command.music.action.done',
+                interaction.guild.preferredLocale,
+                [QueueProvider.GetGuildQueue(interaction.guild)[0].url]
+            ))
             QueueProvider.ClearQueue(interaction.guild)
             audio.stop()
             cStop.stop()

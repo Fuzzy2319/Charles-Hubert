@@ -24,6 +24,18 @@
     "command.invite.description": "Envoie une invitation pour le serveur",
     "command.invite.name": "invitation",
 
+    "command.music.action.added_to_queue": "Votre vidéo ou votre playlist a été ajouté à queue",
+    "command.music.action.done": "Fin de la lecture de $1, déconnexion",
+    "command.music.action.error.link_not_valid": "Lien invalide le lien doit être un lien youtube valide",
+    "command.music.action.error.not_connected": "Vous devez être connecté à un channel vocal pour utiliser la commande",
+    "command.music.action.error.private": "Votre vidéo ou votre playlist est privée impossible de la lire",
+    "command.music.description": "Joue une musique dans un channel vocal",
+    "command.music.embed.button.link": "Voir la vidéo sur Youtube",
+    "command.music.embed.field.name": "Musique",
+    "command.music.name": "musique",
+    "command.music.option.url.description": "Lien Youtube de la musique à jouer",
+    "command.music.option.url.name": "url",
+
     "command.error": "Une erreur est survenue: **$1**: $2",
     "command.loaded": "Commande $1 chargée avec succès",
     "command.used": "$1 a utilisé la commande $2",
