@@ -1,9 +1,4 @@
-import {
-    Client,
-    CommandInteraction,
-    CommandInteractionOption,
-    PermissionsBitField
-} from 'discord.js'
+import {Client, CommandInteraction, CommandInteractionOption, PermissionsBitField} from 'discord.js'
 import {AppSlashCommandBuilder, AppSlashCommandNumberOption} from '../Utils/Builder.js'
 import translator from '../Utils/Translator.js'
 
@@ -27,11 +22,17 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             .value as number
         await interaction.channel.bulkDelete(messageNumber)
         if (messageNumber === 1) {
-            await interaction.reply(translator.getTranslation('command.clean.action.done.singular', interaction.guild.preferredLocale, [messageNumber.toString()]))
+            await interaction.reply({
+                content: translator.getTranslation('command.clean.action.done.singular', interaction.guild.preferredLocale, [messageNumber.toString()]),
+                ephemeral: true
+            })
 
             return
         }
-        await interaction.reply(translator.getTranslation('command.clean.action.done.plural', interaction.guild.preferredLocale, [messageNumber.toString()]))
+        await interaction.reply({
+            content: translator.getTranslation('command.clean.action.done.plural', interaction.guild.preferredLocale, [messageNumber.toString()]),
+            ephemeral: true
+        })
     })
 
 export default command

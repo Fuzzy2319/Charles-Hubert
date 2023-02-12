@@ -23,7 +23,10 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         )
 
         if (emote === undefined) {
-            await interaction.reply(translator.getTranslation('command.emote.action.error', interaction.guild.preferredLocale, [emoteName]))
+            await interaction.reply({
+                content: translator.getTranslation('command.emote.action.error', interaction.guild.preferredLocale, [emoteName]),
+                ephemeral: true
+            })
 
             return
         }
