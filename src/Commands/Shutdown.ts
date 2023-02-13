@@ -1,30 +1,26 @@
-import {Client, CommandInteraction, Locale, Message} from 'discord.js'
+import {Client, CommandInteraction} from 'discord.js'
 import {AppSlashCommandBuilder} from '../Utils/Builder.js'
 import log from '../Utils/Logger.js'
 import sleep from '../Utils/Sleep.js'
-import {DiscordGatewayAdapterLibraryMethods} from "@discordjs/voice";
+import {DiscordGatewayAdapterLibraryMethods} from '@discordjs/voice'
+import translator from '../Utils/Translator.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
-    .setName('shutdown')
-    .setNameLocalization(Locale.French, 'éteindre')
-    .setDescription('Shutdown bot')
-    .setDescriptionLocalization(Locale.French, 'Arrête le bot')
+    .setName('command.shutdown.name')
+    .setDescription('command.shutdown.description')
     .setDMPermission(false)
     .setDefaultMemberPermissions(0)
     .setCallback(async (client: Client, interaction: CommandInteraction) => {
-        log.warn('Arrêt de Charles-Hubert...')
+        log.warn(translator.getTranslation('command.shutdown.action.done'))
 
-        const message: Message = await interaction.reply({
-            fetchReply: true,
-            content: 'Arrêt de Charles-Hubert'
-        })
+        await interaction.reply(translator.getTranslation('command.shutdown.action.start', interaction.guild.preferredLocale))
         await sleep(500)
-        await message.edit('Arrêt de Charles-Hubert.')
+        await interaction.editReply(translator.getTranslation('command.shutdown.action.progress.1', interaction.guild.preferredLocale))
         await sleep(500)
         client.voice.adapters.forEach((adapter: DiscordGatewayAdapterLibraryMethods) => adapter.destroy())
-        await message.edit('Arrêt de Charles-Hubert..')
+        await interaction.editReply(translator.getTranslation('command.shutdown.action.progress.2', interaction.guild.preferredLocale))
         await sleep(500)
-        await message.edit('Arrêt de Charles-Hubert...')
+        await interaction.editReply(translator.getTranslation('command.shutdown.action.done', interaction.guild.preferredLocale))
         client.destroy()
     })
 

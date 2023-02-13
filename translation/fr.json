@@ -47,6 +47,13 @@
     "command.rock_paper_scissor.option.choice.rock": "pierre",
     "command.rock_paper_scissor.option.choice.scissor": "ciseaux",
 
+    "command.shutdown.action.done": "Arrêt de Charles-Hubert...",
+    "command.shutdown.action.progress.1": "Arrêt de Charles-Hubert.",
+    "command.shutdown.action.progress.2": "Arrêt de Charles-Hubert..",
+    "command.shutdown.action.start": "Arrêt de Charles-Hubert",
+    "command.shutdown.description": "Arrête le bot",
+    "command.shutdown.name": "éteindre",
+
     "command.error": "Une erreur est survenue: **$1**: $2",
     "command.loaded": "Commande $1 chargée avec succès",
     "command.used": "$1 a utilisé la commande $2",
