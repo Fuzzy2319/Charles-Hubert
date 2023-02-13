@@ -8,9 +8,9 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
     .setDMPermission(false)
     .setCallback(async (client: Client, interaction: CommandInteraction) => {
         await interaction.reply(translator.getTranslation(
-                'command.test.action.done',
-                interaction.guild.preferredLocale,
-                [client.emojis.resolve('681518586493272088').toString()]
+            'command.test.action.done',
+            interaction.guild.preferredLocale,
+            [client.emojis.resolve('681518586493272088').toString()]
         ))
     })
 

@@ -58,6 +58,10 @@
     "command.test.description": "Permet de vérifier si le bot est fonctionnel",
     "command.test.name": "test",
 
+    "command.version.action.done": "Charles-Hubert est actuellement en version : **$1**",
+    "command.version.description": "Donne la version actuelle de Charles-Hubert",
+    "command.version.name": "version",
+
     "command.error": "Une erreur est survenue: **$1**: $2",
     "command.loaded": "Commande $1 chargée avec succès",
     "command.used": "$1 a utilisé la commande $2",

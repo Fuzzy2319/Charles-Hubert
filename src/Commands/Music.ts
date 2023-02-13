@@ -90,7 +90,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             return
         }
 
-        if(!rep) {
+        if (!rep) {
             await interaction.deferReply()
         }
         const connection: Voice.VoiceConnection = Voice.joinVoiceChannel({

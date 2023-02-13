@@ -1,15 +1,17 @@
-import {Client, CommandInteraction, Locale} from 'discord.js'
+import {Client, CommandInteraction} from 'discord.js'
 import {AppSlashCommandBuilder} from '../Utils/Builder.js'
+import translator from '../Utils/Translator.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
-    .setName('version')
-    .setDescription('Output Charles-Hubert\'s version')
-    .setDescriptionLocalization(Locale.French, 'Donne la version actuelle de Charles-Hubert')
+    .setName('command.version.name')
+    .setDescription('command.version.description')
     .setDMPermission(false)
     .setCallback(async (client: Client, interaction: CommandInteraction) => {
-        await interaction.reply(
-            `Charles-Hubert est actuellement en version : **${process.env.npm_package_version}**`
-        )
+        await interaction.reply(translator.getTranslation(
+            'command.version.action.done',
+            interaction.guild.preferredLocale,
+            [process.env.npm_package_version]
+        ))
     })
 
 export default command
