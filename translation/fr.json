@@ -54,6 +54,10 @@
     "command.shutdown.description": "Arrête le bot",
     "command.shutdown.name": "éteindre",
 
+    "command.test.action.done": "Test OK $1",
+    "command.test.description": "Permet de vérifier si le bot est fonctionnel",
+    "command.test.name": "test",
+
     "command.error": "Une erreur est survenue: **$1**: $2",
     "command.loaded": "Commande $1 chargée avec succès",
     "command.used": "$1 a utilisé la commande $2",

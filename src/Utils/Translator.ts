@@ -19,7 +19,7 @@ class Translator {
     }
 
     private applyTranslationParams(translation: string, args: Array<string>): string {
-        return translation.replace(/\$(\d+)/g, (match: string, index: number) => args[index - 1])
+        return translation.replace(/\$(\d+)/g, (match: string, index: number) => args[index - 1] ?? match)
     }
 
     public getTranslation(key: string, locale: Locale = this.defaultLocale, args: Array<string> = []): string {
