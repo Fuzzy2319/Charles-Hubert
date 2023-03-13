@@ -1,4 +1,13 @@
-import * as Voice from '@discordjs/voice'
+import {
+    AudioPlayer,
+    AudioPlayerStatus,
+    createAudioPlayer,
+    createAudioResource,
+    getVoiceConnection,
+    joinVoiceChannel,
+    VoiceConnection,
+    VoiceConnectionStatus
+} from '@discordjs/voice'
 import {
     ActionRow,
     ActionRowBuilder,
@@ -77,7 +86,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             })
         }
 
-        if (Voice.getVoiceConnection(voiceChan.guild.id) !== undefined) {
+        if (getVoiceConnection(voiceChan.guild.id) !== undefined) {
             return
         }
 
@@ -93,13 +102,13 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         if (!rep) {
             await interaction.deferReply()
         }
-        const connection: Voice.VoiceConnection = Voice.joinVoiceChannel({
+        const connection: VoiceConnection = joinVoiceChannel({
             channelId: voiceChan.id,
             guildId: voiceChan.guild.id,
             adapterCreator: voiceChan.guild.voiceAdapterCreator
         })
 
-        const audio: Voice.AudioPlayer = Voice.createAudioPlayer()
+        const audio: AudioPlayer = createAudioPlayer()
 
         connection.subscribe(audio)
 
@@ -125,8 +134,8 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
                         .setCustomId('pause-resume')
                         .setStyle(ButtonStyle.Primary)
                         .setLabel(
-                            audio.state.status === Voice.AudioPlayerStatus.Playing ||
-                                audio.state.status === Voice.AudioPlayerStatus.Buffering
+                            audio.state.status === AudioPlayerStatus.Playing ||
+                                audio.state.status === AudioPlayerStatus.Buffering
                                 ? '⏸' : '▶'
                         ),
                     new ButtonBuilder()
@@ -155,13 +164,13 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             try {
                 const resource: play.YouTubeStream = await play.stream(QueueProvider.GetGuildQueue(interaction.guild)[0].url, { quality: 2 })
 
-                audio.play(Voice.createAudioResource(resource.stream, {
+                audio.play(createAudioResource(resource.stream, {
                     inputType: resource.type
                 }))
             } catch {
                 const resource: play.YouTubeStream = await play.stream('https://youtu.be/t69tmdgqKFk', { quality: 2 })
 
-                audio.play(Voice.createAudioResource(resource.stream, {
+                audio.play(createAudioResource(resource.stream, {
                     inputType: resource.type
                 }))
             }
@@ -229,7 +238,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             cShuffle.stop()
             cNext.stop()
             cPauseResume.stop()
-            if (connection.state.status !== Voice.VoiceConnectionStatus.Destroyed) {
+            if (connection.state.status !== VoiceConnectionStatus.Destroyed) {
                 connection.destroy()
             }
         }
@@ -245,12 +254,12 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
 
         cNext.on('collect', next)
 
-        audio.on(Voice.AudioPlayerStatus.Idle, () => {
+        audio.on(AudioPlayerStatus.Idle, () => {
             QueueProvider.GetGuildQueue(interaction.guild).length > 1 ? next() : stop()
         })
 
-        connection.on(Voice.VoiceConnectionStatus.Disconnected, stop)
-        connection.on(Voice.VoiceConnectionStatus.Destroyed, stop)
+        connection.on(VoiceConnectionStatus.Disconnected, stop)
+        connection.on(VoiceConnectionStatus.Destroyed, stop)
     })
 
 export default command
