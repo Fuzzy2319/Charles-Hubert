@@ -1,4 +1,4 @@
-/.fleet/
+/.vscode/
 /node_modules/
 /build/
 /src/.env

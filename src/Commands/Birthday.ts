@@ -1,6 +1,6 @@
-import {ApplicationCommandType, Client, ContextMenuCommandInteraction, GuildMember} from 'discord.js'
-import {AppContextMenuCommandBuilder} from '../Utils/Builder.js'
+import { ApplicationCommandType, Client, ContextMenuCommandInteraction, GuildMember } from 'discord.js'
 import BirthdayProvider from '../DataProviders/BirthdayProvider.js'
+import { AppContextMenuCommandBuilder } from '../Utils/Builder.js'
 import translator from '../Utils/Translator.js'
 
 const command: AppContextMenuCommandBuilder = (new AppContextMenuCommandBuilder())
@@ -13,7 +13,7 @@ const command: AppContextMenuCommandBuilder = (new AppContextMenuCommandBuilder(
         await interaction.reply(
             translator.getTranslation('command.birthday.announcement', interaction.guild.preferredLocale, [
                 user.displayName,
-                birthday.toLocaleString(interaction.guild.preferredLocale, {day: '2-digit', month: 'long'})
+                birthday.toLocaleString(interaction.guild.preferredLocale, { day: '2-digit', month: 'long' })
             ])
         )
     })

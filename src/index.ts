@@ -1,7 +1,7 @@
-import 'dotenv/config'
 import {
     ActivityType,
     Client,
+    Events,
     GatewayIntentBits,
     Guild,
     GuildBasedChannel,
@@ -10,14 +10,15 @@ import {
     PresenceUpdateStatus,
     Routes,
     User,
-    userMention
+    userMention,
+    Snowflake
 } from 'discord.js'
-import log from './Utils/Logger.js'
+import 'dotenv/config'
 import * as Fs from 'fs'
-import {AppContextMenuCommandBuilder, AppSlashCommandBuilder} from './Utils/Builder.js'
 import * as Schedule from 'node-schedule'
 import BirthdayProvider from './DataProviders/BirthdayProvider.js'
-import {Snowflake} from 'discord-api-types/globals'
+import { AppContextMenuCommandBuilder, AppSlashCommandBuilder } from './Utils/Builder.js'
+import log from './Utils/Logger.js'
 import sleep from './Utils/Sleep.js'
 import translator from './Utils/Translator.js'
 
@@ -55,7 +56,7 @@ const registerCommands = () => {
         log.debug(translator.getTranslation('commands.add.progress', process.env.DEFAULT_LOCALE as Locale, [guild.name]))
         await client.rest.put(
             Routes.applicationGuildCommands(client.application.id, guild.id),
-            {body: commands}
+            { body: commands }
         )
     })
 
@@ -63,21 +64,21 @@ const registerCommands = () => {
 }
 
 for (const commandFile of commandFiles) {
-    const {default: command} = await import(`./Commands/${commandFile}`)
+    const { default: command } = await import(`./Commands/${commandFile}`)
     commands.push(command)
     log.debug(translator.getTranslation('command.loaded', process.env.DEFAULT_LOCALE as Locale, [command.name]))
 }
 
 await client.login(process.env.TOKEN)
 
-client.on('ready', () => {
+client.on(Events.ClientReady, () => {
     log.info(translator.getTranslation('bot.online'))
     registerCommands()
     client.user.setStatus(PresenceUpdateStatus.Online)
-    client.user.setActivity('les oiseaux chanter', {type: ActivityType.Listening})
+    client.user.setActivity('les oiseaux chanter', { type: ActivityType.Listening })
 })
 
-client.on('interactionCreate', async (interaction: Interaction) => {
+client.on(Events.InteractionCreate, async (interaction: Interaction) => {
     if ((!interaction.isChatInputCommand()) && (!interaction.isContextMenuCommand())) return
     try {
         log.info(translator.getTranslation('command.used', process.env.DEFAULT_LOCALE as Locale, [interaction.user.tag, interaction.commandName]))
@@ -90,14 +91,14 @@ client.on('interactionCreate', async (interaction: Interaction) => {
     }
 })
 
-client.on('shardDisconnect', () => {
+client.on(Events.ShardDisconnect, () => {
     job.cancel()
     log.info(translator.getTranslation('commands.delete.start'))
     client.guilds.cache.map(async (guild: Guild) => {
         log.debug(translator.getTranslation('commands.delete.progress', process.env.DEFAULT_LOCALE as Locale, [guild.name]))
         await client.rest.setToken(process.env.TOKEN).put(
             Routes.applicationGuildCommands(client.application.id, guild.id),
-            {body: []}
+            { body: [] }
         )
     })
     log.info(translator.getTranslation('commands.delete.end'))

@@ -1,5 +1,5 @@
-import {APIApplicationCommandOptionChoice, Client, CommandInteraction, CommandInteractionOption} from 'discord.js'
-import {AppSlashCommandBuilder, AppCommandOptionChoice, AppSlashCommandStringOption} from '../Utils/Builder.js'
+import { APIApplicationCommandOptionChoice, Client, CommandInteraction, CommandInteractionOption } from 'discord.js'
+import { AppCommandOptionChoice, AppSlashCommandBuilder, AppSlashCommandStringOption } from '../Utils/Builder.js'
 import randomInt from '../Utils/Random.js'
 import translator from '../Utils/Translator.js'
 

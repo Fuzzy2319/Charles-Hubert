@@ -1,3 +1,4 @@
+import * as Voice from '@discordjs/voice'
 import {
     ActionRow,
     ActionRowBuilder,
@@ -13,11 +14,10 @@ import {
     Message,
     VoiceBasedChannel
 } from 'discord.js'
-import {AppSlashCommandBuilder, AppSlashCommandStringOption} from '../Utils/Builder.js'
 import play from 'play-dl'
-import * as Voice from '@discordjs/voice'
+import { YoutubeVideoInfo } from '../App.js'
 import QueueProvider from '../DataProviders/QueueProvider.js'
-import {YoutubeVideoInfo} from '../App.js'
+import { AppSlashCommandBuilder, AppSlashCommandStringOption } from '../Utils/Builder.js'
 import translator from '../Utils/Translator.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
@@ -65,7 +65,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         }
 
         if (play.yt_validate(url) === 'playlist') {
-            const playlist: play.YouTubePlayList = await play.playlist_info(url, {incomplete: true})
+            const playlist: play.YouTubePlayList = await play.playlist_info(url, { incomplete: true })
             QueueProvider.AddToGuildQueue(interaction.guild, ...(await playlist.all_videos()))
         }
 
@@ -126,7 +126,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
                         .setStyle(ButtonStyle.Primary)
                         .setLabel(
                             audio.state.status === Voice.AudioPlayerStatus.Playing ||
-                            audio.state.status === Voice.AudioPlayerStatus.Buffering
+                                audio.state.status === Voice.AudioPlayerStatus.Buffering
                                 ? '⏸' : '▶'
                         ),
                     new ButtonBuilder()
@@ -153,13 +153,13 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
 
         const playMusic = async () => {
             try {
-                const resource: play.YouTubeStream = await play.stream(QueueProvider.GetGuildQueue(interaction.guild)[0].url, {quality: 2})
+                const resource: play.YouTubeStream = await play.stream(QueueProvider.GetGuildQueue(interaction.guild)[0].url, { quality: 2 })
 
                 audio.play(Voice.createAudioResource(resource.stream, {
                     inputType: resource.type
                 }))
             } catch {
-                const resource: play.YouTubeStream = await play.stream('https://youtu.be/t69tmdgqKFk', {quality: 2})
+                const resource: play.YouTubeStream = await play.stream('https://youtu.be/t69tmdgqKFk', { quality: 2 })
 
                 audio.play(Voice.createAudioResource(resource.stream, {
                     inputType: resource.type
@@ -204,14 +204,14 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         cPauseResume.on('collect', async () => {
             audio.pause(true) || audio.unpause()
             message = await message.delete()
-            message = await message.channel.send({embeds: [getEmbed()], components: [getActions()]})
+            message = await message.channel.send({ embeds: [getEmbed()], components: [getActions()] })
         })
 
         cShuffle.on('collect', async () => {
             QueueProvider.ShuffleGuildQueue(interaction.guild)
             await playMusic()
             message = await message.delete()
-            message = await message.channel.send({embeds: [getEmbed()], components: [getActions()]})
+            message = await message.channel.send({ embeds: [getEmbed()], components: [getActions()] })
         })
 
         const stop = async () => {
@@ -229,7 +229,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             cShuffle.stop()
             cNext.stop()
             cPauseResume.stop()
-            if (connection.state.status !== 'destroyed') {
+            if (connection.state.status !== Voice.VoiceConnectionStatus.Destroyed) {
                 connection.destroy()
             }
         }
@@ -238,7 +238,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             QueueProvider.ShiftGuildQueue(interaction.guild)
             await playMusic()
             message = await message.delete()
-            message = await message.channel.send({embeds: [getEmbed()], components: [getActions()]})
+            message = await message.channel.send({ embeds: [getEmbed()], components: [getActions()] })
         }
 
         cStop.on('collect', stop)

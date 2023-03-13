@@ -1,5 +1,5 @@
-import {Client, CommandInteraction, CommandInteractionOption, Emoji} from 'discord.js'
-import {AppSlashCommandBuilder, AppSlashCommandStringOption} from '../Utils/Builder.js'
+import { Client, CommandInteraction, CommandInteractionOption, Emoji } from 'discord.js'
+import { AppSlashCommandBuilder, AppSlashCommandStringOption } from '../Utils/Builder.js'
 import translator from '../Utils/Translator.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())

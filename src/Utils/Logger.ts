@@ -1,7 +1,7 @@
-import log, {LogLevelDesc, LogLevelNames, LogLevelNumbers} from 'loglevel'
-import prefix from 'loglevel-plugin-prefix'
 import chalk from 'chalk'
 import * as Fs from 'fs'
+import log, { LogLevelDesc, LogLevelNames, LogLevelNumbers } from 'loglevel'
+import prefix from 'loglevel-plugin-prefix'
 
 const originalFactory = log.methodFactory
 log.methodFactory = function (methodName: LogLevelNames, logLevel: LogLevelNumbers, loggerName: string) {

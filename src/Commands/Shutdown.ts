@@ -1,8 +1,8 @@
-import {Client, CommandInteraction} from 'discord.js'
-import {AppSlashCommandBuilder} from '../Utils/Builder.js'
+import { DiscordGatewayAdapterLibraryMethods } from '@discordjs/voice'
+import { Client, CommandInteraction } from 'discord.js'
+import { AppSlashCommandBuilder } from '../Utils/Builder.js'
 import log from '../Utils/Logger.js'
 import sleep from '../Utils/Sleep.js'
-import {DiscordGatewayAdapterLibraryMethods} from '@discordjs/voice'
 import translator from '../Utils/Translator.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())

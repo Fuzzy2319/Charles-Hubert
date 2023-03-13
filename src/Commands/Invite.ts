@@ -1,5 +1,5 @@
-import {Client, Collection, CommandInteraction, Invite} from 'discord.js'
-import {AppSlashCommandBuilder} from '../Utils/Builder.js'
+import { Client, Collection, CommandInteraction, Invite } from 'discord.js'
+import { AppSlashCommandBuilder } from '../Utils/Builder.js'
 import translator from '../Utils/Translator.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())

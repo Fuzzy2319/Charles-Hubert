@@ -10,7 +10,7 @@ import {
     SlashCommandNumberOption,
     SlashCommandStringOption
 } from 'discord.js'
-import {AppCommandBuilder} from '../App.js'
+import { AppCommandBuilder } from '../App.js'
 import translator from './Translator.js'
 
 export class AppSlashCommandBuilder extends SlashCommandBuilder implements AppCommandBuilder {
@@ -126,6 +126,6 @@ export class AppCommandOptionChoice {
     }
 
     public toJSON(): APIApplicationCommandOptionChoice {
-        return {name: this.name, name_localizations: this.name_localizations, value: this.value}
+        return { name: this.name, name_localizations: this.name_localizations, value: this.value }
     }
 }

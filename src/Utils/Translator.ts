@@ -1,6 +1,6 @@
 import log from './Logger.js'
 import * as Fs from 'fs'
-import {Locale} from 'discord.js'
+import { Locale } from 'discord.js'
 
 class Translator {
     private readonly defaultLocale: Locale

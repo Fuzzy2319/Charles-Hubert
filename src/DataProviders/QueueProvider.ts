@@ -1,9 +1,8 @@
+import { Guild, Snowflake } from 'discord.js'
 import * as Fs from 'fs'
-import {Snowflake} from 'discord-api-types/globals'
-import {YouTubeVideo} from 'play-dl'
-import {Guild} from 'discord.js'
+import { YouTubeVideo } from 'play-dl'
+import { YoutubeVideoInfo } from '../App.js'
 import shuffle from '../Utils/Shuffle.js'
-import {YoutubeVideoInfo} from '../App.js'
 
 export default class QueueProvider {
     private static get dataPath(): string {

@@ -1,5 +1,5 @@
-import {Client, CommandInteraction, CommandInteractionOption, PermissionsBitField} from 'discord.js'
-import {AppSlashCommandBuilder, AppSlashCommandNumberOption} from '../Utils/Builder.js'
+import { Client, CommandInteraction, CommandInteractionOption, PermissionsBitField } from 'discord.js'
+import { AppSlashCommandBuilder, AppSlashCommandNumberOption } from '../Utils/Builder.js'
 import translator from '../Utils/Translator.js'
 
 const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())

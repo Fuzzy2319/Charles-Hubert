@@ -1,6 +1,5 @@
+import { Guild, GuildBasedChannel, GuildMember, Snowflake } from 'discord.js'
 import * as Fs from 'fs'
-import {Snowflake} from 'discord-api-types/globals'
-import {Guild, GuildBasedChannel, GuildMember} from 'discord.js'
 
 export default class BirthdayProvider {
     private static get dataPath(): string {
@@ -39,7 +38,7 @@ export default class BirthdayProvider {
         const birthdays: Map<Snowflake, Date> = new Map<Snowflake, Date>()
         data.get(guild.id).delete('_announceChannel')
         data.get(guild.id).forEach((date, userId) => {
-            const {1: day, 0: month} = date.split('-')
+            const { 1: day, 0: month } = date.split('-')
             birthdays.set(userId, new Date(0, Number.parseInt(month) - 1, Number.parseInt(day)))
         })
 
