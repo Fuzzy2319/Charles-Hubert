@@ -7,6 +7,7 @@ class Translator {
 
     public constructor() {
         this.defaultLocale = process.env.DEFAULT_LOCALE as Locale
+        log.debug(this.defaultLocale)
     }
 
     private getTranslationPath(locale: Locale): string {
@@ -26,7 +27,12 @@ class Translator {
         const path: string = this.getTranslationPath(locale)
         const tranlations: object = JSON.parse(Fs.readFileSync(path).toString())
         if (!tranlations.hasOwnProperty(key)) {
-            log.warn(`Missing translation key ${key} for locale ${locale}`)
+            if (locale !== this.defaultLocale) {
+                log.warn(`Missing translation key ${key} for locale ${locale} fallback to ${this.defaultLocale}`)
+
+                return this.getTranslation(key, this.defaultLocale, args)
+            }
+            log.error(`Missing translation key ${key} for default locale ${locale}`)
 
             return key
         }

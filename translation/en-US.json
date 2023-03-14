@@ -54,10 +54,10 @@
     "command.error": "An error has occurred: **$1**: $2",
     "command.loaded": "Command $1 loaded successfully",
     "command.used": "$1 used command $2",
-    "commands.add.start": "Adding commands (/) in progress",
-    "commands.add.progress": "Added commands (/) on the guild: $1",
     "commands.add.end": "Adding commands (/) completed",
-    "commands.delete.start": "Removing commands (/) in progress",
+    "commands.add.progress": "Added commands (/) on the guild: $1",
+    "commands.add.start": "Adding commands (/) in progress",
+    "commands.delete.end": "Removing commands (/) completed",
     "commands.delete.progress": "Removed commands (/) on the guild: $1",
-    "commands.delete.end": "Removing commands (/) completed"
+    "commands.delete.start": "Removing commands (/) in progress"
 }
