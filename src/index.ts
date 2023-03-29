@@ -1,6 +1,5 @@
 import {
-    ActivityType,
-    Client,
+    ActivityType, Client,
     Events,
     GatewayIntentBits,
     Guild,
@@ -9,9 +8,9 @@ import {
     Locale,
     PresenceUpdateStatus,
     Routes,
+    Snowflake,
     User,
-    userMention,
-    Snowflake
+    userMention
 } from 'discord.js'
 import 'dotenv/config'
 import * as Fs from 'fs'
@@ -91,16 +90,19 @@ client.on(Events.InteractionCreate, async (interaction: Interaction) => {
     }
 })
 
-client.on(Events.ShardDisconnect, () => {
+client.on(Events.ShardDisconnect, async () => {
     job.cancel()
     log.info(translator.getTranslation('commands.delete.start'))
+    client.rest.setToken(process.env.TOKEN)
     client.guilds.cache.map(async (guild: Guild) => {
         log.debug(translator.getTranslation('commands.delete.progress', process.env.DEFAULT_LOCALE as Locale, [guild.name]))
-        await client.rest.setToken(process.env.TOKEN).put(
+        await client.rest.put(
             Routes.applicationGuildCommands(client.application.id, guild.id),
             { body: [] }
         )
     })
     log.info(translator.getTranslation('commands.delete.end'))
+    // Ugly tmp fix
+    await sleep(2_000)
     process.exit()
 })

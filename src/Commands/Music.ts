@@ -212,21 +212,27 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
 
         cPauseResume.on('collect', async () => {
             audio.pause(true) || audio.unpause()
-            message = await message.delete()
+            if (message.deletable) {
+                message = await message.delete()
+            }
             message = await message.channel.send({ embeds: [getEmbed()], components: [getActions()] })
         })
 
         cShuffle.on('collect', async () => {
             QueueProvider.ShuffleGuildQueue(interaction.guild)
             await playMusic()
-            message = await message.delete()
+            if (message.deletable) {
+                message = await message.delete()
+            }
             message = await message.channel.send({ embeds: [getEmbed()], components: [getActions()] })
         })
 
         const stop = async () => {
             connection.removeAllListeners()
             audio.removeAllListeners()
-            message = await message.delete()
+            if (message.deletable) {
+                message = await message.delete()
+            }
             message = await message.channel.send(translator.getTranslation(
                 'command.music.action.done',
                 interaction.guild.preferredLocale,
@@ -246,7 +252,9 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         const next = async () => {
             QueueProvider.ShiftGuildQueue(interaction.guild)
             await playMusic()
-            message = await message.delete()
+            if (message.deletable) {
+                message = await message.delete()
+            }
             message = await message.channel.send({ embeds: [getEmbed()], components: [getActions()] })
         }
 
