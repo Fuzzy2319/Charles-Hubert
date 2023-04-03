@@ -16,7 +16,7 @@
         "@typescript-eslint/parser": "^5.57",
         "chalk": "^5.2",
         "discord-api-types": "^0.37",
-        "discord.js": "^14.8",
+        "discord.js": "^14.9",
         "dotenv": "^16.0",
         "eslint": "^8.37",
         "ffmpeg-static": "^5.1",
