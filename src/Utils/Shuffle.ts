@@ -1,4 +1,4 @@
-import randomInt from './Random.js'
+import randomInt from './Random.js';
 
 export default function shuffle(array: Array<any>) {
     for (let i: number = array.length - 1; i > 0; i += -1) {
