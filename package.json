@@ -1,6 +1,6 @@
 {
     "name": "charles-hubert",
-    "version": "4.3.5",
+    "version": "4.3.6",
     "type": "module",
     "private": true,
     "description": "Discord Bot",
@@ -14,7 +14,7 @@
         "@types/node-schedule": "^2.1",
         "chalk": "^5.2",
         "discord-api-types": "^0.37",
-        "discord.js": "^14.10",
+        "discord.js": "^14.11",
         "dotenv": "^16.0",
         "ffmpeg-static": "^5.1",
         "libsodium-wrappers": "^0.7",
