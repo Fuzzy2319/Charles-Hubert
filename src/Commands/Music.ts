@@ -40,7 +40,6 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             .setRequired(true)
     )
     .setCallback(async (client: Client, interaction: CommandInteraction) => {
-        let rep: boolean = false
         const voiceChan: VoiceBasedChannel | null = (await interaction.guild.members.fetch(interaction.user.id))
             ?.voice
             .channel
@@ -51,19 +50,19 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             .value as string
         const queue: YoutubeVideoInfo[] = QueueProvider.GetGuildQueue(interaction.guild)
 
+        await interaction.deferReply({ ephemeral: true })
+
         if (voiceChan === null) {
-            await interaction.reply({
-                content: translator.getTranslation('command.music.action.error.not_connected', interaction.guild.preferredLocale),
-                ephemeral: true
+            await interaction.followUp({
+                content: translator.getTranslation('command.music.action.error.not_connected', interaction.guild.preferredLocale)
             })
 
             return
         }
 
         if (!url.startsWith('https') || !play.yt_validate(url)) {
-            await interaction.reply({
-                content: translator.getTranslation('command.music.action.error.link_not_valid', interaction.guild.preferredLocale),
-                ephemeral: true
+            await interaction.followUp({
+                content: translator.getTranslation('command.music.action.error.link_not_valid', interaction.guild.preferredLocale)
             })
 
             return
@@ -79,10 +78,8 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         }
 
         if (queue.length > 0) {
-            rep = true
-            await interaction.reply({
-                content: translator.getTranslation('command.music.action.added_to_queue', interaction.guild.preferredLocale),
-                ephemeral: true
+            await interaction.followUp({
+                content: translator.getTranslation('command.music.action.added_to_queue', interaction.guild.preferredLocale)
             })
         }
 
@@ -91,17 +88,13 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         }
 
         if (QueueProvider.GetGuildQueue(interaction.guild).length === 0) {
-            await interaction.reply({
-                content: translator.getTranslation('command.music.action.error.private', interaction.guild.preferredLocale),
-                ephemeral: true
+            await interaction.followUp({
+                content: translator.getTranslation('command.music.action.error.private', interaction.guild.preferredLocale)
             })
 
             return
         }
 
-        if (!rep) {
-            await interaction.deferReply()
-        }
         const connection: VoiceConnection = joinVoiceChannel({
             channelId: voiceChan.id,
             guildId: voiceChan.guild.id,
@@ -178,11 +171,12 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
 
         await playMusic()
 
-        let message: Message = await interaction.followUp(
+        interaction.deleteReply()
+
+        let message: Message = await interaction.channel.send(
             {
                 embeds: [getEmbed()],
-                components: [getActions()],
-                fetchReply: true
+                components: [getActions()]
             }
         )
 
