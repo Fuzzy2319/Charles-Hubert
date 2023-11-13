@@ -9,7 +9,7 @@
     },
     "dependencies": {
         "@discordjs/opus": "^0.9",
-        "@discordjs/rest": "^2.0",
+        "@discordjs/rest": "^2.1",
         "@discordjs/voice": "^0.16",
         "@types/node-schedule": "^2.1",
         "chalk": "^5.3",
