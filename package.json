@@ -22,7 +22,7 @@
         "loglevel-plugin-prefix": "^0.8",
         "node-schedule": "^2.1",
         "play-dl": "^1.9",
-        "typescript": "^5.2"
+        "typescript": "^5.3"
     },
     "scripts": {
         "build": "tsc --build",
