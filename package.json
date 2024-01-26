@@ -18,7 +18,7 @@
         "dotenv": "^16.3",
         "ffmpeg-static": "^5.2",
         "libsodium-wrappers": "^0.7",
-        "loglevel": "^1.8",
+        "loglevel": "^1.9",
         "loglevel-plugin-prefix": "^0.8",
         "node-schedule": "^2.1",
         "play-dl": "^1.9",
