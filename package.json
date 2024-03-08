@@ -1,6 +1,6 @@
 {
     "name": "charles-hubert",
-    "version": "4.3.19",
+    "version": "4.3.20",
     "type": "module",
     "private": true,
     "description": "Discord Bot",
@@ -22,7 +22,7 @@
         "loglevel-plugin-prefix": "^0.8",
         "node-schedule": "^2.1",
         "play-dl": "^1.9",
-        "typescript": "^5.3"
+        "typescript": "^5.4"
     },
     "scripts": {
         "build": "tsc --build",
