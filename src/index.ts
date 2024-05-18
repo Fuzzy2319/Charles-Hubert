@@ -1,5 +1,6 @@
 import {
-    ActivityType, Client,
+    ActivityType,
+    Client,
     Events,
     GatewayIntentBits,
     Guild,
@@ -55,7 +56,7 @@ const registerCommands = () => {
         log.debug(translator.getTranslation('commands.add.progress', process.env.DEFAULT_LOCALE as Locale, [guild.name]))
         await client.rest.put(
             Routes.applicationGuildCommands(client.application.id, guild.id),
-            { body: commands }
+            {body: commands}
         )
     })
 
@@ -63,7 +64,7 @@ const registerCommands = () => {
 }
 
 for (const commandFile of commandFiles) {
-    const { default: command } = await import(`./Commands/${commandFile}`)
+    const {default: command} = await import(`./Commands/${commandFile}`)
     commands.push(command)
     log.debug(translator.getTranslation('command.loaded', process.env.DEFAULT_LOCALE as Locale, [command.name]))
 }
@@ -74,7 +75,7 @@ client.on(Events.ClientReady, () => {
     log.info(translator.getTranslation('bot.online'))
     registerCommands()
     client.user.setStatus(PresenceUpdateStatus.Online)
-    client.user.setActivity('les oiseaux chanter', { type: ActivityType.Listening })
+    client.user.setActivity('les oiseaux chanter', {type: ActivityType.Listening})
 })
 
 client.on(Events.InteractionCreate, async (interaction: Interaction) => {
@@ -98,7 +99,7 @@ client.on(Events.ShardDisconnect, async () => {
         log.debug(translator.getTranslation('commands.delete.progress', process.env.DEFAULT_LOCALE as Locale, [guild.name]))
         await client.rest.put(
             Routes.applicationGuildCommands(client.application.id, guild.id),
-            { body: [] }
+            {body: []}
         )
     })
     log.info(translator.getTranslation('commands.delete.end'))

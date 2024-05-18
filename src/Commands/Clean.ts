@@ -7,13 +7,6 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
     .setDescription('command.clean.description')
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageMessages)
-    .addNumberOption(
-        (new AppSlashCommandNumberOption())
-            .setName('command.clean.option.message.name')
-            .setDescription('command.clean.option.message.description')
-            .setRequired(true)
-            .setMinValue(1)
-    )
     .setCallback(async (client: Client, interaction: CommandInteraction) => {
         const messageNumber: number = interaction
             .options
@@ -34,5 +27,12 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             ephemeral: true
         })
     })
+    .addNumberOption(
+        (new AppSlashCommandNumberOption())
+            .setName('command.clean.option.message.name')
+            .setDescription('command.clean.option.message.description')
+            .setRequired(true)
+            .setMinValue(1)
+    ) as AppSlashCommandBuilder
 
 export default command

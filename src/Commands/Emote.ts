@@ -6,12 +6,6 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
     .setName('command.emote.name')
     .setDescription('command.emote.description')
     .setDMPermission(false)
-    .addStringOption(
-        (new AppSlashCommandStringOption())
-            .setName('command.emote.option.emote.name')
-            .setDescription('command.emote.option.emote.description')
-            .setRequired(true)
-    )
     .setCallback(async (client: Client, interaction: CommandInteraction) => {
         const emoteName: string = interaction
             .options
@@ -32,5 +26,11 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         }
         await interaction.reply(`${emote.toString()} ${emote.toString()} ${emote.toString()}`)
     })
+    .addStringOption(
+        (new AppSlashCommandStringOption())
+            .setName('command.emote.option.emote.name')
+            .setDescription('command.emote.option.emote.description')
+            .setRequired(true)
+    ) as AppSlashCommandBuilder
 
 export default command

@@ -33,12 +33,6 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
     .setName('command.music.name')
     .setDescription('command.music.description')
     .setDMPermission(false)
-    .addStringOption(
-        (new AppSlashCommandStringOption())
-            .setName('command.music.option.url.name')
-            .setDescription('command.music.option.url.description')
-            .setRequired(true)
-    )
     .setCallback(async (client: Client, interaction: CommandInteraction) => {
         const voiceChan: VoiceBasedChannel | null = (await interaction.guild.members.fetch(interaction.user.id))
             ?.voice
@@ -50,7 +44,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             .value as string
         const queue: YoutubeVideoInfo[] = QueueProvider.GetGuildQueue(interaction.guild)
 
-        await interaction.deferReply({ ephemeral: true })
+        await interaction.deferReply({ephemeral: true})
 
         if (voiceChan === null) {
             await interaction.followUp({
@@ -73,7 +67,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         }
 
         if (play.yt_validate(url) === 'playlist') {
-            const playlist: play.YouTubePlayList = await play.playlist_info(url, { incomplete: true })
+            const playlist: play.YouTubePlayList = await play.playlist_info(url, {incomplete: true})
             QueueProvider.AddToGuildQueue(interaction.guild, ...(await playlist.all_videos()))
         }
 
@@ -128,7 +122,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
                         .setStyle(ButtonStyle.Primary)
                         .setLabel(
                             audio.state.status === AudioPlayerStatus.Playing ||
-                                audio.state.status === AudioPlayerStatus.Buffering
+                            audio.state.status === AudioPlayerStatus.Buffering
                                 ? '⏸' : '▶'
                         ),
                     new ButtonBuilder()
@@ -155,13 +149,13 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
 
         const playMusic = async () => {
             try {
-                const resource: play.YouTubeStream = await play.stream(QueueProvider.GetGuildQueue(interaction.guild)[0].url, { quality: 2 })
+                const resource: play.YouTubeStream = await play.stream(QueueProvider.GetGuildQueue(interaction.guild)[0].url, {quality: 2})
 
                 audio.play(createAudioResource(resource.stream, {
                     inputType: resource.type
                 }))
             } catch {
-                const resource: play.YouTubeStream = await play.stream('https://youtu.be/t69tmdgqKFk', { quality: 2 })
+                const resource: play.YouTubeStream = await play.stream('https://youtu.be/t69tmdgqKFk', {quality: 2})
 
                 audio.play(createAudioResource(resource.stream, {
                     inputType: resource.type
@@ -209,7 +203,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             if (message.deletable) {
                 message = await message.delete()
             }
-            message = await message.channel.send({ embeds: [getEmbed()], components: [getActions()] })
+            message = await message.channel.send({embeds: [getEmbed()], components: [getActions()]})
         })
 
         cShuffle.on('collect', async () => {
@@ -218,7 +212,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             if (message.deletable) {
                 message = await message.delete()
             }
-            message = await message.channel.send({ embeds: [getEmbed()], components: [getActions()] })
+            message = await message.channel.send({embeds: [getEmbed()], components: [getActions()]})
         })
 
         const stop = async () => {
@@ -249,7 +243,7 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
             if (message.deletable) {
                 message = await message.delete()
             }
-            message = await message.channel.send({ embeds: [getEmbed()], components: [getActions()] })
+            message = await message.channel.send({embeds: [getEmbed()], components: [getActions()]})
         }
 
         cStop.on('collect', stop)
@@ -263,5 +257,11 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
         connection.on(VoiceConnectionStatus.Disconnected, stop)
         connection.on(VoiceConnectionStatus.Destroyed, stop)
     })
+    .addStringOption(
+        (new AppSlashCommandStringOption())
+            .setName('command.music.option.url.name')
+            .setDescription('command.music.option.url.description')
+            .setRequired(true)
+    ) as AppSlashCommandBuilder
 
 export default command

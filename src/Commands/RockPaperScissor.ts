@@ -7,26 +7,6 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
     .setName('command.rock_paper_scissor.name')
     .setDescription('command.rock_paper_scissor.description')
     .setDMPermission(false)
-    .addStringOption(
-        (new AppSlashCommandStringOption())
-            .setName('command.rock_paper_scissor.option.choice.name')
-            .setDescription('command.rock_paper_scissor.option.choice.description')
-            .setRequired(true)
-            .addChoices(
-                new AppCommandOptionChoice()
-                    .setName('command.rock_paper_scissor.option.choice.rock')
-                    .setValue('1')
-                    .toJSON() as APIApplicationCommandOptionChoice<string>,
-                new AppCommandOptionChoice()
-                    .setName('command.rock_paper_scissor.option.choice.paper')
-                    .setValue('2')
-                    .toJSON() as APIApplicationCommandOptionChoice<string>,
-                new AppCommandOptionChoice()
-                    .setName('command.rock_paper_scissor.option.choice.scissor')
-                    .setValue('3')
-                    .toJSON() as APIApplicationCommandOptionChoice<string>
-            )
-    )
     .setCallback(async (client: Client, interaction: CommandInteraction) => {
         const playerName = (await interaction.guild.members.fetch(interaction.user.id)).displayName
         const botName = (await interaction.guild.members.fetch(client.user.id)).displayName
@@ -97,5 +77,25 @@ const command: AppSlashCommandBuilder = (new AppSlashCommandBuilder())
 
         await interaction.reply(`${result}\n${playerName} : ${choice}\n${botName} : ${botChoice}`)
     })
+    .addStringOption(
+        (new AppSlashCommandStringOption())
+            .setName('command.rock_paper_scissor.option.choice.name')
+            .setDescription('command.rock_paper_scissor.option.choice.description')
+            .setRequired(true)
+            .addChoices(
+                new AppCommandOptionChoice()
+                    .setName('command.rock_paper_scissor.option.choice.rock')
+                    .setValue('1')
+                    .toJSON() as APIApplicationCommandOptionChoice<string>,
+                new AppCommandOptionChoice()
+                    .setName('command.rock_paper_scissor.option.choice.paper')
+                    .setValue('2')
+                    .toJSON() as APIApplicationCommandOptionChoice<string>,
+                new AppCommandOptionChoice()
+                    .setName('command.rock_paper_scissor.option.choice.scissor')
+                    .setValue('3')
+                    .toJSON() as APIApplicationCommandOptionChoice<string>
+            )
+    ) as AppSlashCommandBuilder
 
 export default command
