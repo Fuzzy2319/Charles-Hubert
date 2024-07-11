@@ -14,8 +14,8 @@ import {
     userMention
 } from 'discord.js'
 import 'dotenv/config'
-import * as Fs from 'fs'
-import * as Schedule from 'node-schedule'
+import Fs from 'fs'
+import Schedule from 'node-schedule'
 import BirthdayProvider from './DataProviders/BirthdayProvider.js'
 import { AppContextMenuCommandBuilder, AppSlashCommandBuilder } from './Utils/Builder.js'
 import log from './Utils/Logger.js'

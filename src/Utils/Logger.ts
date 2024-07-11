@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import * as Fs from 'fs'
+import Fs from 'fs'
 import log, { LogLevelDesc, LogLevelNames, LogLevelNumbers } from 'loglevel'
 import prefix from 'loglevel-plugin-prefix'
 

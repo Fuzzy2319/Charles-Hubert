@@ -1,23 +1,9 @@
 import { Guild, GuildBasedChannel, GuildMember, Snowflake } from 'discord.js'
-import * as Fs from 'fs'
+import Fs from 'fs'
 
 export default class BirthdayProvider {
     private static get dataPath(): string {
         return '../data/birthdays.json'
-    }
-
-    // private static serialize(data: Map<Snowflake, Map<Snowflake, string>>): void {
-    // }
-
-    private static unserialize(): Map<Snowflake, Map<Snowflake, string>> {
-        const data: Map<Snowflake, Map<Snowflake, string>> = new Map(
-            [
-                JSON.parse(Fs.readFileSync(BirthdayProvider.dataPath).toString())
-            ]
-        )
-        data.forEach((value, key) => data.set(key, new Map(value)))
-
-        return data
     }
 
     static async getGuildAnnonceChannel(guild: Guild): Promise<GuildBasedChannel> | null {
@@ -38,7 +24,7 @@ export default class BirthdayProvider {
         const birthdays: Map<Snowflake, Date> = new Map<Snowflake, Date>()
         data.get(guild.id).delete('_announceChannel')
         data.get(guild.id).forEach((date, userId) => {
-            const { 1: day, 0: month } = date.split('-')
+            const {1: day, 0: month} = date.split('-')
             birthdays.set(userId, new Date(0, Number.parseInt(month) - 1, Number.parseInt(day)))
         })
 
@@ -47,5 +33,16 @@ export default class BirthdayProvider {
 
     static getUserBirthday(guild: Guild, user: GuildMember): Date | null {
         return BirthdayProvider.getGuildBirthdays(guild)?.get(user.id)
+    }
+
+    private static unserialize(): Map<Snowflake, Map<Snowflake, string>> {
+        const data: Map<Snowflake, Map<Snowflake, string>> = new Map(
+            [
+                JSON.parse(Fs.readFileSync(BirthdayProvider.dataPath).toString())
+            ]
+        )
+        data.forEach((value, key) => data.set(key, new Map(value)))
+
+        return data
     }
 }

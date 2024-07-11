@@ -1,5 +1,5 @@
 import { Guild, Snowflake } from 'discord.js'
-import * as Fs from 'fs'
+import Fs from 'fs'
 import { YouTubeVideo } from 'play-dl'
 import { YoutubeVideoInfo } from '../App.js'
 import shuffle from '../Utils/Shuffle.js'
@@ -7,26 +7,6 @@ import shuffle from '../Utils/Shuffle.js'
 export default class QueueProvider {
     private static get dataPath(): string {
         return '../data/queues.json'
-    }
-
-    private static serialize(data: Map<Snowflake, Array<YoutubeVideoInfo>>): void {
-        const buffer: Array<any> = []
-        data.forEach((value, key) => {
-            buffer.push(key, value)
-        })
-
-        Fs.writeFileSync(QueueProvider.dataPath, JSON.stringify(buffer))
-    }
-
-    private static unserialize(): Map<Snowflake, Array<YoutubeVideoInfo>> {
-        return new Map(
-            [
-                JSON.parse(
-                    Fs.readFileSync(QueueProvider.dataPath).toString() !== '' ?
-                        Fs.readFileSync(QueueProvider.dataPath).toString() : '[]'
-                )
-            ]
-        )
     }
 
     public static GetGuildQueue(guild: Guild): Array<YoutubeVideoInfo> {
@@ -59,5 +39,25 @@ export default class QueueProvider {
         const queue: Array<YoutubeVideoInfo> = QueueProvider.GetGuildQueue(guild)
         queue.shift()
         QueueProvider.SetGuildQueue(guild, queue)
+    }
+
+    private static serialize(data: Map<Snowflake, Array<YoutubeVideoInfo>>): void {
+        const buffer: Array<any> = []
+        data.forEach((value, key) => {
+            buffer.push(key, value)
+        })
+
+        Fs.writeFileSync(QueueProvider.dataPath, JSON.stringify(buffer))
+    }
+
+    private static unserialize(): Map<Snowflake, Array<YoutubeVideoInfo>> {
+        return new Map(
+            [
+                JSON.parse(
+                    Fs.readFileSync(QueueProvider.dataPath).toString() !== '' ?
+                        Fs.readFileSync(QueueProvider.dataPath).toString() : '[]'
+                )
+            ]
+        )
     }
 }
